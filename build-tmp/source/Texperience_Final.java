@@ -1,8 +1,29 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import SimpleOpenNI.*; 
+import processing.opengl.*; 
+import saito.objloader.*; 
+import java.util.Map; 
+import java.util.ArrayList; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class Texperience_Final extends PApplet {
+
 //tal sznicer test
 
-import SimpleOpenNI.*;
-import processing.opengl.*;
-import saito.objloader.*;
+
+
+
 
 OBJModel test, moon, stars, tree, xoxoMan, xoxoCouch, twoMan, twoManArrow, sphear, stone;
 
@@ -21,10 +42,10 @@ float        zoomF =0.5f;
 float        rotX = radians(180);  // by default rotate uthe hole scene 180deg around the x-axis, 
 // the data from openni comes upside down
 float        rotY = radians(0);
-color[]      userColors = { 
+int[]      userColors = { 
   color(255, 255, 255), color(255, 255, 255), color(255, 255, 255), color(255, 255, 255), color(255, 0, 255), color(0, 255, 255)
 };
-color[]      userCoMColors = { 
+int[]      userCoMColors = { 
   color(86, 118, 255), color(86, 118, 255), color(86, 118, 255), color(86, 118, 255), color(255, 100, 255), color(100, 255, 255)
 };
 
@@ -62,7 +83,7 @@ long currentTime;
 // some programmers like to call it elapsedTime, or changeInTime. It's all a matter of preference
 // To keep the simulation accurate, we use a fixed time step.
 final int fixedDeltaTime = 15;
-float fixedDeltaTimeSeconds = (float)fixedDeltaTime / 1000.0;
+float fixedDeltaTimeSeconds = (float)fixedDeltaTime / 1000.0f;
 
 // the leftOverDeltaTime carries over change in time that isn't accounted for over to the next frame
 int leftOverDeltaTime = 0;
@@ -86,7 +107,7 @@ float treeHoleZ =(random(0, 40000));
 boolean treeHoleSmall = false;
 float openGate = 0;
 
-void setup() {
+public void setup() {
 
   // FULL SCREEN
   //size(displayWidth, displayHeight, P3D);
@@ -206,14 +227,14 @@ void setup() {
   stone.scale(1, -1, -1);
 }
 
-import java.util.Map;
-import java.util.ArrayList;
+
+
 
 HashMap<Integer, ArrayList> hm = new HashMap();
 
 
 
-void draw() {
+public void draw() {
 
   if (cameraOn == true)
   {
@@ -288,7 +309,7 @@ void draw() {
     target = defaultCameraPosition ;
   }
 
-  currentCameraPosition.lerp(target, 0.1);
+  currentCameraPosition.lerp(target, 0.1f);
 
   /*
   
@@ -302,13 +323,13 @@ void draw() {
     camera( 
     currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
     0, 0, 0, 
-    0, 1.0, 0);
+    0, 1.0f, 0);
   } 
   else {
     camera( 
-    (((float(mouseX) / width) - 0.5) * 2000), (((float(mouseY) / height) - 0.5) * 2000), walkZ, //mouseY / height * 2000, //move camera
+    (((PApplet.parseFloat(mouseX) / width) - 0.5f) * 2000), (((PApplet.parseFloat(mouseY) / height) - 0.5f) * 2000), walkZ, //mouseY / height * 2000, //move camera
     0, 0, 0, 
-    0, 1.0, 0);
+    0, 1.0f, 0);
   }  
 
   scale(1, -1, 1);
@@ -326,7 +347,7 @@ void draw() {
   //directionalLight(255, 255, 255, 0, -1, 0);
   //directionalLight(255, 255, 255, 0, 0, -1);
 
-  perspective(PI / 3, float(width)/float(height), 1, 1000000);
+  perspective(PI / 3, PApplet.parseFloat(width)/PApplet.parseFloat(height), 1, 1000000);
 
   ////opening-------------------------------------------------------------------------------------------------------------------
   if(state == START || state == ENGAGE){
@@ -433,12 +454,12 @@ void draw() {
   popMatrix();
 
   //Falling Tree Scrip
-  if (walkZ <= 11500.0 && walkZ >= 10000.0 && treeHoleR > 0 && treeHoleSmall == false)
+  if (walkZ <= 11500.0f && walkZ >= 10000.0f && treeHoleR > 0 && treeHoleSmall == false)
   {
     treeHoleSmall = true;
     for (int k = 0; k < 15000; k++)
     {
-      treeHoleR += 0.1;
+      treeHoleR += 0.1f;
       println (treeHoleR);
     }
     println ("done");
@@ -488,7 +509,7 @@ void draw() {
   popMatrix();  
 
   // make xoxo fall in a certain point on Z axis
-  if (walkZ <= 12400.0 && xoxoFall >= -2500)
+  if (walkZ <= 12400.0f && xoxoFall >= -2500)
   {
     for (int k = 0; k < 200; k++)
     {
@@ -502,7 +523,7 @@ void draw() {
   pushStyle(); 
   strokeWeight(4);
   stroke(255, 0, 0);
-  translate(0, xoxoFall*1.5, 5700);
+  translate(0, xoxoFall*1.5f, 5700);
   xoxoMan.draw();  
   popStyle();
   popMatrix();
@@ -613,7 +634,7 @@ void draw() {
 
   // If the mouse is pressing, it's influence will be spread out over every iteration in equal parts.
   // This keeps the program from exploding from user interaction if the timeStepAmt gets too high.
-  mouseInfluenceScalar = 1.0 / timeStepAmt;
+  mouseInfluenceScalar = 1.0f / timeStepAmt;
 
   // update physics
   for (int iteration = 1; iteration <= timeStepAmt; iteration++) {
@@ -645,7 +666,7 @@ void draw() {
   if (frameCount % 60 == 0)
     println("Frame rate is " + frameRate);
 }
-void createCurtain () {
+public void createCurtain () {
   // We use an ArrayList instead of an array so we could add or remove particles at will.
   // not that it isn't possible using an array, it's just more convenient this way
   particles = new ArrayList();
@@ -692,7 +713,7 @@ void createCurtain () {
 }
 
 // SimpleOpenNI events---------------------------------------------------------------------------
-void onNewUser(int userId)
+public void onNewUser(int userId)
 {
   println("onNewUser - userId: " + userId);
   println("  start pose detection");
@@ -703,27 +724,27 @@ void onNewUser(int userId)
     context.startPoseDetection("Psi", userId);
 }
 
-void onLostUser(int userId)
+public void onLostUser(int userId)
 {
   println("onLostUser - userId: " + userId);
 }
 
-void onExitUser(int userId)
+public void onExitUser(int userId)
 {
   println("onExitUser - userId: " + userId);
 }
 
-void onReEnterUser(int userId)
+public void onReEnterUser(int userId)
 {
   println("onReEnterUser - userId: " + userId);
 }
 
-void onStartCalibration(int userId)
+public void onStartCalibration(int userId)
 {
   println("onStartCalibration - userId: " + userId);
 }
 
-void onEndCalibration(int userId, boolean successfull)
+public void onEndCalibration(int userId, boolean successfull)
 {
   println("onEndCalibration - userId: " + userId + ", successfull: " + successfull);
 
@@ -740,7 +761,7 @@ void onEndCalibration(int userId, boolean successfull)
   }
 }
 
-void onStartPose(String pose, int userId)
+public void onStartPose(String pose, int userId)
 {
   println("onStartPose - userId: " + userId + ", pose: " + pose);
   println(" stop pose detection");
@@ -749,13 +770,13 @@ void onStartPose(String pose, int userId)
   context.requestCalibrationSkeleton(userId, true);
 }
 
-void onEndPose(String pose, int userId)
+public void onEndPose(String pose, int userId)
 {
   println("onEndPose - userId: " + userId + ", pose: " + pose);
 }
 
 // Keyboard events -----------------------------------------------------------------
-void keyPressed() {
+public void keyPressed() {
 
   if (key == '1')
   {
@@ -800,7 +821,7 @@ void keyPressed() {
 
 // fabric------------------------------------------------------------------------------------------------------------------
 
-void drawInstructions () {
+public void drawInstructions () {
   float fade = 255 - (((float)millis()-(instructionLength - instructionFade)) / instructionFade) * 255;
   stroke(0, fade);
   fill(255, fade);
@@ -811,7 +832,7 @@ void drawInstructions () {
 }
 
 // Credit to: http://www.codeguru.com/forum/showpost.php?p=1913101&postcount=16
-float distPointToSegmentSquared (float lineX1, float lineY1, float lineX2, float lineY2, float pointX, float pointY) {
+public float distPointToSegmentSquared (float lineX1, float lineY1, float lineX2, float lineY2, float pointX, float pointY) {
   float vx = lineX1 - pointX;
   float vy = lineY1 - pointY;
   float ux = lineX2 - lineX1;
@@ -836,7 +857,7 @@ final int SYNC = 2;
 
 int state = START;
 
-void startGame ()
+public void startGame ()
 {
  chosenUser = 0;
  state  = START; 
@@ -844,7 +865,7 @@ void startGame ()
 
 int chosenUser = 0;
 
-void engage(int id)
+public void engage(int id)
 {
   state = ENGAGE;
   chosenUser = id;
@@ -852,7 +873,193 @@ void engage(int id)
   
 }
 
-void sync()
+public void sync()
 {
  state  = SYNC; 
+}
+// The Link class is used for handling constraints between particles.
+class Link {
+  float restingDistance;
+  float stiffness;
+  
+  Particle p1;
+  Particle p2;
+  
+  // the scalars are how much "tug" the particles have on each other
+  // this takes into account masses and stiffness, and are set in the Link constructor
+  float scalarP1;
+  float scalarP2;
+  
+  // if you want this link to be invisible, set this to false
+  boolean drawThis = true;
+  
+  Link (Particle which1, Particle which2, float restingDist, float stiff) {
+    p1 = which1; // when you set one object to another, it's pretty much a reference. 
+    p2 = which2; // Anything that'll happen to p1 or p2 in here will happen to the paticles in our array
+    
+    restingDistance = restingDist;
+    stiffness = stiff;
+    
+    // although there are no differences in masses for the curtain, 
+    // this opens up possibilities in the future for if we were to have a fabric with particles of different weights
+    float im1 = 1 / p1.mass; // inverse mass quantities
+    float im2 = 1 / p2.mass;
+    scalarP1 = (im1 / (im1 + im2)) * stiffness;
+    scalarP2 = (im2 / (im1 + im2)) * stiffness;
+  }
+  
+  public void constraintSolve () {
+    // calculate the distance between the two particles
+    PVector delta = PVector.sub(p1.position, p2.position);  
+    float d = sqrt(delta.x * delta.x + delta.y * delta.y);
+    float difference = (restingDistance - d) / d;
+    
+    // if the distance is more than curtainTearSensitivity, the cloth tears
+    // it would probably be better if force was calculated, but this works
+    if (d > curtainTearSensitivity) 
+      p1.removeLink(this);
+    
+    // P1.position += delta * scalarP1 * difference
+    // P2.position -= delta * scalarP2 * difference
+    p1.position.add(PVector.mult(delta, scalarP1 * difference));
+    p2.position.sub(PVector.mult(delta, scalarP2 * difference));
+  }
+
+  public void draw () {
+    if (drawThis)
+      line(p1.position.x, p1.position.y, p2.position.x, p2.position.y);
+  }
+}
+// the Particle class.
+class Particle {
+  PVector lastPosition; // for calculating position change (velocity)
+  PVector position;
+  
+  PVector acceleration; 
+  
+  float mass = 1;
+  float damping = 20;
+
+  // An ArrayList for links, so we can have as many links as we want to this particle :)
+  ArrayList links = new ArrayList();
+  
+  boolean pinned = false;
+  PVector pinLocation = new PVector(0,0);
+  
+  // Particle constructor
+  Particle (PVector pos) {
+    position = pos.get();
+    lastPosition = pos.get();
+    acceleration = new PVector(0,0);
+  }
+  
+  // The update function is used to update the physics of the particle.
+  // motion is applied, and links are drawn here
+  public void updatePhysics (float timeStep) { // timeStep should be in elapsed seconds (deltaTime)
+    // gravity:
+    // f(gravity) = m * g
+    PVector fg = new PVector(0, mass * gravity);
+    this.applyForce(fg);
+    
+    
+    /* Verlet Integration, WAS using http://archive.gamedev.net/reference/programming/features/verlet/ 
+       however, we're using the tradition Velocity Verlet integration, because our timestep is now constant. */
+    // velocity = position - lastPosition
+    PVector velocity = PVector.sub(position, lastPosition);
+    // apply damping: acceleration -= velocity * (damping/mass)
+    acceleration.sub(PVector.mult(velocity,damping/mass)); 
+    // newPosition = position + velocity + 0.5 * acceleration * deltaTime * deltaTime
+    PVector nextPos = PVector.add(PVector.add(position, velocity), PVector.mult(PVector.mult(acceleration, 0.5f), timeStep * timeStep));
+    
+    // reset variables
+    lastPosition.set(position);
+    position.set(nextPos);
+    acceleration.set(0,0,0);
+  } 
+  public void updateInteractions () {
+    // this is where our interaction comes in.
+    if (mousePressed) {
+      float distanceSquared = distPointToSegmentSquared(pmouseX,pmouseY,mouseX,mouseY,position.x,position.y);
+      if (mouseButton == LEFT) {
+        if (distanceSquared < mouseInfluenceSize) { // remember mouseInfluenceSize was squared in setup()
+          // To change the velocity of our particle, we subtract that change from the lastPosition.
+          // When the physics gets integrated (see updatePhysics()), the change is calculated
+          // Here, the velocity is set equal to the cursor's velocity
+          lastPosition = PVector.sub(position, new PVector((mouseX-pmouseX)*mouseInfluenceScalar, (mouseY-pmouseY)*mouseInfluenceScalar));
+        }
+      }
+      else { // if the right mouse button is clicking, we tear the cloth by removing links
+        if (distanceSquared < mouseTearSize) 
+          links.clear();
+      }
+    }
+  }
+
+  public void draw () {
+    // draw the links and points
+    stroke(0);
+    if (links.size() > 0) {
+      for (int i = 0; i < links.size(); i++) {
+        Link currentLink = (Link) links.get(i);
+        currentLink.draw();
+      }
+    }
+    else
+      point(position.x, position.y);
+  }
+  /* Constraints */
+  public void solveConstraints () {
+    /* Link Constraints */
+    // Links make sure particles connected to this one is at a set distance away
+    for (int i = 0; i < links.size(); i++) {
+      Link currentLink = (Link) links.get(i);
+      currentLink.constraintSolve();
+    }
+    
+    /* Boundary Constraints */
+    // These if statements keep the particles within the screen
+    if (position.y < 1)
+      position.y = 2 * (1) - position.y;
+    if (position.y > height-1)
+      position.y = 2 * (height - 1) - position.y;
+    if (position.x > width-1)
+      position.x = 2 * (width - 1) - position.x;
+    if (position.x < 1)
+      position.x = 2 * (1) - position.x;
+    
+    /* Other Constraints */
+    // make sure the particle stays in its place if it's pinned
+    if (pinned)
+      position.set(pinLocation);
+  }
+  
+  // attachTo can be used to create links between this particle and other particles
+  public void attachTo (Particle P, float restingDist, float stiff) {
+    Link lnk = new Link(this, P, restingDist, stiff);
+    links.add(lnk);
+  }
+  public void removeLink (Link lnk) {
+    links.remove(lnk);
+  }  
+ 
+  public void applyForce (PVector f) {
+    // acceleration = (1/mass) * force
+    // or
+    // acceleration = force / mass
+    acceleration.add(PVector.div(f, mass));
+  }
+  
+  public void pinTo (PVector location) {
+    pinned = true;
+    pinLocation.set(location);
+  }
+}
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "Texperience_Final" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
 }

@@ -12,7 +12,7 @@ PVector head = new PVector();
 
 //  Sensor position relative to screen in mm
 PVector sensorPosition = new PVector(0, 0, 0);
-PVector defaultCameraPosition = new PVector(0, 1800, 3000);
+PVector defaultCameraPosition = new PVector(0, 1800, 1550);
 PVector currentCameraPosition = defaultCameraPosition;
 
 //opening-------------------------------------------------------------------------------------------------------
@@ -77,7 +77,8 @@ final int instructionFade = 300;
 // end fabric------------------------------------------------------------------------------------------------------------------
 
 //My Floats
-float walkZ;
+float mouseZPosition;
+float zPosition;
 boolean cameraOn = false;
 float xoxoFall = 4000;
 float treeHoleR = 1;
@@ -122,17 +123,10 @@ void setup() {
 
   // enable skeleton generation for all joints
   context.enableUser(SimpleOpenNI.SKEL_PROFILE_ALL);
+    
+  mouseZPosition =  15500;
 
-  //camera or muse
-  if (cameraOn == true)
-  {
-    float walkZ =  currentCameraPosition.z;
-  } 
-  else {
-    walkZ =  6000;
-  }
-
-  smooth();
+  //smooth();
 
   //opening-------------------------------------------------------------------------------------------------------------------
 
@@ -217,7 +211,7 @@ void draw() {
 
   if (cameraOn == true)
   {
-    float walkZ =  currentCameraPosition.z;// 30000;
+    float mouseZPosition =  currentCameraPosition.z;
   }
 
   // update the cam
@@ -298,17 +292,20 @@ void draw() {
    sensorPosition.y = 0;
    }
    */
+   //Toggle between camera and mouse
   if (cameraOn) {
     camera( 
     currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
     0, 0, 0, 
     0, 1.0, 0);
-  } 
+    println("user z position"+ currentCameraPosition.z + sensorPosition.z);
+   } 
   else {
     camera( 
-    (((float(mouseX) / width) - 0.5) * 2000), (((float(mouseY) / height) - 0.5) * 2000), walkZ, //mouseY / height * 2000, //move camera
+    (((float(mouseX) / width) - 0.5) * 2000), (((float(mouseY) / height) - 0.5) * 2000), mouseZPosition, //mouseY / height * 2000, //move camera
     0, 0, 0, 
     0, 1.0, 0);
+    println("user z position"+ mouseZPosition);
   }  
 
   scale(1, -1, 1);
@@ -339,8 +336,7 @@ void draw() {
 
   pushMatrix();
   pushStyle();  
-
-  translate(0, 500, 11000);  // set the rotation center of the scene 1000 infront of the camera
+  translate(0, 1000, 15500);  // set the rotation center of the scene 1000 infront of the camera
   rotateY(radians(180));
   int userCount = context.getNumberOfUsers();
   int[] userMap = null;
@@ -433,7 +429,7 @@ void draw() {
   popMatrix();
 
   //Falling Tree Scrip
-  if (walkZ <= 11500.0 && walkZ >= 10000.0 && treeHoleR > 0 && treeHoleSmall == false)
+  if (zPosition <= 11500.0 && zPosition >= 10000.0 && treeHoleR > 0 && treeHoleSmall == false)
   {
     treeHoleSmall = true;
     for (int k = 0; k < 15000; k++)
@@ -474,7 +470,7 @@ void draw() {
   pushStyle();  
   translate(-100000, 0, -10000);
   rotateX(radians(90));
-  fill(0);
+  fill(255);
   rect(0, 0, 200000, 200000);
   popStyle();
   popMatrix();
@@ -488,7 +484,7 @@ void draw() {
   popMatrix();  
 
   // make xoxo fall in a certain point on Z axis
-  if (walkZ <= 12400.0 && xoxoFall >= -2500)
+  if (zPosition <= 12400.0 && xoxoFall >= -2500)
   {
     for (int k = 0; k < 200; k++)
     {
@@ -521,7 +517,7 @@ void draw() {
   pushMatrix();
   pushStyle();
   translate(0, 0, 0);
-  rotateY(radians(walkZ)/20);
+  rotateY(radians(zPosition)/20);
   //rotateY(radians(currentCameraPosition.z + sensorPosition.z)/20);
   twoMan.draw();
   popStyle();  
@@ -531,7 +527,7 @@ void draw() {
   pushMatrix();
   pushStyle();
   translate(0, 0, 0);
-  rotateY(radians(walkZ)/-10);
+  rotateY(radians(zPosition)/-10);
   //rotateY(radians(currentCameraPosition.z + sensorPosition.z)/20);
   twoManArrow.draw();
   fill(255, 0, 0);
@@ -561,8 +557,8 @@ void draw() {
    pushStyle(); 
    strokeWeight(4);
    stroke(255, 0, 0);
-   rotateY(radians(walkZ)/-10);
-   rotateX(radians(walkZ)/-10);
+   rotateY(radians(zPosition)/-10);
+   rotateX(radians(zPosition)/-10);
    translate(0, pos*1.5, 5700);
    xoxoMan.draw();  
    popStyle();
@@ -642,9 +638,10 @@ void draw() {
   if (millis() < instructionLength)
     drawInstructions();
 
-  if (frameCount % 60 == 0)
-    println("Frame rate is " + frameRate);
+  // if (frameCount % 60 == 0)
+  //   println("Frame rate is " + frameRate);
 }
+
 void createCurtain () {
   // We use an ArrayList instead of an array so we could add or remove particles at will.
   // not that it isn't possible using an array, it's just more convenient this way
@@ -772,12 +769,12 @@ void keyPressed() {
 
   if (cameraOn == false) {
     if (keyCode == DOWN) { 
-      walkZ +=500;
-      //      println(walkZ);
+      mouseZPosition +=500;
+      //      println(mouseZPosition);
     } 
     else if (keyCode == UP ) {
-      walkZ -=500;
-      //    println(walkZ);
+      mouseZPosition -=500;
+      //    println(mouseZPosition);
     }
     else if (keyCode == RIGHT ) {
       openGate +=20;

@@ -381,7 +381,7 @@ void draw() {
           }
           else
             // camera capture background color
-            stroke(100); 
+            stroke(110); 
             //float blur = random(-100, 100);
             float blur = 0.0;
             point(realWorldPoint.x+blur, realWorldPoint.y+blur, realWorldPoint.z);

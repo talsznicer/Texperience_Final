@@ -100,7 +100,7 @@ int[]      userCoMColors = {
 //My Floats
 float mouseZPosition;
 float zPosition;
-boolean cameraOn = false;
+boolean cameraOn = true;
 float xoxoFall = 4000;
 float treeHoleR = 1;
 float treeHoleX =(random(-1000, 1000));
@@ -112,19 +112,19 @@ float startPosition = 30000;
 public void setup() {
 
   // FULL SCREEN
-  //size(displayWidth, displayHeight, P3D);
-  size(900, 1000, P3D);
+  size(displayWidth, displayHeight, P3D);
+  //size(900, 1000, P3D);
 
-//   // fabric------------------------------------------------------------------------------------------------------------------
-//   // we square the mouseInfluenceSize and mouseTearSize so we don't have to use squareRoot when comparing distances with this.
-//   mouseInfluenceSize *= mouseInfluenceSize; 
-//   mouseTearSize *= mouseTearSize;
+  //   // fabric------------------------------------------------------------------------------------------------------------------
+  //   // we square the mouseInfluenceSize and mouseTearSize so we don't have to use squareRoot when comparing distances with this.
+  //   mouseInfluenceSize *= mouseInfluenceSize; 
+  //   mouseTearSize *= mouseTearSize;
 
-//   // create the curtain
-//   createCurtain();
+  //   // create the curtain
+  //   createCurtain();
 
-//   font = loadFont("LucidaBright-Demi-16.vlw");
-//   textFont(font);
+  //   font = loadFont("LucidaBright-Demi-16.vlw");
+  //   textFont(font);
   // end fabric------------------------------------------------------------------------------------------------------------------
 
 
@@ -145,7 +145,7 @@ public void setup() {
 
   // enable skeleton generation for all joints
   context.enableUser(SimpleOpenNI.SKEL_PROFILE_ALL);
-    
+
   mouseZPosition =  15500;
 
   //smooth();
@@ -231,10 +231,6 @@ HashMap<Integer, ArrayList> hm = new HashMap();
 
 public void draw() {
 
-  
-   if (frameCount % 60 == 0)
-     println("Frame rate is " + frameRate);
-
   // update the cam
   context.update();
 
@@ -245,42 +241,42 @@ public void draw() {
   {
     if (context.isTrackingSkeleton(userList[i]))
     {
-      
+
       if (state != ENGAGE)
       {
-      if (!hm.containsKey(userList[i]))
-      {    
-        hm.put(userList[i], new ArrayList());
-      }
-
-      ArrayList<PVector> headHistory = hm.get(userList[i]);
-      headHistory.add(new PVector(head.x, head.y, head.z));
-      final int historySize = 50;
-
-      if (headHistory.size() > historySize)
-      {
-        //check if not moving
-        float total = 0; //accumulated head movement
-        for (int j=1;j<historySize;j++)
-        {
-          PVector v3 = PVector.sub(headHistory.get(j), headHistory.get(j-1));
-          total += v3.mag();
+        if (!hm.containsKey(userList[i]))
+        {    
+          hm.put(userList[i], new ArrayList());
         }
 
-        float avg = total / historySize;
+        ArrayList<PVector> headHistory = hm.get(userList[i]);
+        headHistory.add(new PVector(head.x, head.y, head.z));
+        final int historySize = 50;
 
-        println("head movement average" + avg);
-
-        final int headMovementThreshold = 10; 
-        if (avg < headMovementThreshold)
+        if (headHistory.size() > historySize)
         {
-          engage(userList[i]);
-          println("AAAAAAAAAAAAAAAAAAA");
-        }
+          //check if not moving
+          float total = 0; //accumulated head movement
+          for (int j=1;j<historySize;j++)
+          {
+            PVector v3 = PVector.sub(headHistory.get(j), headHistory.get(j-1));
+            total += v3.mag();
+          }
 
-        //finally, pop
-        headHistory.remove(0);
-      }
+          float avg = total / historySize;
+
+          println("head movement average" + avg);
+
+          final int headMovementThreshold = 10; 
+          if (avg < headMovementThreshold)
+          {
+            engage(userList[i]);
+            println("AAAAAAAAAAAAAAAAAAA");
+          }
+
+          //finally, pop
+          headHistory.remove(0);
+        }
       }
 
       numTreckedUsers++;
@@ -305,16 +301,30 @@ public void draw() {
 
   currentCameraPosition.lerp(target, 0.1f);
 
-   //Toggle between camera and mouse
+  //Toggle between camera and mouse
   if (cameraOn) {
-    camera( 
-    currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
-    0, 0, 0, 
-    0, 1.0f, 0);
-    zPosition =currentCameraPosition.z + sensorPosition.z; 
-    println("user z position"+ zPosition);
-   } 
-  else {
+    if (state != START) { 
+      camera( 
+      currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
+      0, 0, 0, 
+      0, 1.0f, 0);
+      zPosition =currentCameraPosition.z + sensorPosition.z; 
+      println("X: "+ currentCameraPosition.x);
+      println("y: "+ currentCameraPosition.y);
+      println("z: "+ currentCameraPosition.z);
+      println("user z position"+ zPosition);
+      println("______________________");
+    } 
+    else {
+      camera( 
+      60, -800, 19000, 
+      0, 0, 0, 
+      0, 1.0f, 0);
+      zPosition =currentCameraPosition.z + sensorPosition.z; 
+      println("user z position"+ zPosition);
+    }
+  }
+  else if (cameraOn == false) {
     camera( 
     (((PApplet.parseFloat(mouseX) / width) - 0.5f) * 2000), (((PApplet.parseFloat(mouseY) / height) - 0.5f) * 2000), mouseZPosition, //mouseY / height * 2000, //move camera
     0, 0, 0, 
@@ -341,65 +351,65 @@ public void draw() {
   perspective(PI / 3, PApplet.parseFloat(width)/PApplet.parseFloat(height), 1, 1000000);
 
   ////opening-------------------------------------------------------------------------------------------------------------------
-  if(state == START || state == ENGAGE){
-    
-  scale(zoomF);
-  int[]   depthMap = context.depthMap();
-  int     steps   = 5;  // to speed up the drawing, draw every third point
-  int     index;
-  PVector realWorldPoint;
+  if (state == START || state == ENGAGE) {
 
-  pushMatrix();
-  pushStyle();  
-  translate(0, 1000, startPosition + 3000);  // set the rotation center of the scene 1000 infront of the camera
-  rotateY(radians(180));
-  int userCount = context.getNumberOfUsers();
-  int[] userMap = null;
-  if (userCount > 0)
-  {
-    userMap = context.getUsersPixels(SimpleOpenNI.USERS_ALL);
-  }
+    scale(zoomF);
+    int[]   depthMap = context.depthMap();
+    int     steps   = 5;  // to speed up the drawing, draw every third point
+    int     index;
+    PVector realWorldPoint;
 
-  for (int y=0;y < context.depthHeight();y+=steps)
-  {
-    for (int x=0;x < context.depthWidth();x+=steps)
+    pushMatrix();
+    pushStyle();  
+    translate(0, 1000, startPosition + 3000);  // set the rotation center of the scene 1000 infront of the camera
+    rotateY(radians(180));
+    int userCount = context.getNumberOfUsers();
+    int[] userMap = null;
+    if (userCount > 0)
     {
-      index = x + y * context.depthWidth();
-      if (depthMap[index] > 0)
-      { 
-        // get the realworld points
-        realWorldPoint = context.depthMapRealWorld()[index];
+      userMap = context.getUsersPixels(SimpleOpenNI.USERS_ALL);
+    }
 
-        // check if there is a user
-        if (userMap != null && userMap[index] != 0)
-        {  // calc the user color
-          //int colorIndex = userMap[index] % userColors.length;
-          strokeWeight(4);
-          if(state == ENGAGE)
-          {
-            if ( userMap[index] == chosenUser){
-              stroke(color(255,0,0));
+    for (int y=0;y < context.depthHeight();y+=steps)
+    {
+      for (int x=0;x < context.depthWidth();x+=steps)
+      {
+        index = x + y * context.depthWidth();
+        if (depthMap[index] > 0)
+        { 
+          // get the realworld points
+          realWorldPoint = context.depthMapRealWorld()[index];
+
+          // check if there is a user
+          if (userMap != null && userMap[index] != 0)
+          {  // calc the user color
+            //int colorIndex = userMap[index] % userColors.length;
+            strokeWeight(4);
+            if (state == ENGAGE)
+            {
+              if ( userMap[index] == chosenUser) {
+                stroke(color(255, 0, 0));
+              }
+              else {
+                stroke(color(0, 255, 0));
+              }
             }
-            else{
-              stroke(color(0,255,0));
-           }
+            else {
+              stroke(userColors[0]);
+            }
           }
-          else{
-            stroke(userColors[0]);
-          }
+          else
+            // default color
+            noStroke();
+          stroke(255, 255, 0); 
+          point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
         }
-        else
-          // default color
-          noStroke();
-        stroke(255,255,0); 
-        point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
       }
     }
+    popStyle();
+    popMatrix();
   }
-  popStyle();
-  popMatrix();
-  }
-  
+
   //end opening -------------------------------------------------------------------------------------------------------------------
 
   //XYZ AXIS
@@ -457,16 +467,16 @@ public void draw() {
 
   //Tree holes
 
-    pushMatrix();
-    pushStyle();
-    //  translate(treeHoleX, treeHoleZ, -2);
-    translate(0, 1, 3000);
-    rotateX(radians(90));
-    fill (0);
-    noStroke(); 
-    ellipse(0, 0, treeHoleR, treeHoleR);
-    popStyle();  
-    popMatrix();  
+  pushMatrix();
+  pushStyle();
+  //  translate(treeHoleX, treeHoleZ, -2);
+  translate(0, 1, 3000);
+  rotateX(radians(90));
+  fill (0);
+  noStroke(); 
+  ellipse(0, 0, treeHoleR, treeHoleR);
+  popStyle();  
+  popMatrix();  
 
   // tree
   pushMatrix();
@@ -605,98 +615,98 @@ public void draw() {
 
   endCamera();
 
-//   // fabric------------------------------------------------------------------------------------------------------------------
-//   /******** Physics ********/
-//   // time related stuff
-//   currentTime = millis();
-//   // deltaTimeMS: change in time in milliseconds since last frame
-//   long deltaTimeMS = currentTime - previousTime;
-//   previousTime = currentTime; // reset previousTime
-//   // timeStepAmt will be how many of our fixedDeltaTime's can fit in the physics for this frame. 
-//   int timeStepAmt = (int)((float)(deltaTimeMS + leftOverDeltaTime) / (float)fixedDeltaTime);
-//   // Here we cap the timeStepAmt to prevent the iteration count from getting too high and exploding
-//   timeStepAmt = min(timeStepAmt, 5);
+  //   // fabric------------------------------------------------------------------------------------------------------------------
+  //   /******** Physics ********/
+  //   // time related stuff
+  //   currentTime = millis();
+  //   // deltaTimeMS: change in time in milliseconds since last frame
+  //   long deltaTimeMS = currentTime - previousTime;
+  //   previousTime = currentTime; // reset previousTime
+  //   // timeStepAmt will be how many of our fixedDeltaTime's can fit in the physics for this frame. 
+  //   int timeStepAmt = (int)((float)(deltaTimeMS + leftOverDeltaTime) / (float)fixedDeltaTime);
+  //   // Here we cap the timeStepAmt to prevent the iteration count from getting too high and exploding
+  //   timeStepAmt = min(timeStepAmt, 5);
 
-//   leftOverDeltaTime += (int)deltaTimeMS - (timeStepAmt * fixedDeltaTime); // add to the leftOverDeltaTime.
+  //   leftOverDeltaTime += (int)deltaTimeMS - (timeStepAmt * fixedDeltaTime); // add to the leftOverDeltaTime.
 
-//   // If the mouse is pressing, it's influence will be spread out over every iteration in equal parts.
-//   // This keeps the program from exploding from user interaction if the timeStepAmt gets too high.
-//   mouseInfluenceScalar = 1.0 / timeStepAmt;
+  //   // If the mouse is pressing, it's influence will be spread out over every iteration in equal parts.
+  //   // This keeps the program from exploding from user interaction if the timeStepAmt gets too high.
+  //   mouseInfluenceScalar = 1.0 / timeStepAmt;
 
-//   // update physics
-//   for (int iteration = 1; iteration <= timeStepAmt; iteration++) {
-//     // solve the constraints multiple times
-//     // the more it's solved, the more accurate.
-//     for (int x = 0; x < constraintAccuracy; x++) {
-//       for (int i = 0; i < particles.size(); i++) {
-//         Particle particle = (Particle) particles.get(i);
-//         particle.solveConstraints();
-//       }
-//     }
+  //   // update physics
+  //   for (int iteration = 1; iteration <= timeStepAmt; iteration++) {
+  //     // solve the constraints multiple times
+  //     // the more it's solved, the more accurate.
+  //     for (int x = 0; x < constraintAccuracy; x++) {
+  //       for (int i = 0; i < particles.size(); i++) {
+  //         Particle particle = (Particle) particles.get(i);
+  //         particle.solveConstraints();
+  //       }
+  //     }
 
-//     // update each particle's position
-//     for (int i = 0; i < particles.size(); i++) {
-//       Particle particle = (Particle) particles.get(i);
-//       particle.updateInteractions();
-//       particle.updatePhysics(fixedDeltaTimeSeconds);
-//     }
-//   }
-//   // draw each particle or its links
-//   for (int i = 0; i < particles.size(); i++) {
-//     Particle particle = (Particle) particles.get(i);
-//     particle.draw();
-//   }
+  //     // update each particle's position
+  //     for (int i = 0; i < particles.size(); i++) {
+  //       Particle particle = (Particle) particles.get(i);
+  //       particle.updateInteractions();
+  //       particle.updatePhysics(fixedDeltaTimeSeconds);
+  //     }
+  //   }
+  //   // draw each particle or its links
+  //   for (int i = 0; i < particles.size(); i++) {
+  //     Particle particle = (Particle) particles.get(i);
+  //     particle.draw();
+  //   }
 
-//   if (millis() < instructionLength)
-//     drawInstructions();
+  //   if (millis() < instructionLength)
+  //     drawInstructions();
 
-//    // if (frameCount % 60 == 0)
-//    //   println("Frame rate is " + frameRate);
-// }
+  //    // if (frameCount % 60 == 0)
+  //    //   println("Frame rate is " + frameRate);
+  // }
 
-// void createCurtain () {
-//   // We use an ArrayList instead of an array so we could add or remove particles at will.
-//   // not that it isn't possible using an array, it's just more convenient this way
-//   particles = new ArrayList();
+  // void createCurtain () {
+  //   // We use an ArrayList instead of an array so we could add or remove particles at will.
+  //   // not that it isn't possible using an array, it's just more convenient this way
+  //   particles = new ArrayList();
 
-//   // midWidth: amount to translate the curtain along x-axis for it to be centered
-//   // (curtainWidth * restingDistances) = curtain's pixel width
-//   int midWidth = (int) (width/2 - (curtainWidth * restingDistances)/2);
-//   // Since this our fabric is basically a grid of points, we have two loops
-//   for (int y = 0; y <= curtainHeight; y++) { // due to the way particles are attached, we need the y loop on the outside
-//     for (int x = 0; x <= curtainWidth; x++) { 
-//       Particle particle = new Particle(new PVector(midWidth + x * restingDistances, y * restingDistances + yStart));
+  //   // midWidth: amount to translate the curtain along x-axis for it to be centered
+  //   // (curtainWidth * restingDistances) = curtain's pixel width
+  //   int midWidth = (int) (width/2 - (curtainWidth * restingDistances)/2);
+  //   // Since this our fabric is basically a grid of points, we have two loops
+  //   for (int y = 0; y <= curtainHeight; y++) { // due to the way particles are attached, we need the y loop on the outside
+  //     for (int x = 0; x <= curtainWidth; x++) { 
+  //       Particle particle = new Particle(new PVector(midWidth + x * restingDistances, y * restingDistances + yStart));
 
-//       // attach to 
-//       // x - 1  and
-//       // y - 1  
-//       // particle attachTo parameters: Particle particle, float restingDistance, float stiffness
-//       // try disabling the next 2 lines (the if statement and attachTo part) to create a hairy effect
-//       if (x != 0) 
-//         particle.attachTo((Particle)(particles.get(particles.size()-1)), restingDistances, stiffnesses);
-//       // the index for the particles are one dimensions, 
-//       // so we convert x,y coordinates to 1 dimension using the formula y*width+x  
-//       if (y != 0)
-//         particle.attachTo((Particle)(particles.get((y - 1) * (curtainWidth+1) + x)), restingDistances, stiffnesses);
+  //       // attach to 
+  //       // x - 1  and
+  //       // y - 1  
+  //       // particle attachTo parameters: Particle particle, float restingDistance, float stiffness
+  //       // try disabling the next 2 lines (the if statement and attachTo part) to create a hairy effect
+  //       if (x != 0) 
+  //         particle.attachTo((Particle)(particles.get(particles.size()-1)), restingDistances, stiffnesses);
+  //       // the index for the particles are one dimensions, 
+  //       // so we convert x,y coordinates to 1 dimension using the formula y*width+x  
+  //       if (y != 0)
+  //         particle.attachTo((Particle)(particles.get((y - 1) * (curtainWidth+1) + x)), restingDistances, stiffnesses);
 
-//       /*
-//       // shearing, presumably. Attaching invisible links diagonally between points can give our cloth stiffness.
-//        // the stiffer these are, the more our cloth acts like jello. 
-//        // these are unnecessary for me, so I keep them disabled.
-//        if ((x != 0) && (y != 0)) 
-//        particle.attachTo((Particle)(particles.get((y - 1) * (curtainWidth+1) + (x-1))), restingDistances * sqrt(2), 0.1, false);
-//        if ((x != curtainWidth) && (y != 0))
-//        particle.attachTo((Particle)(particles.get((y - 1) * (curtainWidth+1) + (x+1))), restingDistances * sqrt(2), 1, true);
-//        */
+  //       /*
+  //       // shearing, presumably. Attaching invisible links diagonally between points can give our cloth stiffness.
+  //        // the stiffer these are, the more our cloth acts like jello. 
+  //        // these are unnecessary for me, so I keep them disabled.
+  //        if ((x != 0) && (y != 0)) 
+  //        particle.attachTo((Particle)(particles.get((y - 1) * (curtainWidth+1) + (x-1))), restingDistances * sqrt(2), 0.1, false);
+  //        if ((x != curtainWidth) && (y != 0))
+  //        particle.attachTo((Particle)(particles.get((y - 1) * (curtainWidth+1) + (x+1))), restingDistances * sqrt(2), 1, true);
+  //        */
 
-//       // we pin the very top particles to where they are
-//       if (y == 0)
-//         particle.pinTo(particle.position);
+  //       // we pin the very top particles to where they are
+  //       if (y == 0)
+  //         particle.pinTo(particle.position);
 
-//       // add to particle array  
-//       particles.add(particle);
-//     }
-//   }
+  //       // add to particle array  
+  //       particles.add(particle);
+  //     }
+  //   }
   // end fabric------------------------------------------------------------------------------------------------------------------
 }
 
@@ -782,7 +792,6 @@ public void keyPressed() {
   if (cameraOn == false) {
     if (keyCode == DOWN) { 
       mouseZPosition +=500;
-
     } 
     else if (keyCode == UP ) {
       mouseZPosition -=500;
@@ -846,8 +855,8 @@ int state = START;
 
 public void startGame ()
 {
- chosenUser = 0;
- state  = START; 
+  chosenUser = 0;
+  state  = START;
 }
 
 int chosenUser = 0;
@@ -857,13 +866,13 @@ public void engage(int id)
   state = ENGAGE;
   chosenUser = id;
   println ("bridg UP");
-  
 }
 
 public void sync()
 {
- state  = SYNC; 
+  state  = SYNC;
 }
+
 // // The Link class is used for handling constraints between particles.
 // class Link {
 //   float restingDistance;

@@ -79,7 +79,7 @@ color[]      userCoMColors = {
 //My Floats
 float mouseZPosition;
 float zPosition;
-boolean cameraOn = false;
+boolean cameraOn = true;
 float xoxoFall = 4000;
 float treeHoleR = 1;
 float treeHoleX =(random(-1000, 1000));
@@ -91,8 +91,8 @@ float startPosition = 30000;
 void setup() {
 
   // FULL SCREEN
-  //size(displayWidth, displayHeight, P3D);
-  size(900, 1000, P3D);
+  size(displayWidth, displayHeight, P3D);
+  //size(900, 1000, P3D);
 
   //   // fabric------------------------------------------------------------------------------------------------------------------
   //   // we square the mouseInfluenceSize and mouseTearSize so we don't have to use squareRoot when comparing distances with this.
@@ -282,14 +282,28 @@ void draw() {
 
   //Toggle between camera and mouse
   if (cameraOn) {
-    camera( 
-    currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
-    0, 0, 0, 
-    0, 1.0, 0);
-    zPosition =currentCameraPosition.z + sensorPosition.z; 
-    println("user z position"+ zPosition);
-  } 
-  else {
+    if (state != START) { 
+      camera( 
+      currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
+      0, 0, 0, 
+      0, 1.0, 0);
+      zPosition =currentCameraPosition.z + sensorPosition.z; 
+      // println("X: "+ currentCameraPosition.x);
+      // println("y: "+ currentCameraPosition.y);
+      // println("z: "+ currentCameraPosition.z);
+      // println("user z position"+ zPosition);
+      // println("______________________");
+    } 
+    else {
+      camera( 
+      60, -800, 19000, 
+      0, 0, 0, 
+      0, 1.0, 0);
+      zPosition =currentCameraPosition.z + sensorPosition.z; 
+      println("user z position" + zPosition);
+    }
+  }
+  else if (cameraOn == false) {
     camera( 
     (((float(mouseX) / width) - 0.5) * 2000), (((float(mouseY) / height) - 0.5) * 2000), mouseZPosition, //mouseY / height * 2000, //move camera
     0, 0, 0, 

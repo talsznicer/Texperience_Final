@@ -33,7 +33,7 @@ PVector head = new PVector();
 
 //  Sensor position relative to screen in mm
 PVector sensorPosition = new PVector(0, 0, 0);
-PVector defaultCameraPosition = new PVector(0, 1800, 1550);
+PVector defaultCameraPosition = new PVector(0, 0, 0);
 PVector currentCameraPosition = defaultCameraPosition;
 
 //opening-------------------------------------------------------------------------------------------------------
@@ -43,10 +43,10 @@ float        rotX = radians(180);  // by default rotate the hole scene 180deg ar
 // the data from openni comes upside down
 float        rotY = radians(0);
 int[]      userColors = { 
-  color(255, 255, 255), color(255, 255, 255), color(255,  255, 255), color(255, 255, 255), color(255, 0, 255), color(0, 255, 255)
+  color (0,0,0), color (0,0,0), color (0,0,0), color (0,0,0), color (0,0,0), color(0, 255, 255)
 };
 int[]      userCoMColors = { 
-  color(86, 118, 255), color(86, 118, 255), color(86, 118, 255), color(86, 118, 255), color(255, 100, 255), color(100, 255, 255)
+  color (255,0,0),color (255,0,0),color (255,0,0),color (255,0,0),color (255,0,0),color (255,0,0)
 };
 
 //end Opening------------------------------------------------------------------------------------------------------
@@ -135,7 +135,7 @@ public void setup() {
   {
     println("Can't open the depthMap, maybe the camera is not connected!"); 
 
-    if ( context.openFileRecording("C:\\Users\\tal\\GitHub\\FinalTexperience\\fin\\1.oni") == false)
+    if ( context.openFileRecording("C:\\Users\\tal\\Documents\\GitHub\\Texperience_Final\\data\\1.oni") == false)
     {
       println("can't find recording !!!!");
       exit();
@@ -315,7 +315,7 @@ public void draw() {
     } 
     else {
       camera( 
-      60, -3000, 19000, 
+      60, -1000, 19000, 
       0, 0, 0, 
       0, 1.0f, 0);
       zPosition =currentCameraPosition.z + sensorPosition.z; 
@@ -384,22 +384,24 @@ public void draw() {
           {  // call the user color
             int colorIndex = userMap[index] % userColors.length;
             strokeWeight(4);
-            if (state == ENGAGE)
+            if (state == ENGAGE || state == START)
             {
               if ( userMap[index] == chosenUser) {
-                stroke(color(255, 0, 0));
+              //color of chosen person
+                stroke(color(0, 255, 0));
               }
               else {
-                stroke(color(0, 255, 0));
+                //color of recognized people
+                stroke(color(0, 0, 255));
               }
             }
             else {
-              stroke(userColors[0]);
+              //stroke(userColors[0]);
+              stroke(color(0, 0,255));
             }
           }
           else
-            // background color
-            noStroke();
+          // camera capture background  color
           stroke(255); 
           point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
         }

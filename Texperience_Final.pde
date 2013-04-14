@@ -77,11 +77,11 @@ color[]      userCoMColors = {
 float mouseZPosition = 15500;
 float zPosition;
 boolean cameraOn = true;
-float xoxoFall = 4000;
+float xoxoFall = 6000;
 float treeHoleR = 1;
 float treeHoleX =(random(-1000, 1000));
 float treeHoleZ =(random(0, 40000));
-boolean treeHoleSmall = false;
+float treeY = 0;
 float wallUp = 0;
 float startPosition = 30000;
 float frameCounter = 0;
@@ -282,7 +282,9 @@ void draw() {
       currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
       0, 0, 0, 
       0, 1.0, 0);
-      zPosition =currentCameraPosition.z + sensorPosition.z; 
+     zPosition =currentCameraPosition.z + sensorPosition.z; 
+
+
       // println("X: "+ currentCameraPosition.x);
       // println("y: "+ currentCameraPosition.y);
       // println("z: "+ currentCameraPosition.z);
@@ -291,7 +293,7 @@ void draw() {
     else {
       camera( 
       60, -1000, 19000, 
-      0, 0, 0, 
+      0, -5000, 0, 
       0, 1.0, 0);
       zPosition = 19000; 
     }
@@ -376,9 +378,9 @@ void draw() {
           }
           else
             // camera capture background color
-            stroke(100); 
-          //float blur = random(-100, 100);
-          float blur = 0.0;
+            stroke(0); 
+          float blur = random(-100, 100);
+          //float blur = 0.0;
           point(realWorldPoint.x+blur, realWorldPoint.y+blur, realWorldPoint.z);
         }
       }
@@ -388,23 +390,22 @@ void draw() {
   }
   //end opening -------------------------------------------------------------------------------------------------------------------
 
-  //XYZ AXIS
-  pushMatrix();
-  pushStyle();  
-  int A = 10000;
-  strokeWeight(1);
-  //X green
-  stroke(255, 0, 0);
-  line(0, 0, 0, A, 0, 0);
-  //y blue
-  stroke(0, 255, 0);
-  line(0, 0, 0, 0, A, 0);
-  //Z red
-  stroke(0, 0, 255);
-  line(0, 0, 0, 0, 0, A);
-  popStyle();
-  popMatrix();
-
+  // //XYZ AXIS
+  // pushMatrix();
+  // pushStyle();  
+  // int A = 10000;
+  // strokeWeight(1);
+  // //X green
+  // stroke(255, 0, 0);
+  // line(0, 0, 0, A, 0, 0);
+  // //y blue
+  // stroke(0, 255, 0);
+  // line(0, 0, 0, 0, A, 0);
+  // //Z red
+  // stroke(0, 0, 255);
+  // line(0, 0, 0, 0, 0, A);
+  // popStyle();
+  // popMatrix();
 
   /*
   // test
@@ -427,23 +428,9 @@ void draw() {
   popStyle();  
   popMatrix();
 
-  //Falling Tree Scrip
-  // if (zPosition <= 11500.0 && zPosition >= 10000.0 && treeHoleR > 0 && treeHoleSmall == false)
-  // {
-  //   treeHoleSmall = true;
-  //   for (int k = 0; k < 15000; k++)
-  //   {
-  //     treeHoleR += 0.1;
-  //     println (treeHoleR);
-  //   }
-  //   println ("done");
-  // }
-
   //Tree holes
-
   pushMatrix();
   pushStyle();
-  //  translate(treeHoleX, treeHoleZ, -2);
   translate(0, 1, 3000);
   rotateX(radians(90));
   fill (0);
@@ -455,8 +442,7 @@ void draw() {
   // tree
   pushMatrix();
   pushStyle(); 
-  //translate(treeHoleX, 500, treeHoleZ);
-  translate(0, 0, 3000);
+  translate(0, treeY, 3000);
   tree.draw();  
   popStyle();
   popMatrix();
@@ -484,7 +470,7 @@ void draw() {
   pushStyle(); 
   strokeWeight(4);
   stroke(255, 0, 0);
-  translate(0, xoxoFall*1.5, 5700);
+  translate(0, xoxoFall*1.5, zPosition - 7500);
   xoxoMan.draw();  
   popStyle();
   popMatrix();
@@ -494,7 +480,7 @@ void draw() {
   pushStyle(); 
   strokeWeight(1);
   stroke(255, 0, 0);
-  translate(0, xoxoFall, 5700);
+  translate(0, xoxoFall, zPosition - 7500);
   xoxoCouch.draw();  
   popStyle();
   popMatrix();
@@ -535,7 +521,6 @@ void draw() {
   stone.draw();
   popStyle();  
   popMatrix();
-
 
   /*
   // SUPER COOL
@@ -850,9 +835,9 @@ void startWalk()
 //--Animations-------------------
 void loop()
 {
-  println("user z position" + zPosition);  
   xoxoFall();
   wallUp();
+  treePop();
 }
 
 void wallUp ()
@@ -869,10 +854,22 @@ void wallUp ()
 
 void xoxoFall () // make xoxo fall in a certain point on Z axis
 {
-
-  if (zPosition <= 12400.0)
+  if (zPosition <= 15000.0 && xoxoFall >= -3500 )
   {
-    xoxoFall -= -1;
+    xoxoFall -= 90;
   }
 }
+ 
+ void treePop ()
+ {
 
+ if (zPosition <= 15000  )//&& treeHoleR >= 100)
+  {
+      treeHoleR += 10;
+      println("treeHoleR: "+treeHoleR);
+      if (treeHoleR >= 800)
+      {
+        treeY -=10;
+      }
+  }
+ }

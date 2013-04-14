@@ -18,11 +18,11 @@ PVector currentCameraPosition = defaultCameraPosition;
 //opening-------------------------------------------------------------------------------------------------------
 
 float        zoomF =0.5f;
-float        rotX = radians(180);  // by default rotate uthe hole scene 180deg around the x-axis, 
+float        rotX = radians(180);  // by default rotate the hole scene 180deg around the x-axis, 
 // the data from openni comes upside down
 float        rotY = radians(0);
 color[]      userColors = { 
-  color(255, 255, 255), color(255, 255, 255), color(255, 255, 255), color(255, 255, 255), color(255, 0, 255), color(0, 255, 255)
+  color(255, 255, 255), color(255, 255, 255), color(255,  255, 255), color(255, 255, 255), color(255, 0, 255), color(0, 255, 255)
 };
 color[]      userCoMColors = { 
   color(86, 118, 255), color(86, 118, 255), color(86, 118, 255), color(86, 118, 255), color(255, 100, 255), color(100, 255, 255)
@@ -220,7 +220,6 @@ void draw() {
   {
     if (context.isTrackingSkeleton(userList[i]))
     {
-
       if (state != ENGAGE)
       {
         if (!hm.containsKey(userList[i]))
@@ -244,13 +243,13 @@ void draw() {
 
           float avg = total / historySize;
 
-          println("head movement average" + avg);
+          //println("head movement average" + avg);
 
           final int headMovementThreshold = 10; 
           if (avg < headMovementThreshold)
           {
             engage(userList[i]);
-            println("AAAAAAAAAAAAAAAAAAA");
+            println("engaged");
           }
 
           //finally, pop
@@ -291,16 +290,15 @@ void draw() {
       // println("X: "+ currentCameraPosition.x);
       // println("y: "+ currentCameraPosition.y);
       // println("z: "+ currentCameraPosition.z);
-      // println("user z position"+ zPosition);
       // println("______________________");
     } 
     else {
       camera( 
-      60, -800, 19000, 
+      60, -3000, 19000, 
       0, 0, 0, 
       0, 1.0, 0);
       zPosition =currentCameraPosition.z + sensorPosition.z; 
-      println("user z position" + zPosition);
+      //println("user z position" + zPosition);
     }
   }
   else if (cameraOn == false) {
@@ -309,7 +307,7 @@ void draw() {
     0, 0, 0, 
     0, 1.0, 0);
     zPosition = mouseZPosition ;
-    println("user z position"+ zPosition);
+    //println("user z position"+ zPosition);
   }  
 
   scale(1, -1, 1);
@@ -340,7 +338,8 @@ void draw() {
 
     pushMatrix();
     pushStyle();  
-    translate(0, 1000, startPosition + 3000);  // set the rotation center of the scene 1000 infront of the camera
+    scale(1);
+    translate(0,2000, startPosition + 3000);  // set the rotation center of the scene 1000 infront of the camera
     rotateY(radians(180));
     int userCount = context.getNumberOfUsers();
     int[] userMap = null;
@@ -361,8 +360,8 @@ void draw() {
 
           // check if there is a user
           if (userMap != null && userMap[index] != 0)
-          {  // calc the user color
-            //int colorIndex = userMap[index] % userColors.length;
+          {  // call the user color
+            int colorIndex = userMap[index] % userColors.length;
             strokeWeight(4);
             if (state == ENGAGE)
             {
@@ -378,9 +377,9 @@ void draw() {
             }
           }
           else
-            // default color
+            // background color
             noStroke();
-          stroke(255, 255, 0); 
+          stroke(255); 
           point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
         }
       }
@@ -471,7 +470,7 @@ void draw() {
   pushStyle();  
   translate(-100000, 0, -10000);
   rotateX(radians(90));
-  fill(255);
+  fill(20);
   rect(0, 0, 200000, 200000);
   popStyle();
   popMatrix();

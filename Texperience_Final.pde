@@ -86,6 +86,7 @@ float treeHoleX =(random(-1000, 1000));
 float treeHoleZ =(random(0, 40000));
 boolean treeHoleSmall = false;
 float openGate = 0;
+float startPosition = 30000;
 
 void setup() {
 
@@ -209,11 +210,6 @@ HashMap<Integer, ArrayList> hm = new HashMap();
 
 void draw() {
 
-  if (cameraOn == true)
-  {
-    float mouseZPosition =  currentCameraPosition.z;
-  }
-
   // update the cam
   context.update();
 
@@ -248,7 +244,7 @@ void draw() {
 
         float avg = total / historySize;
 
-        println(avg);
+        println("head movement average" + avg);
 
         final int headMovementThreshold = 10; 
         if (avg < headMovementThreshold)
@@ -284,28 +280,22 @@ void draw() {
 
   currentCameraPosition.lerp(target, 0.1);
 
-  /*
-  
-   //prevent from going under ground!
-   if(sensorPosition.y < 0)
-   {
-   sensorPosition.y = 0;
-   }
-   */
    //Toggle between camera and mouse
   if (cameraOn) {
     camera( 
     currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
     0, 0, 0, 
     0, 1.0, 0);
-    println("user z position"+ currentCameraPosition.z + sensorPosition.z);
+    zPosition =currentCameraPosition.z + sensorPosition.z; 
+    println("user z position"+ zPosition);
    } 
   else {
     camera( 
     (((float(mouseX) / width) - 0.5) * 2000), (((float(mouseY) / height) - 0.5) * 2000), mouseZPosition, //mouseY / height * 2000, //move camera
     0, 0, 0, 
     0, 1.0, 0);
-    println("user z position"+ mouseZPosition);
+    zPosition = mouseZPosition ;
+    println("user z position"+ zPosition);
   }  
 
   scale(1, -1, 1);
@@ -336,7 +326,7 @@ void draw() {
 
   pushMatrix();
   pushStyle();  
-  translate(0, 1000, 15500);  // set the rotation center of the scene 1000 infront of the camera
+  translate(0, 1000, startPosition + 3000);  // set the rotation center of the scene 1000 infront of the camera
   rotateY(radians(180));
   int userCount = context.getNumberOfUsers();
   int[] userMap = null;
@@ -376,7 +366,7 @@ void draw() {
         else
           // default color
           noStroke();
-        //stroke(255,0,0); 
+        stroke(255,255,0); 
         point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
       }
     }
@@ -421,29 +411,27 @@ void draw() {
   pushMatrix();
   pushStyle();
   //rotateY(radians(180));
-  translate(-5000, openGate, 7000);
+  translate(-50000, openGate, startPosition);
   //rotateX(radians(openGate));
   fill(0);
-  rect(0, 0, 10000, 10000);
+  rect(0, 0, 100000, 100000);
   popStyle();  
   popMatrix();
 
   //Falling Tree Scrip
-  if (zPosition <= 11500.0 && zPosition >= 10000.0 && treeHoleR > 0 && treeHoleSmall == false)
-  {
-    treeHoleSmall = true;
-    for (int k = 0; k < 15000; k++)
-    {
-      treeHoleR += 0.1;
-      println (treeHoleR);
-    }
-    println ("done");
-  }
+  // if (zPosition <= 11500.0 && zPosition >= 10000.0 && treeHoleR > 0 && treeHoleSmall == false)
+  // {
+  //   treeHoleSmall = true;
+  //   for (int k = 0; k < 15000; k++)
+  //   {
+  //     treeHoleR += 0.1;
+  //     println (treeHoleR);
+  //   }
+  //   println ("done");
+  // }
 
   //Tree holes
-  int holes = 1;
-  for (int i = 0; i < holes; i++)
-  {
+
     pushMatrix();
     pushStyle();
     //  translate(treeHoleX, treeHoleZ, -2);
@@ -453,8 +441,7 @@ void draw() {
     noStroke(); 
     ellipse(0, 0, treeHoleR, treeHoleR);
     popStyle();  
-    popMatrix();
-  }
+    popMatrix();  
 
   // tree
   pushMatrix();
@@ -484,14 +471,14 @@ void draw() {
   popMatrix();  
 
   // make xoxo fall in a certain point on Z axis
-  if (zPosition <= 12400.0 && xoxoFall >= -2500)
-  {
-    for (int k = 0; k < 200; k++)
-    {
-      xoxoFall = xoxoFall-1;
-      //print (xoxoFall);
-    }
-  }
+  // if (zPosition <= 12400.0 && xoxoFall >= -2500)
+  // {
+  //   for (int k = 0; k < 200; k++)
+  //   {
+  //     xoxoFall = xoxoFall-1;
+  //     //print (xoxoFall);
+  //   }
+  // }
 
   // xoxoMan
   pushMatrix();
@@ -638,8 +625,8 @@ void draw() {
   if (millis() < instructionLength)
     drawInstructions();
 
-  // if (frameCount % 60 == 0)
-  //   println("Frame rate is " + frameRate);
+   // if (frameCount % 60 == 0)
+   //   println("Frame rate is " + frameRate);
 }
 
 void createCurtain () {
@@ -770,11 +757,10 @@ void keyPressed() {
   if (cameraOn == false) {
     if (keyCode == DOWN) { 
       mouseZPosition +=500;
-      //      println(mouseZPosition);
+
     } 
     else if (keyCode == UP ) {
       mouseZPosition -=500;
-      //    println(mouseZPosition);
     }
     else if (keyCode == RIGHT ) {
       openGate +=20;

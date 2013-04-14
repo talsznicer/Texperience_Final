@@ -74,7 +74,7 @@ color[]      userCoMColors = {
 // // end fabric------------------------------------------------------------------------------------------------------------------
 
 //My Floats
-float mouseZPosition;
+float mouseZPosition = 15500;
 float zPosition;
 boolean cameraOn = true;
 float xoxoFall = 4000;
@@ -86,9 +86,8 @@ float wallUp = 0;
 float startPosition = 30000;
 float frameCounter = 0;
 boolean bringWallUp = false;
-void setup() {
 
-  mouseZPosition =  15500;
+void setup() {
 
   // FULL SCREEN
   size(displayWidth, displayHeight, P3D);
@@ -205,10 +204,8 @@ HashMap<Integer, ArrayList> hm = new HashMap();
 
 void draw() {
 
-if ( bringWallUp )
-{
-  wallUp();
-}
+  loop();
+  
   // update the cam
   context.update();
 
@@ -296,8 +293,7 @@ if ( bringWallUp )
       60, -1000, 19000, 
       0, 0, 0, 
       0, 1.0, 0);
-      //zPosition =currentCameraPosition.z + sensorPosition.z; 
-      //println("user z position" + zPosition);
+      zPosition = 19000; 
     }
   }
   else if (cameraOn == false) {
@@ -381,9 +377,9 @@ if ( bringWallUp )
           else
             // camera capture background color
             stroke(100); 
-            //float blur = random(-100, 100);
-            float blur = 0.0;
-            point(realWorldPoint.x+blur, realWorldPoint.y+blur, realWorldPoint.z);
+          //float blur = random(-100, 100);
+          float blur = 0.0;
+          point(realWorldPoint.x+blur, realWorldPoint.y+blur, realWorldPoint.z);
         }
       }
     }
@@ -482,16 +478,6 @@ if ( bringWallUp )
   moon.draw();  
   popStyle();
   popMatrix();  
-
-  // make xoxo fall in a certain point on Z axis
-  // if (zPosition <= 12400.0 && xoxoFall >= -2500)
-  // {
-  //   for (int k = 0; k < 200; k++)
-  //   {
-  //     xoxoFall = xoxoFall-1;
-  //     //print (xoxoFall);
-  //   }
-  // }
 
   // xoxoMan
   pushMatrix();
@@ -768,7 +754,7 @@ void keyPressed() {
   }
   else if (key == '4') 
   {
-   startWalk(); 
+    startWalk();
   }
 
   if (cameraOn == false) {
@@ -862,13 +848,31 @@ void startWalk()
 }
 
 //--Animations-------------------
+void loop()
+{
+  println("user z position" + zPosition);  
+  xoxoFall();
+  wallUp();
+}
+
 void wallUp ()
 {
-  if (frameCounter < 15000)
+  if (frameCounter < 15000 && bringWallUp)
   {
     wallUp += 40;  
-    frameCounter += 1; 
-  } else {
+    frameCounter += 1;
+  } 
+  else {
     bringWallUp = false;
   }
 }
+
+void xoxoFall () // make xoxo fall in a certain point on Z axis
+{
+
+  if (zPosition <= 12400.0)
+  {
+    xoxoFall -= -1;
+  }
+}
+

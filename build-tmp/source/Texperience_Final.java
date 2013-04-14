@@ -39,9 +39,6 @@ PVector currentCameraPosition = defaultCameraPosition;
 //opening-------------------------------------------------------------------------------------------------------
 
 float        zoomF =0.5f;
-float        rotX = radians(180);  // by default rotate the hole scene 180deg around the x-axis, 
-// the data from openni comes upside down
-float        rotY = radians(0);
 int[]      userColors = { 
   color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255)
 };
@@ -98,7 +95,7 @@ int[]      userCoMColors = {
 // // end fabric------------------------------------------------------------------------------------------------------------------
 
 //My Floats
-float mouseZPosition;
+float mouseZPosition = 15500;
 float zPosition;
 boolean cameraOn = true;
 float xoxoFall = 4000;
@@ -106,8 +103,10 @@ float treeHoleR = 1;
 float treeHoleX =(random(-1000, 1000));
 float treeHoleZ =(random(0, 40000));
 boolean treeHoleSmall = false;
-float openGate = 0;
+float wallUp = 0;
 float startPosition = 30000;
+float frameCounter = 0;
+boolean bringWallUp = false;
 
 public void setup() {
 
@@ -127,7 +126,6 @@ public void setup() {
   //   textFont(font);
   // end fabric------------------------------------------------------------------------------------------------------------------
 
-
   context = new SimpleOpenNI(this);
 
   // enable depthMap generation 
@@ -145,8 +143,6 @@ public void setup() {
 
   // enable skeleton generation for all joints
   context.enableUser(SimpleOpenNI.SKEL_PROFILE_ALL);
-
-  mouseZPosition =  15500;
 
   //smooth();
 
@@ -227,10 +223,10 @@ public void setup() {
 
 HashMap<Integer, ArrayList> hm = new HashMap();
 
-
-
 public void draw() {
 
+  loop();
+  
   // update the cam
   context.update();
 
@@ -241,7 +237,7 @@ public void draw() {
   {
     if (context.isTrackingSkeleton(userList[i]))
     {
-      if (state != ENGAGE)
+      if (state == START)
       {
         if (!hm.containsKey(userList[i]))
         {    
@@ -302,7 +298,7 @@ public void draw() {
 
   //Toggle between camera and mouse
   if (cameraOn) {
-    if (state != START) { 
+    if (state == STARTWALK) { 
       camera( 
       currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
       0, 0, 0, 
@@ -318,8 +314,7 @@ public void draw() {
       60, -1000, 19000, 
       0, 0, 0, 
       0, 1.0f, 0);
-      //zPosition =currentCameraPosition.z + sensorPosition.z; 
-      //println("user z position" + zPosition);
+      zPosition = 19000; 
     }
   }
   else if (cameraOn == false) {
@@ -403,16 +398,15 @@ public void draw() {
           else
             // camera capture background color
             stroke(100); 
-            //float blur = random(-100, 100);
-            float blur = 0.0f;
-            point(realWorldPoint.x+blur, realWorldPoint.y+blur, realWorldPoint.z);
+          //float blur = random(-100, 100);
+          float blur = 0.0f;
+          point(realWorldPoint.x+blur, realWorldPoint.y+blur, realWorldPoint.z);
         }
       }
     }
     popStyle();
     popMatrix();
   }
-
   //end opening -------------------------------------------------------------------------------------------------------------------
 
   //XYZ AXIS
@@ -448,9 +442,7 @@ public void draw() {
   //Begining wall
   pushMatrix();
   pushStyle();
-  //rotateY(radians(180));
-  translate(-50000, openGate, startPosition);
-  //rotateX(radians(openGate));
+  translate(-50000, wallUp, startPosition);
   fill(0);
   rect(0, 0, 100000, 100000);
   popStyle();  
@@ -507,16 +499,6 @@ public void draw() {
   moon.draw();  
   popStyle();
   popMatrix();  
-
-  // make xoxo fall in a certain point on Z axis
-  // if (zPosition <= 12400.0 && xoxoFall >= -2500)
-  // {
-  //   for (int k = 0; k < 200; k++)
-  //   {
-  //     xoxoFall = xoxoFall-1;
-  //     //print (xoxoFall);
-  //   }
-  // }
 
   // xoxoMan
   pushMatrix();
@@ -791,6 +773,10 @@ public void keyPressed() {
   {
     sync();
   }
+  else if (key == '4') 
+  {
+    startWalk();
+  }
 
   if (cameraOn == false) {
     if (keyCode == DOWN) { 
@@ -800,10 +786,10 @@ public void keyPressed() {
       mouseZPosition -=500;
     }
     else if (keyCode == RIGHT ) {
-      openGate +=20;
+      wallUp +=20;
     }
     else if (keyCode == LEFT ) {
-      openGate -=40;
+      wallUp -=40;
     }
   }
   if (keyCode == ' ' ) {
@@ -853,13 +839,14 @@ public void keyPressed() {
 final int START = 0;
 final int ENGAGE = 1;
 final int SYNC = 2;
+final int STARTWALK = 3;
 
 int state = START;
 
 public void startGame ()
 {
-  chosenUser = 0;
   state  = START;
+  chosenUser = 0;
 }
 
 int chosenUser = 0;
@@ -868,12 +855,46 @@ public void engage(int id)
 {
   state = ENGAGE;
   chosenUser = id;
-  println ("bridg UP");
+  bringWallUp = true;
 }
 
 public void sync()
 {
   state  = SYNC;
+}
+
+public void startWalk()
+{
+  state  = STARTWALK;
+}
+
+//--Animations-------------------
+public void loop()
+{
+  println("user z position" + zPosition);  
+  xoxoFall();
+  wallUp();
+}
+
+public void wallUp ()
+{
+  if (frameCounter < 15000 && bringWallUp)
+  {
+    wallUp += 40;  
+    frameCounter += 1;
+  } 
+  else {
+    bringWallUp = false;
+  }
+}
+
+public void xoxoFall () // make xoxo fall in a certain point on Z axis
+{
+
+  if (zPosition <= 12400.0f)
+  {
+    xoxoFall -= -1;
+  }
 }
 
 // // The Link class is used for handling constraints between particles.

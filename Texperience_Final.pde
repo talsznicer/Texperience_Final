@@ -297,7 +297,7 @@ void draw() {
       60, -1000, 19000, 
       0, 0, 0, 
       0, 1.0, 0);
-      zPosition =currentCameraPosition.z + sensorPosition.z; 
+      //zPosition =currentCameraPosition.z + sensorPosition.z; 
       //println("user z position" + zPosition);
     }
   }
@@ -339,7 +339,7 @@ void draw() {
     pushMatrix();
     pushStyle();  
     scale(1);
-    translate(0, 2000, startPosition + 3000);  // set the rotation center of the scene 1000 infront of the camera
+    translate(0, 1300, startPosition + 3000);  // set the rotation center of the scene 1000 infront of the camera
     rotateY(radians(180));
     int userCount = context.getNumberOfUsers();
     int[] userMap = null;
@@ -380,9 +380,11 @@ void draw() {
             }
           }
           else
-            // camera capture background  color
-            stroke(255); 
-          point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
+            // camera capture background color
+            stroke(100); 
+            //float blur = random(-100, 100);
+            float blur = 0.0;
+            point(realWorldPoint.x+blur, realWorldPoint.y+blur, realWorldPoint.z);
         }
       }
     }

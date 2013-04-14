@@ -18,9 +18,6 @@ PVector currentCameraPosition = defaultCameraPosition;
 //opening-------------------------------------------------------------------------------------------------------
 
 float        zoomF =0.5f;
-float        rotX = radians(180);  // by default rotate the hole scene 180deg around the x-axis, 
-// the data from openni comes upside down
-float        rotY = radians(0);
 color[]      userColors = { 
   color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255)
 };
@@ -85,10 +82,13 @@ float treeHoleR = 1;
 float treeHoleX =(random(-1000, 1000));
 float treeHoleZ =(random(0, 40000));
 boolean treeHoleSmall = false;
-float openGate = 0;
+float wallUp = 0;
 float startPosition = 30000;
-
+float frameCounter = 0;
+boolean bringWallUp = false;
 void setup() {
+
+  mouseZPosition =  15500;
 
   // FULL SCREEN
   size(displayWidth, displayHeight, P3D);
@@ -105,7 +105,6 @@ void setup() {
   //   font = loadFont("LucidaBright-Demi-16.vlw");
   //   textFont(font);
   // end fabric------------------------------------------------------------------------------------------------------------------
-
 
   context = new SimpleOpenNI(this);
 
@@ -124,8 +123,6 @@ void setup() {
 
   // enable skeleton generation for all joints
   context.enableUser(SimpleOpenNI.SKEL_PROFILE_ALL);
-
-  mouseZPosition =  15500;
 
   //smooth();
 
@@ -206,10 +203,12 @@ import java.util.ArrayList;
 
 HashMap<Integer, ArrayList> hm = new HashMap();
 
-
-
 void draw() {
 
+if ( bringWallUp )
+{
+  wallUp();
+}
   // update the cam
   context.update();
 
@@ -220,7 +219,7 @@ void draw() {
   {
     if (context.isTrackingSkeleton(userList[i]))
     {
-      if (state != ENGAGE)
+      if (state == START)
       {
         if (!hm.containsKey(userList[i]))
         {    
@@ -281,7 +280,7 @@ void draw() {
 
   //Toggle between camera and mouse
   if (cameraOn) {
-    if (state != START) { 
+    if (state == STARTWALK) { 
       camera( 
       currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
       0, 0, 0, 
@@ -391,7 +390,6 @@ void draw() {
     popStyle();
     popMatrix();
   }
-
   //end opening -------------------------------------------------------------------------------------------------------------------
 
   //XYZ AXIS
@@ -427,9 +425,7 @@ void draw() {
   //Begining wall
   pushMatrix();
   pushStyle();
-  //rotateY(radians(180));
-  translate(-50000, openGate, startPosition);
-  //rotateX(radians(openGate));
+  translate(-50000, wallUp, startPosition);
   fill(0);
   rect(0, 0, 100000, 100000);
   popStyle();  
@@ -770,6 +766,10 @@ void keyPressed() {
   {
     sync();
   }
+  else if (key == '4') 
+  {
+   startWalk(); 
+  }
 
   if (cameraOn == false) {
     if (keyCode == DOWN) { 
@@ -779,10 +779,10 @@ void keyPressed() {
       mouseZPosition -=500;
     }
     else if (keyCode == RIGHT ) {
-      openGate +=20;
+      wallUp +=20;
     }
     else if (keyCode == LEFT ) {
-      openGate -=40;
+      wallUp -=40;
     }
   }
   if (keyCode == ' ' ) {
@@ -832,13 +832,14 @@ void keyPressed() {
 final int START = 0;
 final int ENGAGE = 1;
 final int SYNC = 2;
+final int STARTWALK = 3;
 
 int state = START;
 
 void startGame ()
 {
-  chosenUser = 0;
   state  = START;
+  chosenUser = 0;
 }
 
 int chosenUser = 0;
@@ -847,7 +848,7 @@ void engage(int id)
 {
   state = ENGAGE;
   chosenUser = id;
-  println ("bridg UP");
+  bringWallUp = true;
 }
 
 void sync()
@@ -855,3 +856,19 @@ void sync()
   state  = SYNC;
 }
 
+void startWalk()
+{
+  state  = STARTWALK;
+}
+
+//--Animations-------------------
+void wallUp ()
+{
+  if (frameCounter < 15000)
+  {
+    wallUp += 40;  
+    frameCounter += 1; 
+  } else {
+    bringWallUp = false;
+  }
+}

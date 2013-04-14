@@ -84,8 +84,7 @@ float treeHoleZ =(random(0, 40000));
 float treeY = 0;
 float wallUp = 0;
 float startPosition = 30000;
-float frameCounter = 0;
-boolean bringWallUp = false;
+boolean startWallUp = false;
 
 void setup() {
 
@@ -245,6 +244,7 @@ void draw() {
           if (avg < headMovementThreshold)
           {
             engage(userList[i]);
+            startWallUp = true;
             println("engaged");
           }
 
@@ -739,7 +739,7 @@ void keyPressed() {
   }
   else if (key == '4') 
   {
-    startWalk();
+    startWalk(0);
   }
 
   if (cameraOn == false) {
@@ -819,7 +819,6 @@ void engage(int id)
 {
   state = ENGAGE;
   chosenUser = id;
-  bringWallUp = true;
 }
 
 void sync()
@@ -827,9 +826,10 @@ void sync()
   state  = SYNC;
 }
 
-void startWalk()
+void startWalk(int id)
 {
   state  = STARTWALK;
+  chosenUser = id;
 }
 
 //--Animations-------------------
@@ -842,14 +842,10 @@ void loop()
 
 void wallUp ()
 {
-  if (frameCounter < 15000 && bringWallUp)
+  if (wallUp >= 0 && wallUp <=10000 && startWallUp)
   {
-    wallUp += 40;  
-    frameCounter += 1;
+    wallUp += 80;  
   } 
-  else {
-    bringWallUp = false;
-  }
 }
 
 void xoxoFall () // make xoxo fall in a certain point on Z axis
@@ -862,14 +858,13 @@ void xoxoFall () // make xoxo fall in a certain point on Z axis
  
  void treePop ()
  {
-
- if (zPosition <= 15000  )//&& treeHoleR >= 100)
+ if (zPosition <= 15000 && treeHoleR <= 2200 )
   {
       treeHoleR += 10;
-      println("treeHoleR: "+treeHoleR);
-      if (treeHoleR >= 800)
-      {
-        treeY -=10;
-      }
   }
- }
+  if (treeHoleR >= 800)
+   {    
+        println("currentCameraPosition.y /100: "+currentCameraPosition.y /100);
+        treeY = (currentCameraPosition.y);
+  }
+  }

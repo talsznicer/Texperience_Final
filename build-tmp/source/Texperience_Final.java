@@ -105,8 +105,7 @@ float treeHoleZ =(random(0, 40000));
 float treeY = 0;
 float wallUp = 0;
 float startPosition = 30000;
-float frameCounter = 0;
-boolean bringWallUp = false;
+boolean startWallUp = false;
 
 public void setup() {
 
@@ -266,6 +265,7 @@ public void draw() {
           if (avg < headMovementThreshold)
           {
             engage(userList[i]);
+            startWallUp = true;
             println("engaged");
           }
 
@@ -760,7 +760,7 @@ public void keyPressed() {
   }
   else if (key == '4') 
   {
-    startWalk();
+    startWalk(0);
   }
 
   if (cameraOn == false) {
@@ -840,7 +840,6 @@ public void engage(int id)
 {
   state = ENGAGE;
   chosenUser = id;
-  bringWallUp = true;
 }
 
 public void sync()
@@ -848,9 +847,10 @@ public void sync()
   state  = SYNC;
 }
 
-public void startWalk()
+public void startWalk(int id)
 {
   state  = STARTWALK;
+  chosenUser = id;
 }
 
 //--Animations-------------------
@@ -863,14 +863,10 @@ public void loop()
 
 public void wallUp ()
 {
-  if (frameCounter < 15000 && bringWallUp)
+  if (wallUp >= 0 && wallUp <=10000 && startWallUp)
   {
-    wallUp += 40;  
-    frameCounter += 1;
+    wallUp += 80;  
   } 
-  else {
-    bringWallUp = false;
-  }
 }
 
 public void xoxoFall () // make xoxo fall in a certain point on Z axis
@@ -883,17 +879,16 @@ public void xoxoFall () // make xoxo fall in a certain point on Z axis
  
  public void treePop ()
  {
-
- if (zPosition <= 15000  )//&& treeHoleR >= 100)
+ if (zPosition <= 15000 && treeHoleR <= 2200 )
   {
       treeHoleR += 10;
-      println("treeHoleR: "+treeHoleR);
-      if (treeHoleR >= 800)
-      {
-        treeY -=10;
-      }
   }
- }
+  if (treeHoleR >= 800)
+   {    
+        println("currentCameraPosition.y /100: "+currentCameraPosition.y /100);
+        treeY = (currentCameraPosition.y);
+  }
+  }
 // // The Link class is used for handling constraints between particles.
 // class Link {
 //   float restingDistance;

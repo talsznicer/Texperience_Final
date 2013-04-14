@@ -43,10 +43,10 @@ float        rotX = radians(180);  // by default rotate the hole scene 180deg ar
 // the data from openni comes upside down
 float        rotY = radians(0);
 int[]      userColors = { 
-  color (0,0,0), color (0,0,0), color (0,0,0), color (0,0,0), color (0,0,0), color(0, 255, 255)
+  color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255)
 };
 int[]      userCoMColors = { 
-  color (255,0,0),color (255,0,0),color (255,0,0),color (255,0,0),color (255,0,0),color (255,0,0)
+  color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0)
 };
 
 //end Opening------------------------------------------------------------------------------------------------------
@@ -318,7 +318,7 @@ public void draw() {
       60, -1000, 19000, 
       0, 0, 0, 
       0, 1.0f, 0);
-      zPosition =currentCameraPosition.z + sensorPosition.z; 
+      //zPosition =currentCameraPosition.z + sensorPosition.z; 
       //println("user z position" + zPosition);
     }
   }
@@ -360,7 +360,7 @@ public void draw() {
     pushMatrix();
     pushStyle();  
     scale(1);
-    translate(0,2000, startPosition + 3000);  // set the rotation center of the scene 1000 infront of the camera
+    translate(0, 1300, startPosition + 3000);  // set the rotation center of the scene 1000 infront of the camera
     rotateY(radians(180));
     int userCount = context.getNumberOfUsers();
     int[] userMap = null;
@@ -387,7 +387,7 @@ public void draw() {
             if (state == ENGAGE || state == START)
             {
               if ( userMap[index] == chosenUser) {
-              //color of chosen person
+                //color of chosen person
                 stroke(color(0, 255, 0));
               }
               else {
@@ -397,13 +397,15 @@ public void draw() {
             }
             else {
               //stroke(userColors[0]);
-              stroke(color(0, 0,255));
+              stroke(color(0, 0, 255));
             }
           }
           else
-          // camera capture background  color
-          stroke(255); 
-          point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
+            // camera capture background color
+            stroke(100); 
+            //float blur = random(-100, 100);
+            float blur = 0.0f;
+            point(realWorldPoint.x+blur, realWorldPoint.y+blur, realWorldPoint.z);
         }
       }
     }

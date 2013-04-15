@@ -31,64 +31,25 @@ color[]      userCoMColors = {
 
 //end Opening------------------------------------------------------------------------------------------------------
 
-// fabric------------------------------------------------------------------------------------------------------------------
-
-// ArrayList particles;
-
-// // every particle within this many pixels will be influenced by the cursor
-// float mouseInfluenceSize = 15; 
-// // minimum distance for tearing when user is right clicking
-// float mouseTearSize = 8;
-// float mouseInfluenceScalar = 1;
-
-// // force of gravity is really 9.8, but because of scaling, we use 9.8 * 40 (392)
-// // (9.8 is too small for a 1 second timestep)
-// float gravity = 392; 
-
-// // Dimensions for our curtain. These are number of particles for each direction, not actual widths and heights
-// // the true width and height can be calculated by multiplying restingDistances by the curtain dimensions
-// final int curtainHeight = 56;
-// final int curtainWidth = 80;
-// final int yStart = 25; // where will the curtain start on the y axis?
-// final float restingDistances = 5;
-// final float stiffnesses = 1;
-// final float curtainTearSensitivity = 50; // distance the particles have to go before ripping
-
-// // These variables are used to keep track of how much time is elapsed between each frame
-// // they're used in the physics to maintain a certain level of accuracy and consistency
-// // this program should run the at the same rate whether it's running at 30 FPS or 300,000 FPS
-// long previousTime;
-// long currentTime;
-// // Delta means change. It's actually a triangular symbol, to label variables in equations
-// // some programmers like to call it elapsedTime, or changeInTime. It's all a matter of preference
-// // To keep the simulation accurate, we use a fixed time step.
-// final int fixedDeltaTime = 15;
-// float fixedDeltaTimeSeconds = (float)fixedDeltaTime / 1000.0;
-
-// // the leftOverDeltaTime carries over change in time that isn't accounted for over to the next frame
-// int leftOverDeltaTime = 0;
-
-// // How many times are the constraints solved for per frame:
-// int constraintAccuracy = 3;
-
-// // instructional stuffs:
-// PFont font;
-// final int instructionLength = 3000;
-// final int instructionFade = 300;
-// // end fabric------------------------------------------------------------------------------------------------------------------
 
 //My Floats
 float mouseZPosition = 15500;
 float zPosition;
 boolean cameraOn = true;
 float xoxoFall = 6000;
+float cameraY = 0;
 
 boolean runOnce = true;
-float treeNumber = 1;
+float treeNumber = 5;
 
-float[] treeX;
-float[] treeZ ;
-float[] treeRotate;
+float[] treeX = { 
+  (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000))};
+
+float[] treeZ = {
+  (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500))};
+
+float[] treeRotate = {
+  (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)) };
 
 float treeHoleR = 1;
 float treeY = 0;
@@ -101,18 +62,6 @@ void setup() {
   // FULL SCREEN
   size(displayWidth, displayHeight, P3D);
   //size(900, 1000, P3D);
-
-  //   // fabric------------------------------------------------------------------------------------------------------------------
-  //   // we square the mouseInfluenceSize and mouseTearSize so we don't have to use squareRoot when comparing distances with this.
-  //   mouseInfluenceSize *= mouseInfluenceSize; 
-  //   mouseTearSize *= mouseTearSize;
-
-  //   // create the curtain
-  //   createCurtain();
-
-  //   font = loadFont("LucidaBright-Demi-16.vlw");
-  //   textFont(font);
-  // end fabric------------------------------------------------------------------------------------------------------------------
 
   context = new SimpleOpenNI(this);
 
@@ -132,7 +81,7 @@ void setup() {
   // enable skeleton generation for all joints
   context.enableUser(SimpleOpenNI.SKEL_PROFILE_ALL);
 
-  //smooth();
+  smooth();
 
   //opening-------------------------------------------------------------------------------------------------------------------
 
@@ -204,16 +153,15 @@ void setup() {
   stone.enableDebug();
   stone.scale(1);
   stone.scale(1, -1, -1);
-
-  
 }
 
 void draw() {
-
-  loop();
-
-  // update the cam
   context.update();
+  cameraZero ();
+  cameraToggle ();
+  xoxoFall ();
+  wallUp ();
+  treePop ();
 
   // draw the skeleton if it's available
   int[] userList = context.getUsers();
@@ -282,38 +230,6 @@ void draw() {
 
   currentCameraPosition.lerp(target, 0.1);
 
-  //Toggle between camera and mouse
-  if (cameraOn) {
-    if (state == STARTWALK) { 
-      camera( 
-      currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
-      0, 0, 0, 
-      0, 1.0, 0);
-      zPosition =currentCameraPosition.z + sensorPosition.z; 
-
-
-      // println("X: "+ currentCameraPosition.x);
-      // println("y: "+ currentCameraPosition.y);
-      // println("z: "+ currentCameraPosition.z);
-      // println("______________________");
-    } 
-    else {
-      camera( 
-      60, -1000, 19000, 
-      0, -5000, 0, 
-      0, 1.0, 0);
-      zPosition = 19000;
-    }
-  }
-  else if (cameraOn == false) {
-    camera( 
-    (((float(mouseX) / width) - 0.5) * 2000), (((float(mouseY) / height) - 0.5) * 2000), mouseZPosition, //mouseY / height * 2000, //move camera
-    0, 0, 0, 
-    0, 1.0, 0);
-    zPosition = mouseZPosition ;
-    println("user z position"+ zPosition);
-  }  
-
   scale(1, -1, 1);
   background(10, 10, 40);
   //  lights();
@@ -324,78 +240,13 @@ void draw() {
   //spotLight(51, 102, 126, 80, 20, 40, -1, 0, 0, PI/2, 2); 
   //pointLight(255, 255, 255, 1000, 1000,-10000);
   //ambientLight(255,255,255,0,-100000,-1);
-
   //directionalLight(255, 255, 255, -1, 0, 0);
   //directionalLight(255, 255, 255, 0, -1, 0);
   //directionalLight(255, 255, 255, 0, 0, -1);
 
   perspective(PI / 3, float(width)/float(height), 1, 1000000);
 
-  ////opening-------------------------------------------------------------------------------------------------------------------
-  if (state == START || state == ENGAGE) {
-
-    scale(zoomF);
-    int[]   depthMap = context.depthMap();
-    int     steps   = 5;  // to speed up the drawing, draw every third point
-    int     index;
-    PVector realWorldPoint;
-
-    pushMatrix();
-    pushStyle();  
-    scale(1);
-    translate(0, 1300, startPosition + 3000);  // set the rotation center of the scene 1000 infront of the camera
-    rotateY(radians(180));
-    int userCount = context.getNumberOfUsers();
-    int[] userMap = null;
-    if (userCount > 0)
-    {
-      userMap = context.getUsersPixels(SimpleOpenNI.USERS_ALL);
-    }
-
-    for (int y=0;y < context.depthHeight();y+=steps)
-    {
-      for (int x=0;x < context.depthWidth();x+=steps)
-      {
-        index = x + y * context.depthWidth();
-        if (depthMap[index] > 0)
-        { 
-          // get the realworld points
-          realWorldPoint = context.depthMapRealWorld()[index];
-
-          // check if there is a user
-          if (userMap != null && userMap[index] != 0)
-          {  // call the user color
-            int colorIndex = userMap[index] % userColors.length;
-            strokeWeight(4);
-            if (state == ENGAGE || state == START)
-            {
-              if ( userMap[index] == chosenUser) {
-                //color of chosen person
-                stroke(color(0, 255, 0));
-              }
-              else {
-                //color of recognized people
-                stroke(color(0, 0, 255));
-              }
-            }
-            else {
-              //stroke(userColors[0]);
-              stroke(color(0, 0, 255));
-            }
-          }
-          else
-            // camera capture background color
-            stroke(0); 
-          float blur = random(-100, 100);
-          //float blur = 0.0;
-          point(realWorldPoint.x+blur, realWorldPoint.y+blur, realWorldPoint.z);
-        }
-      }
-    }
-    popStyle();
-    popMatrix();
-  }
-  //end opening -------------------------------------------------------------------------------------------------------------------
+  drawWall ();
 
   // //XYZ AXIS
   // pushMatrix();
@@ -438,25 +289,25 @@ void draw() {
   for (int t = 0; t < treeNumber; t++)
   {
     //Tree holes
-  pushStyle();
-  fill (0);
-  noStroke(); 
-  pushMatrix();
-  translate(treeX[t], 1, treeZ[t]);
-  rotateX(radians(90));
-  ellipse(0, 0, treeHoleR, treeHoleR);
-  popMatrix();  
-  popStyle(); 
-  
-  // tree
-  pushStyle(); 
-  pushMatrix();
-  translate(treeX[t], treeY, treeZ[t]);
-  rotateY(radians(treeRotate[t]));
-  stroke(255);
-  tree.draw();  
-  popMatrix();
-  popStyle();
+    pushStyle();
+    fill (0);
+    noStroke(); 
+    pushMatrix();
+    translate(treeX[t], 1, treeZ[t]);
+    rotateX(radians(90));
+    ellipse(0, 0, treeHoleR, treeHoleR);
+    popMatrix();  
+    popStyle(); 
+
+    // tree
+    pushStyle(); 
+    pushMatrix();
+    translate(treeX[t], treeY, treeZ[t]);
+    rotateY(radians(treeRotate[t]));
+    stroke(255);
+    tree.draw();  
+    popMatrix();
+    popStyle();
   }
 
   //floor
@@ -534,144 +385,11 @@ void draw() {
   popStyle();  
   popMatrix();
 
-  /*
-  // SUPER COOL
-   pushMatrix();
-   pushStyle(); 
-   strokeWeight(4);
-   stroke(255, 0, 0);
-   rotateY(radians(zPosition)/-10);
-   rotateX(radians(zPosition)/-10);
-   translate(0, pos*1.5, 5700);
-   xoxoMan.draw();  
-   popStyle();
-   popMatrix();
-   */
-
-
-  //sphere
-  //  int N = 7;
-  //
-  //  for (int i = 0; i < N; i++)
-  //    for (int j = 0; j < N; j++)
-  //      for (int k = 0; k < N; k++)
-  //      {
-  //        pushMatrix();
-  //        fill(255 * i / N, 255 * j / N, 255 * k / N);
-  //        translate((i-N/2)*500, (j-N/2)*500, (k-N/2)*500);
-  //        box(50);
-  //        popMatrix();
-  //      }
-
-  /*
-  //stars
-   pushMatrix();
-   pushStyle(); 
-   translate(0, -300, -900000);
-   scale(1000);
-   stars.draw();  
-   popStyle();
-   popMatrix();
-   */
-
   endCamera();
-
-  //   // fabric------------------------------------------------------------------------------------------------------------------
-  //   /******** Physics ********/
-  //   // time related stuff
-  //   currentTime = millis();
-  //   // deltaTimeMS: change in time in milliseconds since last frame
-  //   long deltaTimeMS = currentTime - previousTime;
-  //   previousTime = currentTime; // reset previousTime
-  //   // timeStepAmt will be how many of our fixedDeltaTime's can fit in the physics for this frame. 
-  //   int timeStepAmt = (int)((float)(deltaTimeMS + leftOverDeltaTime) / (float)fixedDeltaTime);
-  //   // Here we cap the timeStepAmt to prevent the iteration count from getting too high and exploding
-  //   timeStepAmt = min(timeStepAmt, 5);
-
-  //   leftOverDeltaTime += (int)deltaTimeMS - (timeStepAmt * fixedDeltaTime); // add to the leftOverDeltaTime.
-
-  //   // If the mouse is pressing, it's influence will be spread out over every iteration in equal parts.
-  //   // This keeps the program from exploding from user interaction if the timeStepAmt gets too high.
-  //   mouseInfluenceScalar = 1.0 / timeStepAmt;
-
-  //   // update physics
-  //   for (int iteration = 1; iteration <= timeStepAmt; iteration++) {
-  //     // solve the constraints multiple times
-  //     // the more it's solved, the more accurate.
-  //     for (int x = 0; x < constraintAccuracy; x++) {
-  //       for (int i = 0; i < particles.size(); i++) {
-  //         Particle particle = (Particle) particles.get(i);
-  //         particle.solveConstraints();
-  //       }
-  //     }
-
-  //     // update each particle's position
-  //     for (int i = 0; i < particles.size(); i++) {
-  //       Particle particle = (Particle) particles.get(i);
-  //       particle.updateInteractions();
-  //       particle.updatePhysics(fixedDeltaTimeSeconds);
-  //     }
-  //   }
-  //   // draw each particle or its links
-  //   for (int i = 0; i < particles.size(); i++) {
-  //     Particle particle = (Particle) particles.get(i);
-  //     particle.draw();
-  //   }
-
-  //   if (millis() < instructionLength)
-  //     drawInstructions();
-
-  //    // if (frameCount % 60 == 0)
-  //    //   println("Frame rate is " + frameRate);
-  // }
-
-  // void createCurtain () {
-  //   // We use an ArrayList instead of an array so we could add or remove particles at will.
-  //   // not that it isn't possible using an array, it's just more convenient this way
-  //   particles = new ArrayList();
-
-  //   // midWidth: amount to translate the curtain along x-axis for it to be centered
-  //   // (curtainWidth * restingDistances) = curtain's pixel width
-  //   int midWidth = (int) (width/2 - (curtainWidth * restingDistances)/2);
-  //   // Since this our fabric is basically a grid of points, we have two loops
-  //   for (int y = 0; y <= curtainHeight; y++) { // due to the way particles are attached, we need the y loop on the outside
-  //     for (int x = 0; x <= curtainWidth; x++) { 
-  //       Particle particle = new Particle(new PVector(midWidth + x * restingDistances, y * restingDistances + yStart));
-
-  //       // attach to 
-  //       // x - 1  and
-  //       // y - 1  
-  //       // particle attachTo parameters: Particle particle, float restingDistance, float stiffness
-  //       // try disabling the next 2 lines (the if statement and attachTo part) to create a hairy effect
-  //       if (x != 0) 
-  //         particle.attachTo((Particle)(particles.get(particles.size()-1)), restingDistances, stiffnesses);
-  //       // the index for the particles are one dimensions, 
-  //       // so we convert x,y coordinates to 1 dimension using the formula y*width+x  
-  //       if (y != 0)
-  //         particle.attachTo((Particle)(particles.get((y - 1) * (curtainWidth+1) + x)), restingDistances, stiffnesses);
-
-  //       /*
-  //       // shearing, presumably. Attaching invisible links diagonally between points can give our cloth stiffness.
-  //        // the stiffer these are, the more our cloth acts like jello. 
-  //        // these are unnecessary for me, so I keep them disabled.
-  //        if ((x != 0) && (y != 0)) 
-  //        particle.attachTo((Particle)(particles.get((y - 1) * (curtainWidth+1) + (x-1))), restingDistances * sqrt(2), 0.1, false);
-  //        if ((x != curtainWidth) && (y != 0))
-  //        particle.attachTo((Particle)(particles.get((y - 1) * (curtainWidth+1) + (x+1))), restingDistances * sqrt(2), 1, true);
-  //        */
-
-  //       // we pin the very top particles to where they are
-  //       if (y == 0)
-  //         particle.pinTo(particle.position);
-
-  //       // add to particle array  
-  //       particles.add(particle);
-  //     }
-  //   }
-  // end fabric------------------------------------------------------------------------------------------------------------------
 }
 
 // SimpleOpenNI events---------------------------------------------------------------------------
+
 void onNewUser(int userId)
 {
   println("onNewUser - userId: " + userId);
@@ -780,38 +498,6 @@ void keyPressed() {
   }
 }
 
-// fabric------------------------------------------------------------------------------------------------------------------
-
-// void drawInstructions () {
-//   float fade = 255 - (((float)millis()-(instructionLength - instructionFade)) / instructionFade) * 255;
-//   stroke(0, fade);
-//   fill(255, fade);
-//   rect(0, 0, 200, 45);
-//   fill(0, fade);
-//   text("'r' : reset", 10, 20);
-//   text("'g' : toggle gravity", 10, 35);
-// }
-
-// // Credit to: http://www.codeguru.com/forum/showpost.php?p=1913101&postcount=16
-// float distPointToSegmentSquared (float lineX1, float lineY1, float lineX2, float lineY2, float pointX, float pointY) {
-//   float vx = lineX1 - pointX;
-//   float vy = lineY1 - pointY;
-//   float ux = lineX2 - lineX1;
-//   float uy = lineY2 - lineY1;
-
-//   float len = ux*ux + uy*uy;
-//   float det = (-vx * ux) + (-vy * uy);
-//   if ((det < 0) || (det > len)) {
-//     ux = lineX2 - pointX;
-//     uy = lineY2 - pointY;
-//     return min(vx*vx+vy*vy, ux*ux+uy*uy);
-//   }
-
-//   det = ux*vy - uy*vx;
-//   return (det*det) / len;
-// }
-// end fabric------------------------------------------------------------------------------------------------------------------
-
 final int START = 0;
 final int ENGAGE = 1;
 final int SYNC = 2;
@@ -844,15 +530,8 @@ void startWalk(int id)
   chosenUser = id;
 }
 
-//--Animations-------------------
-void loop()
-{
-  initTreeXYZ ();
-  xoxoFall();
-  wallUp();
-  treePop();
-}
 
+// Voids
 void wallUp ()
 {
   if (wallUp >= 0 && wallUp <=10000 && startWallUp)
@@ -882,15 +561,126 @@ void treePop ()
   }
 }
 
+void cameraZero ()
+{
+  
+ if ( cameraY >= 1 )
+ {
+  cameraY = 0;
+ } else {
+   cameraY =  currentCameraPosition.y + sensorPosition.y;
+ }
+}
 
-void initTreeXYZ ()
-{if (runOnce){
-  for (int tn = 0; tn < treeNumber; tn++) 
-  {
-    treeX  [tn]  = (random(-6000, 6000));
-    treeZ [tn] =  (random(-400, 29500));
-    treeRotate [tn]=  (random(0, 360));
+void cameraToggle ()
+{
+  //Toggle between camera and mouse
+  if (cameraOn) {
+    if (state == STARTWALK) { 
+      camera( 
+      currentCameraPosition.x + sensorPosition.x, cameraY, currentCameraPosition.z + sensorPosition.z, 
+      0, 0, 0, 
+      0, 1.0, 0);
+      zPosition =currentCameraPosition.z + sensorPosition.z; 
+      // println("X: "+ currentCameraPosition.x);
+      // println("y: "+ currentCameraPosition.y);
+      // println("z: "+ currentCameraPosition.z);
+      // println("______________________");
+    } 
+    else {
+      camera( 
+      60, -1000, 19000, 
+      0, -5000, 0, 
+      0, 1.0, 0);
+      zPosition = 19000;
+    }
   }
-  runOnce = false; 
+  else if (cameraOn == false) {
+    camera( 
+    (((float(mouseX) / width) - 0.5) * 2000), (((float(mouseY) / height) - 0.5) * 2000), mouseZPosition, //mouseY / height * 2000, //move camera
+    0, 0, 0, 
+    0, 1.0, 0);
+    zPosition = mouseZPosition ;
+    println("user z position"+ zPosition);
+  }  
 }
+
+void drawWall()
+{
+  if (state == START || state == ENGAGE) {
+
+    scale(zoomF);
+    int[]   depthMap = context.depthMap();
+    int     steps   = 5;  // to speed up the drawing, draw every third point
+    int     index;
+    PVector realWorldPoint;
+
+    pushMatrix();
+    pushStyle();  
+    scale(1);
+    translate(0, 1300, startPosition + 3000);  // set the rotation center of the scene 1000 infront of the camera
+    rotateY(radians(180));
+    int userCount = context.getNumberOfUsers();
+    int[] userMap = null;
+    if (userCount > 0)
+    {
+      userMap = context.getUsersPixels(SimpleOpenNI.USERS_ALL);
+    }
+
+    for (int y=0;y < context.depthHeight();y+=steps)
+    {
+      for (int x=0;x < context.depthWidth();x+=steps)
+      {
+        index = x + y * context.depthWidth();
+        if (depthMap[index] > 0)
+        { 
+          // get the realworld points
+          realWorldPoint = context.depthMapRealWorld()[index];
+
+          // check if there is a user
+          if (userMap != null && userMap[index] != 0)
+          {  // call the user color
+            int colorIndex = userMap[index] % userColors.length;
+            strokeWeight(4);
+            if (state == ENGAGE || state == START)
+            {
+              if ( userMap[index] == chosenUser) {
+                //color of chosen person
+                stroke(color(0, 255, 0));
+              }
+              else {
+                //color of recognized people
+                stroke(color(0, 0, 255));
+              }
+            }
+            else {
+              //stroke(userColors[0]);
+              stroke(color(0, 0, 255));
+            }
+          }
+          else
+            // camera capture background color
+            stroke(0); 
+          float blur = random(-100, 100);
+          //float blur = 0.0;
+          point(realWorldPoint.x+blur, realWorldPoint.y+blur, realWorldPoint.z);
+        }
+      }
+    }
+    popStyle();
+    popMatrix();
+  }
 }
+
+// void initTreeXYZ ()
+// {
+//   if (runOnce){
+//   for (int tn = 0; tn < treeNumber; tn++) 
+//   {
+//     treeX  [tn]  = (random(-6000, 6000));
+//     treeZ [tn] =  (random(-400, 29500));
+//     treeRotate [tn]=  (random(0, 360));
+//   }
+//   runOnce = false; 
+// }
+// }

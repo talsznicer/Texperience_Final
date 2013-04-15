@@ -25,6 +25,10 @@ public class Texperience_Final extends PApplet {
 
 
 
+
+
+HashMap<Integer, ArrayList> hm = new HashMap();
+
 OBJModel test, moon, stars, tree, xoxoMan, xoxoCouch, twoMan, twoManArrow, sphear, stone;
 
 SimpleOpenNI  context;
@@ -99,9 +103,15 @@ float mouseZPosition = 15500;
 float zPosition;
 boolean cameraOn = true;
 float xoxoFall = 6000;
+
+boolean runOnce = true;
+float treeNumber = 1;
+
+float[] treeX;
+float[] treeZ ;
+float[] treeRotate;
+
 float treeHoleR = 1;
-float treeHoleX =(random(-1000, 1000));
-float treeHoleZ =(random(0, 40000));
 float treeY = 0;
 float wallUp = 0;
 float startPosition = 30000;
@@ -167,7 +177,7 @@ public void setup() {
   moon.scale(1, -1, -1);
 
   // tree
-  tree = new OBJModel(this, "tree.obj", "relative", POLYGON);
+  tree = new OBJModel(this, "tree.obj", "relative", POLYGON);//LINES);
   tree.enableDebug();
   tree.scale(1);
   tree.scale(1, -1, -1);
@@ -215,17 +225,14 @@ public void setup() {
   stone.enableDebug();
   stone.scale(1);
   stone.scale(1, -1, -1);
+
+  
 }
-
-
-
-
-HashMap<Integer, ArrayList> hm = new HashMap();
 
 public void draw() {
 
   loop();
-  
+
   // update the cam
   context.update();
 
@@ -303,7 +310,7 @@ public void draw() {
       currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
       0, 0, 0, 
       0, 1.0f, 0);
-     zPosition =currentCameraPosition.z + sensorPosition.z; 
+      zPosition =currentCameraPosition.z + sensorPosition.z; 
 
 
       // println("X: "+ currentCameraPosition.x);
@@ -316,7 +323,7 @@ public void draw() {
       60, -1000, 19000, 
       0, -5000, 0, 
       0, 1.0f, 0);
-      zPosition = 19000; 
+      zPosition = 19000;
     }
   }
   else if (cameraOn == false) {
@@ -325,7 +332,7 @@ public void draw() {
     0, 0, 0, 
     0, 1.0f, 0);
     zPosition = mouseZPosition ;
-    //println("user z position"+ zPosition);
+    println("user z position"+ zPosition);
   }  
 
   scale(1, -1, 1);
@@ -449,24 +456,29 @@ public void draw() {
   popStyle();  
   popMatrix();
 
-  //Tree holes
-  pushMatrix();
+  for (int t = 0; t < treeNumber; t++)
+  {
+    //Tree holes
   pushStyle();
-  translate(0, 1, 3000);
-  rotateX(radians(90));
   fill (0);
   noStroke(); 
-  ellipse(0, 0, treeHoleR, treeHoleR);
-  popStyle();  
-  popMatrix();  
-
-  // tree
   pushMatrix();
+  translate(treeX[t], 1, treeZ[t]);
+  rotateX(radians(90));
+  ellipse(0, 0, treeHoleR, treeHoleR);
+  popMatrix();  
+  popStyle(); 
+  
+  // tree
   pushStyle(); 
-  translate(0, treeY, 3000);
+  pushMatrix();
+  translate(treeX[t], treeY, treeZ[t]);
+  rotateY(radians(treeRotate[t]));
+  stroke(255);
   tree.draw();  
-  popStyle();
   popMatrix();
+  popStyle();
+  }
 
   //floor
   pushMatrix();
@@ -856,6 +868,7 @@ public void startWalk(int id)
 //--Animations-------------------
 public void loop()
 {
+  initTreeXYZ ();
   xoxoFall();
   wallUp();
   treePop();
@@ -865,8 +878,8 @@ public void wallUp ()
 {
   if (wallUp >= 0 && wallUp <=10000 && startWallUp)
   {
-    wallUp += 80;  
-  } 
+    wallUp += 80;
+  }
 }
 
 public void xoxoFall () // make xoxo fall in a certain point on Z axis
@@ -876,19 +889,32 @@ public void xoxoFall () // make xoxo fall in a certain point on Z axis
     xoxoFall -= 90;
   }
 }
- 
- public void treePop ()
- {
- if (zPosition <= 15000 && treeHoleR <= 2200 )
+
+public void treePop ()
+{
+  if (zPosition <= 15000 && treeHoleR <= 2200 )
   {
-      treeHoleR += 10;
+    treeHoleR += 10;
   }
   if (treeHoleR >= 800)
-   {    
-        println("currentCameraPosition.y /100: "+currentCameraPosition.y /100);
-        treeY = (currentCameraPosition.y);
+  {    
+    println("currentCameraPosition.y /100: "+currentCameraPosition.y /100);
+    treeY = (currentCameraPosition.y);
   }
+}
+
+
+public void initTreeXYZ ()
+{if (runOnce){
+  for (int tn = 0; tn < treeNumber; tn++) 
+  {
+    treeX  [tn]  = (random(-6000, 6000));
+    treeZ [tn] =  (random(-400, 29500));
+    treeRotate [tn]=  (random(0, 360));
   }
+  runOnce = false; 
+}
+}
 // // The Link class is used for handling constraints between particles.
 // class Link {
 //   float restingDistance;

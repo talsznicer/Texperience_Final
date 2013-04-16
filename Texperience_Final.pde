@@ -1,5 +1,6 @@
-//tal sznicer test
 
+//tal sznicer test
+//imports
 import SimpleOpenNI.*;
 import processing.opengl.*;
 import saito.objloader.*;
@@ -14,23 +15,15 @@ SimpleOpenNI  context;
 boolean       autoCalib=true;
 PVector head = new PVector();
 
-//  Sensor position relative to screen in mm
+//Sensor position relative to screen in mm
 PVector sensorPosition = new PVector(0, 0, 0);
 PVector defaultCameraPosition = new PVector(0, 0, 0);
 PVector currentCameraPosition = defaultCameraPosition;
 
-//opening-------------------------------------------------------------------------------------------------------
-
-float        zoomF =0.5f;
-color[]      userColors = { 
-  color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255)
-};
-color[]      userCoMColors = { 
-  color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0)
-};
-
-//end Opening------------------------------------------------------------------------------------------------------
-
+//Opening
+float zoomF =0.5f;
+color[] userColors = { color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255) };
+color[] userCoMColors = { color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0) };
 
 //My Floats
 float mouseZPosition = 15500;
@@ -38,24 +31,53 @@ float zPosition;
 boolean cameraOn = true;
 float xoxoFall = 6000;
 float cameraY = 0;
-
 boolean runOnce = true;
 float treeNumber = 5;
-
-float[] treeX = { 
-  (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000))};
-
-float[] treeZ = {
-  (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500))};
-
-float[] treeRotate = {
-  (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)) };
-
+float[] treeX = { (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000))};
+float[] treeZ = { (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500))};
+float[] treeRotate = { (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)) };
 float treeHoleR = 1;
 float treeY = 0;
 float wallUp = 0;
 float startPosition = 30000;
 boolean startWallUp = false;
+
+float lastRWPx = 0.0;
+float lastRWPy = 0.0;
+float lastRWPz = 0.0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void setup() {
 
@@ -83,13 +105,10 @@ void setup() {
 
   smooth();
 
-  //opening-------------------------------------------------------------------------------------------------------------------
-
-  // enable the scene, to get the floor
+  // Opening enable the scene, to get the floor
   context.enableScene();
 
-  //end opening -------------------------------------------------------------------------------------------------------------------
-
+  //3D Objects 
   //types of rendering: LINES,POLYGON,QUADS,
 
   // test
@@ -155,15 +174,35 @@ void setup() {
   stone.scale(1, -1, -1);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void draw() {
+//beginCamera();
   context.update();
   cameraZero ();
   cameraToggle ();
+
   xoxoFall ();
   wallUp ();
   treePop ();
 
-  // draw the skeleton if it's available
+// draw the skeleton if it's available
   int[] userList = context.getUsers();
   int numTreckedUsers = 0;
   for (int i=0;i<userList.length;i++)  
@@ -183,7 +222,7 @@ void draw() {
 
         if (headHistory.size() > historySize)
         {
-          //check if not moving
+        //check if not moving
           float total = 0; //accumulated head movement
           for (int j=1;j<historySize;j++)
           {
@@ -217,7 +256,7 @@ void draw() {
     }
   }
 
-  beginCamera();
+  
   PVector target = new PVector();
   if (numTreckedUsers > 0)
   {
@@ -232,6 +271,7 @@ void draw() {
 
   scale(1, -1, 1);
   background(10, 10, 40);
+  
   //  lights();
   //directionalLight(255, 255, 255, 0, -1, 0);
   //  directionalLight(255, 255, 255, 0, 0, 1);
@@ -244,9 +284,10 @@ void draw() {
   //directionalLight(255, 255, 255, 0, -1, 0);
   //directionalLight(255, 255, 255, 0, 0, -1);
 
-  perspective(PI / 3, float(width)/float(height), 1, 1000000);
-
+//Draw the wall projection
   drawWall ();
+
+//Draw 3D Objects
 
   // //XYZ AXIS
   // pushMatrix();
@@ -384,11 +425,39 @@ void draw() {
   stone.draw();
   popStyle();  
   popMatrix();
-
-  endCamera();
+  
+  perspective(PI / 3, float(width)/float(height), 1, 1000000);
+  //endCamera();
 }
 
-// SimpleOpenNI events---------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// SimpleOpenNI events
 
 void onNewUser(int userId)
 {
@@ -452,7 +521,7 @@ void onEndPose(String pose, int userId)
   println("onEndPose - userId: " + userId + ", pose: " + pose);
 }
 
-// Keyboard events -----------------------------------------------------------------
+// Keyboard events
 void keyPressed() {
 
   if (key == '1')
@@ -479,12 +548,12 @@ void keyPressed() {
     else if (keyCode == UP ) {
       mouseZPosition -=500;
     }
-    else if (keyCode == RIGHT ) {
-      wallUp +=20;
-    }
-    else if (keyCode == LEFT ) {
-      wallUp -=40;
-    }
+    // else if (keyCode == RIGHT ) {
+    //   tX +=10;
+    // }
+    // else if (keyCode == LEFT ) {
+    //   tX -=10;
+    // }
   }
   if (keyCode == ' ' ) {
     if (cameraOn == false) {
@@ -498,6 +567,7 @@ void keyPressed() {
   }
 }
 
+//States
 final int START = 0;
 final int ENGAGE = 1;
 final int SYNC = 2;
@@ -579,7 +649,7 @@ void cameraToggle ()
     if (state == STARTWALK) { 
       camera( 
       currentCameraPosition.x + sensorPosition.x, cameraY, currentCameraPosition.z + sensorPosition.z, 
-      0, 0, 0, 
+      0,0,0,
       0, 1.0, 0);
       zPosition =currentCameraPosition.z + sensorPosition.z; 
       // println("X: "+ currentCameraPosition.x);
@@ -640,7 +710,8 @@ void drawWall()
           // check if there is a user
           if (userMap != null && userMap[index] != 0)
           {  // call the user color
-            int colorIndex = userMap[index] % userColors.length;
+            
+            //int colorIndex = userMap[index] % userColors.length;
             strokeWeight(4);
             if (state == ENGAGE || state == START)
             {
@@ -661,9 +732,13 @@ void drawWall()
           else
             // camera capture background color
             stroke(0); 
-          float blur = random(-100, 100);
-          //float blur = 0.0;
-          point(realWorldPoint.x+blur, realWorldPoint.y+blur, realWorldPoint.z);
+          
+          //point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
+          line(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z, lastRWPx,lastRWPy,lastRWPz);
+          
+          lastRWPx = realWorldPoint.x;
+          lastRWPy = realWorldPoint.y;
+          lastRWPz = realWorldPoint.z;
         }
       }
     }

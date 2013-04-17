@@ -26,21 +26,25 @@ color[] userColors = { color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color 
 color[] userCoMColors = { color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0) };
 
 //My Floats
-float mouseZPosition = 15500;
-float zPosition;
+float mouseZPosition = 19000.0;
+float zPosition = 0.0;
 boolean cameraOn = true;
+
 float xoxoFall = 6000;
-float cameraY = 0;
-boolean runOnce = true;
+//float cameraY = 0;
+//boolean runOnce = true;
+
 float treeNumber = 5;
-float[] treeX = { (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000)), (random(-6000, 6000))};
-float[] treeZ = { (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500)), (random(-400, 29500))};
-float[] treeRotate = { (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)), (random(0, 360)) };
+float[] treeX = { (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0))};
+float[] treeZ = { (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0))};
+float[] treeRotate = { (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)) };
 float treeHoleR = 1;
 float treeY = 0;
-float wallUp = 0;
-float startPosition = 30000;
 boolean startWallUp = false;
+float wallUp = 0;
+
+float startPosition = 30000;
+
 
 float lastRWPx = 0.0;
 float lastRWPy = 0.0;
@@ -200,8 +204,17 @@ void setup() {
 
 void draw() {
 //beginCamera();
+  println("state:     "+state);
+  println("_____");
+  println("cameraX:    "+(currentCameraPosition.x + sensorPosition.x));
+  println("cameraY:   "+(currentCameraPosition.y + sensorPosition.y));
+  println("cameraZ:   "+(currentCameraPosition.z + sensorPosition.z));
+  println("_____");
+  println("zPosition:  "+zPosition);  
+  println("______________________");
+
   context.update();
-  cameraZero ();
+  //cameraZero ();
   cameraToggle ();
   drawSkeleton();
   xoxoFall ();
@@ -324,7 +337,7 @@ void draw() {
   popStyle();  
   popMatrix();
 
-  //sphear
+  //sphere
   pushMatrix();
   pushStyle();
   translate(-300, 600, 250);
@@ -416,19 +429,14 @@ void drawSkeleton(){
         }
       }
     else if (state == SYNC) 
-    {
-      println("engaged");
-      float zz = currentCameraPosition.z + sensorPosition.z;
-      println("Z: "+ zz);
-      
-      if (currentCameraPosition.z + sensorPosition.z >= 9000.0)
+    {      
+      if (currentCameraPosition.z + sensorPosition.z >= 8000.0)
         {
         startWalk(userList[i]);
         }
     }
     else if (state == STARTWALK)
     {
-     println("synced");
      startWallUp = true; 
     }  
     
@@ -453,9 +461,6 @@ void drawSkeleton(){
 currentCameraPosition.lerp(target, 0.1);
 }
 
-
-
-
 void engage ()
 {
   //reset all inits and floats
@@ -467,14 +472,14 @@ void engage ()
 void sync(int id)
 {
   //println("SYNC");
-  state = ENGAGE;
+  state = SYNC;
   chosenUser = id;
 }
 
 void startWalk(int id)
 {
   //println("STARTWALK");
-  state  = SYNC;
+  state  = STARTWALK;
   chosenUser = id;
 }
 
@@ -503,52 +508,54 @@ void treePop ()
   }
   if (treeHoleR >= 800)
   {    
-    println("currentCameraPosition.y /100: "+currentCameraPosition.y /100);
     treeY = (currentCameraPosition.y);
   }
 }
 
-void cameraZero ()
+/*void cameraZero ()
 {
-  
  if ( cameraY >= 1 )
  {
   cameraY = 0;
  } else {
    cameraY =  currentCameraPosition.y + sensorPosition.y;
  }
-}
+}*/
 
 void cameraToggle ()
 {
   //Toggle between camera and mouse
   if (cameraOn) {
-    if (state == STARTWALK) { 
+    if (state == SYNC || state == ENGAGE) { 
+
+      println("camera on freez");
       camera( 
-      currentCameraPosition.x + sensorPosition.x, cameraY, currentCameraPosition.z + sensorPosition.z, 
+      60, -1000, startPosition, 
+      0, -5000, 0, 
+      0, 1.0, 0);
+      //zPosition = 19000;
+    } 
+    else {
+      println("camera on user");
+      zPosition =(currentCameraPosition.z + sensorPosition.z); 
+      camera( 
+      currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
       0,0,0,
       0, 1.0, 0);
-      zPosition =currentCameraPosition.z + sensorPosition.z; 
+      
       // println("X: "+ currentCameraPosition.x);
       // println("y: "+ currentCameraPosition.y);
       // println("z: "+ currentCameraPosition.z);
       // println("______________________");
-    } 
-    else {
-      camera( 
-      60, -1000, 19000, 
-      0, -5000, 0, 
-      0, 1.0, 0);
-      zPosition = 19000;
     }
   }
   else if (cameraOn == false) {
+    println("camera off");
     camera( 
     (((float(mouseX) / width) - 0.5) * 2000), (((float(mouseY) / height) - 0.5) * 2000), mouseZPosition, //mouseY / height * 2000, //move camera
     0, 0, 0, 
     0, 1.0, 0);
     zPosition = mouseZPosition ;
-    println("user z position"+ zPosition);
   }  
 }
 
@@ -565,7 +572,7 @@ void drawWall()
     pushMatrix();
     pushStyle();  
     scale(1);
-    translate(0, 1300, startPosition + 3000);  // set the rotation center of the scene 1000 infront of the camera
+    translate(0, 1300, (startPosition + 300));  // set the rotation center of the scene 1000 infront of the camera
     rotateY(radians(180));
     int userCount = context.getNumberOfUsers();
     int[] userMap = null;

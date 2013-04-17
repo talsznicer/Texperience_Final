@@ -1,0 +1,2104 @@
+SimpleOpenNI Version 0.27
+draw mode:		POLYGON
+Loading this = test.obj
+Loading this = test.mtl
+material: 		'Color_000'
+material: 		'tal'
+found group
+group 'Mesh1'
+group 'Group1'
+group 'Model'
+found group
+group 'Mesh2'
+found group
+group 'Mesh3'
+found group
+group 'Mesh4'
+found group
+group 'Mesh5'
+found group
+group 'Mesh6'
+found group
+group 'Mesh7'
+found group
+group 'Mesh8'
+found group
+group 'Mesh9'
+found group
+group 'Mesh10'
+found group
+group 'Mesh11'
+found group
+group 'Mesh12'
+found group
+group 'Mesh13'
+found group
+group 'Mesh14'
+found group
+group 'Mesh15'
+found group
+group 'Mesh16'
+Obj Name: 		default
+
+V  Size: 		438
+Vt Size: 		2393
+Vn Size: 		791
+G  Size: 		19
+S  Size: 		16
+
+
+objloader version 021
+18 August 2010
+http://code.google.com/p/saitoobjloader/
+
+draw mode:		POLYGON
+Loading this = moon.obj
+Loading this = moon.mtl
+material: 		'FrontColor'
+found group
+group 'Mesh1'
+group 'Model'
+Obj Name: 		default
+
+V  Size: 		48
+Vt Size: 		144
+Vn Size: 		26
+G  Size: 		3
+S  Size: 		1
+
+
+objloader version 021
+18 August 2010
+http://code.google.com/p/saitoobjloader/
+
+draw mode:		POLYGON
+Loading this = tree.obj
+Loading this = tree.mtl
+material: 		'Color_A03'
+material: 		'FrontColor'
+material: 		'Color_A01'
+material: 		'M_0066_Honeydew'
+found group
+group 'Mesh1'
+group 'Group1'
+group 'FF_Model_ID2455_1_river_birch1'
+group 'Model'
+found group
+group 'Mesh2'
+group 'branch1_1'
+found group
+group 'Mesh3'
+group 'branch1_2'
+found group
+group 'Mesh4'
+group 'branch1_3'
+found group
+group 'Mesh5'
+group 'branch1_4'
+found group
+group 'Mesh6'
+group 'branch1_5'
+found group
+group 'Mesh7'
+group 'branch1_6'
+found group
+group 'Mesh8'
+group 'branch1_7'
+found group
+group 'Mesh9'
+group 'branch1_8'
+found group
+group 'Mesh10'
+group 'branch1_9'
+found group
+group 'Mesh11'
+group 'branch1_10'
+found group
+group 'Mesh12'
+group 'branch1_11'
+found group
+group 'Mesh13'
+group 'branch1_12'
+found group
+group 'Mesh14'
+group 'branch1_13'
+found group
+group 'Mesh15'
+group 'branch1_14'
+found group
+group 'Mesh16'
+group 'branch1_15'
+found group
+group 'Mesh17'
+group 'branch1_16'
+found group
+group 'Mesh18'
+group 'branch1_17'
+found group
+group 'Mesh19'
+group 'branch1_18'
+found group
+group 'Mesh20'
+group 'branch1_19'
+found group
+group 'Mesh21'
+group 'branch1_20'
+found group
+group 'Mesh22'
+group 'spray1'
+found group
+group 'Mesh23'
+group 'spray2'
+found group
+group 'Mesh24'
+group 'spray3'
+found group
+group 'Mesh25'
+group 'spray4'
+found group
+group 'Mesh26'
+group 'spray5'
+found group
+group 'Mesh27'
+group 'spray6'
+found group
+group 'Mesh28'
+group 'spray7'
+found group
+group 'Mesh29'
+group 'spray8'
+found group
+group 'Mesh30'
+group 'spray9'
+found group
+group 'Mesh31'
+group 'spray10'
+found group
+group 'Mesh32'
+group 'spray11'
+found group
+group 'Mesh33'
+group 'spray12'
+found group
+group 'Mesh34'
+group 'spray13'
+found group
+group 'Mesh35'
+group 'spray14'
+found group
+group 'Mesh36'
+group 'spray15'
+found group
+group 'Mesh37'
+group 'spray16'
+found group
+group 'Mesh38'
+group 'spray17'
+found group
+group 'Mesh39'
+group 'spray18'
+found group
+group 'Mesh40'
+group 'spray19'
+found group
+group 'Mesh41'
+group 'spray20'
+found group
+group 'Mesh42'
+group 'spray21'
+found group
+group 'Mesh43'
+group 'spray22'
+found group
+group 'Mesh44'
+group 'spray23'
+found group
+group 'Mesh45'
+group 'spray24'
+found group
+group 'Mesh46'
+group 'spray25'
+found group
+group 'Mesh47'
+group 'spray26'
+found group
+group 'Mesh48'
+group 'spray27'
+found group
+group 'Mesh49'
+group 'spray28'
+found group
+group 'Mesh50'
+group 'spray29'
+found group
+group 'Mesh51'
+group 'spray30'
+found group
+group 'Mesh52'
+group 'spray31'
+found group
+group 'Mesh53'
+group 'spray32'
+found group
+group 'Mesh54'
+group 'spray33'
+found group
+group 'Mesh55'
+group 'spray34'
+found group
+group 'Mesh56'
+group 'spray35'
+found group
+group 'Mesh57'
+group 'spray36'
+found group
+group 'Mesh58'
+group 'spray37'
+found group
+group 'Mesh59'
+group 'spray38'
+found group
+group 'Mesh60'
+group 'spray39'
+found group
+group 'Mesh61'
+group 'spray40'
+found group
+group 'Mesh62'
+group 'spray41'
+found group
+group 'Mesh63'
+group 'spray42'
+found group
+group 'Mesh64'
+group 'spray43'
+found group
+group 'Mesh65'
+group 'spray44'
+found group
+group 'Mesh66'
+group 'spray45'
+found group
+group 'Mesh67'
+group 'spray46'
+found group
+group 'Mesh68'
+group 'spray47'
+found group
+group 'Mesh69'
+group 'spray48'
+found group
+group 'Mesh70'
+group 'spray49'
+found group
+group 'Mesh71'
+group 'spray50'
+found group
+group 'Mesh72'
+group 'spray51'
+found group
+group 'Mesh73'
+group 'spray52'
+found group
+group 'Mesh74'
+group 'spray53'
+found group
+group 'Mesh75'
+group 'spray54'
+found group
+group 'Mesh76'
+group 'spray55'
+found group
+group 'Mesh77'
+group 'spray56'
+found group
+group 'Mesh78'
+group 'spray57'
+found group
+group 'Mesh79'
+group 'spray58'
+found group
+group 'Mesh80'
+group 'spray59'
+found group
+group 'Mesh81'
+group 'spray60'
+found group
+group 'Mesh82'
+group 'spray61'
+found group
+group 'Mesh83'
+group 'spray62'
+found group
+group 'Mesh84'
+group 'spray63'
+found group
+group 'Mesh85'
+group 'spray64'
+found group
+group 'Mesh86'
+group 'spray65'
+found group
+group 'Mesh87'
+group 'spray66'
+found group
+group 'Mesh88'
+group 'spray67'
+found group
+group 'Mesh89'
+group 'spray68'
+found group
+group 'Mesh90'
+group 'spray69'
+found group
+group 'Mesh91'
+group 'spray70'
+found group
+group 'Mesh92'
+group 'spray71'
+found group
+group 'Mesh93'
+group 'spray72'
+found group
+group 'Mesh94'
+group 'spray73'
+found group
+group 'Mesh95'
+group 'spray74'
+found group
+group 'Mesh96'
+group 'spray75'
+found group
+group 'Mesh97'
+group 'spray76'
+found group
+group 'Mesh98'
+group 'spray77'
+found group
+group 'Mesh99'
+group 'spray78'
+found group
+group 'Mesh100'
+group 'spray79'
+found group
+group 'Mesh101'
+group 'spray80'
+found group
+group 'Mesh102'
+group 'spray81'
+found group
+group 'Mesh103'
+group 'spray82'
+found group
+group 'Mesh104'
+group 'spray83'
+found group
+group 'Mesh105'
+group 'spray84'
+found group
+group 'Mesh106'
+group 'spray85'
+found group
+group 'Mesh107'
+group 'spray86'
+found group
+group 'Mesh108'
+group 'spray87'
+found group
+group 'Mesh109'
+group 'spray88'
+found group
+group 'Mesh110'
+group 'spray89'
+found group
+group 'Mesh111'
+group 'spray90'
+found group
+group 'Mesh112'
+group 'spray91'
+found group
+group 'Mesh113'
+group 'spray92'
+found group
+group 'Mesh114'
+group 'spray93'
+Obj Name: 		default
+
+V  Size: 		1057
+Vt Size: 		581
+Vn Size: 		606
+G  Size: 		231
+S  Size: 		123
+
+
+objloader version 021
+18 August 2010
+http://code.google.com/p/saitoobjloader/
+
+draw mode:		POLYGON
+Loading this = xoxoMan.obj
+Loading this = xoxoMan.mtl
+material: 		'Color_000'
+material: 		'tal'
+found group
+group 'Mesh1'
+group 'Group1'
+group 'Model'
+found group
+group 'Mesh2'
+found group
+group 'Mesh3'
+found group
+group 'Mesh4'
+found group
+group 'Mesh5'
+found group
+group 'Mesh6'
+found group
+group 'Mesh7'
+found group
+group 'Mesh8'
+found group
+group 'Mesh9'
+found group
+group 'Mesh10'
+found group
+group 'Mesh11'
+found group
+group 'Mesh12'
+found group
+group 'Mesh13'
+found group
+group 'Mesh14'
+found group
+group 'Mesh15'
+found group
+group 'Mesh16'
+Obj Name: 		default
+
+V  Size: 		438
+Vt Size: 		2393
+Vn Size: 		791
+G  Size: 		19
+S  Size: 		16
+
+
+objloader version 021
+18 August 2010
+http://code.google.com/p/saitoobjloader/
+
+draw mode:		POLYGON
+Loading this = twoManArrow.obj
+Loading this = twoManArrow.mtl
+material: 		'FrontColor'
+The file "xoxoCouch/canvas.jpg" is missing or inaccessible, make sure the URL is valid or that the file has been added to your sketch and is readable.
+found group
+group 'Mesh1'
+group 'Component_1_1'
+group 'Group1'
+group 'Model'
+found group
+group 'Mesh2'
+group 'Component_1_2'
+found group
+group 'Mesh3'
+group 'Component_1_3'
+found group
+group 'Mesh4'
+group 'Component_1_4'
+found group
+group 'Mesh5'
+group 'Component_1_5'
+found group
+group 'Mesh6'
+group 'Component_1_6'
+found group
+group 'Mesh7'
+group 'Component_1_7'
+found group
+group 'Mesh8'
+group 'Component_1_8'
+Obj Name: 		default
+
+V  Size: 		32
+Vt Size: 		10
+Vn Size: 		32
+G  Size: 		19
+S  Size: 		8
+
+
+objloader version 021
+18 August 2010
+http://code.google.com/p/saitoobjloader/
+
+draw mode:		POLYGON
+Loading this = xoxoCouch.obj
+Loading this = xoxoCouch.mtl
+material: 		'Color_001'
+material: 		'Color_007'
+material: 		'tal'
+material: 		'canvas'
+diffuse: 		'xoxoCouch/canvas.jpg'
+found group
+group 'Mesh1'
+group 'Group1'
+group 'Model'
+found group
+group 'Mesh2'
+found group
+group 'Mesh3'
+group 'knob1'
+group 'tylosand_sofa_leg1'
+found group
+group 'Mesh4'
+group 'knob2'
+found group
+group 'Mesh5'
+found group
+group 'Mesh6'
+group 'karlstad_cushion_1_1'
+found group
+group 'Mesh7'
+group 'tylosand_sofa_pillow1'
+found group
+group 'Mesh8'
+group 'Group2'
+group 'karlstad_loveseat_half_1_1'
+found group
+group 'Mesh9'
+found group
+group 'Mesh10'
+group 'knob3'
+group 'tylosand_sofa_leg2'
+found group
+group 'Mesh11'
+group 'knob4'
+found group
+group 'Mesh12'
+found group
+group 'Mesh13'
+group 'knob5'
+group 'tylosand_sofa_leg3'
+found group
+group 'Mesh14'
+group 'knob6'
+found group
+group 'Mesh15'
+found group
+group 'Mesh16'
+group 'tylosand_sofa_bottomHalf1'
+found group
+group 'Mesh17'
+group 'karlstad_cushion_1_2'
+found group
+group 'Mesh18'
+found group
+group 'Mesh19'
+group 'tylosand_sofa_pillow2'
+found group
+group 'Mesh20'
+group 'tylosand_sofa_pillow3'
+found group
+group 'Mesh21'
+group 'tylosand_sofa_pillow4'
+found group
+group 'Mesh22'
+group 'knob7'
+group 'tylosand_sofa_leg4'
+found group
+group 'Mesh23'
+group 'knob8'
+found group
+group 'Mesh24'
+found group
+group 'Mesh25'
+group 'tylosand_sofa_bottomHalf2'
+found group
+group 'Mesh26'
+Obj Name: 		default
+
+V  Size: 		1790
+Vt Size: 		2317
+Vn Size: 		1833
+G  Size: 		51
+S  Size: 		33
+
+
+objloader version 021
+18 August 2010
+http://code.google.com/p/saitoobjloader/
+
+draw mode:		POLYGON
+Loading this = twoMan.obj
+Loading this = twoMan.mtl
+material: 		'Color_A03'
+material: 		'Color_G03'
+material: 		'Material4'
+material: 		'Color_I14'
+found group
+group 'Mesh1'
+group 'Fighting_man1'
+group 'Model'
+found group
+group 'Mesh2'
+found group
+group 'Mesh3'
+found group
+group 'Mesh4'
+found group
+group 'Mesh5'
+found group
+group 'Mesh6'
+found group
+group 'Mesh7'
+found group
+group 'Mesh8'
+found group
+group 'Mesh9'
+found group
+group 'Mesh10'
+Obj Name: 		default
+
+V  Size: 		1486
+Vt Size: 		8398
+Vn Size: 		4301
+G  Size: 		13
+S  Size: 		14
+
+
+objloader version 021
+18 August 2010
+http://code.google.com/p/saitoobjloader/
+
+draw mode:		POLYGON
+Loading this = sphear.obj
+Loading this = sphear.mtl
+material: 		'M_0020_Red'
+found group
+group 'Mesh1'
+group 'Component_2_1'
+group 'Component_3_1'
+group 'Group1'
+group 'Model'
+found group
+group 'Mesh2'
+group 'Component_2_2'
+group 'Component_3_2'
+found group
+group 'Mesh3'
+group 'Component_2_3'
+group 'Component_3_3'
+found group
+group 'Mesh4'
+group 'Component_2_4'
+group 'Component_3_4'
+found group
+group 'Mesh5'
+group 'Component_2_5'
+group 'Component_3_5'
+found group
+group 'Mesh6'
+group 'Component_2_6'
+group 'Component_3_6'
+found group
+group 'Mesh7'
+group 'Component_2_7'
+group 'Component_3_7'
+found group
+group 'Mesh8'
+group 'Component_2_8'
+group 'Component_3_8'
+found group
+group 'Mesh9'
+group 'Component_2_9'
+group 'Component_3_9'
+found group
+group 'Mesh10'
+group 'Component_2_10'
+group 'Component_3_10'
+found group
+group 'Mesh11'
+group 'Component_2_11'
+group 'Component_3_11'
+found group
+group 'Mesh12'
+group 'Component_2_12'
+group 'Component_3_12'
+found group
+group 'Mesh13'
+group 'Component_2_13'
+group 'Component_3_13'
+found group
+group 'Mesh14'
+group 'Component_2_14'
+group 'Component_3_14'
+found group
+group 'Mesh15'
+group 'Component_2_15'
+group 'Component_3_15'
+found group
+group 'Mesh16'
+group 'Component_2_16'
+group 'Component_3_16'
+found group
+group 'Mesh17'
+group 'Component_2_17'
+group 'Component_3_17'
+found group
+group 'Mesh18'
+group 'Component_2_18'
+group 'Component_3_18'
+found group
+group 'Mesh19'
+group 'Component_2_19'
+group 'Component_3_19'
+found group
+group 'Mesh20'
+group 'Component_2_20'
+group 'Component_3_20'
+found group
+group 'Mesh21'
+group 'Component_2_21'
+group 'Component_3_21'
+found group
+group 'Mesh22'
+group 'Component_2_22'
+group 'Component_3_22'
+found group
+group 'Mesh23'
+group 'Component_2_23'
+group 'Component_3_23'
+found group
+group 'Mesh24'
+group 'Component_2_24'
+group 'Component_3_24'
+found group
+group 'Mesh25'
+group 'Component_2_25'
+group 'Component_3_25'
+found group
+group 'Mesh26'
+group 'Component_2_26'
+group 'Component_3_26'
+found group
+group 'Mesh27'
+group 'Component_2_27'
+group 'Component_3_27'
+found group
+group 'Mesh28'
+group 'Component_2_28'
+group 'Component_3_28'
+found group
+group 'Mesh29'
+group 'Component_2_29'
+group 'Component_3_29'
+found group
+group 'Mesh30'
+group 'Component_2_30'
+group 'Component_3_30'
+found group
+group 'Mesh31'
+group 'Component_2_31'
+group 'Component_3_31'
+found group
+group 'Mesh32'
+group 'Component_2_32'
+group 'Component_3_32'
+found group
+group 'Mesh33'
+group 'Component_2_33'
+group 'Component_3_33'
+found group
+group 'Mesh34'
+group 'Component_2_34'
+group 'Component_3_34'
+found group
+group 'Mesh35'
+group 'Component_2_35'
+group 'Component_3_35'
+found group
+group 'Mesh36'
+group 'Component_2_36'
+group 'Component_3_36'
+Obj Name: 		default
+
+V  Size: 		140
+Vt Size: 		4
+Vn Size: 		34
+G  Size: 		111
+S  Size: 		36
+
+
+objloader version 021
+18 August 2010
+http://code.google.com/p/saitoobjloader/
+
+draw mode:		POLYGON
+Loading this = stone.obj
+Loading this = stone.mtl
+material: 		'Color_000'
+found group
+group 'Mesh1'
+group 'Group1'
+group 'Model'
+found group
+group 'Mesh2'
+found group
+group 'Mesh3'
+Obj Name: 		default
+
+V  Size: 		585
+Vt Size: 		1609
+Vn Size: 		340
+G  Size: 		6
+S  Size: 		3
+
+
+objloader version 021
+18 August 2010
+http://code.google.com/p/saitoobjloader/
+
+onNewUser - userId: 1
+  start pose detection
+onStartCalibration - userId: 1
+onNewUser - userId: 2
+  start pose detection
+onStartCalibration - userId: 2
+onEndCalibration - userId: 2, successfull: true
+  User calibrated !!!
+onNewUser - userId: 3
+  start pose detection
+onStartCalibration - userId: 3
+onNewUser - userId: 4
+  start pose detection
+onStartCalibration - userId: 4
+engaged
+Z: 6631.15870.0
+SYNC
+Z: 6630.6890.0
+SYNC
+Z: 6630.2660.0
+SYNC
+Z: 6629.88570.0
+SYNC
+Z: 6629.54350.0
+SYNC
+onEndCalibration - userId: 4, successfull: true
+  User calibrated !!!
+Z: 6629.23540.0
+SYNC
+Z: 6629.23540.0
+SYNC
+Z: 6402.65330.0
+SYNC
+Z: 6402.65330.0
+SYNC
+Z: 6198.7360.0
+SYNC
+Z: 6198.7360.0
+SYNC
+Z: 6015.2030.0
+SYNC
+Z: 6015.2030.0
+SYNC
+Z: 5849.93850.0
+SYNC
+Z: 5849.93850.0
+SYNC
+Z: 5701.1150.0
+SYNC
+Z: 5701.1150.0
+SYNC
+Z: 5567.230.0
+SYNC
+Z: 5567.230.0
+SYNC
+Z: 5446.85250.0
+SYNC
+Z: 5446.85250.0
+SYNC
+Z: 5338.60350.0
+SYNC
+Z: 5338.60350.0
+SYNC
+Z: 5241.6240.0
+SYNC
+Z: 5241.6240.0
+SYNC
+Z: 5155.60840.0
+SYNC
+Z: 5155.60840.0
+SYNC
+Z: 5077.74170.0
+SYNC
+Z: 5077.74170.0
+SYNC
+Z: 5006.3550.0
+SYNC
+Z: 5006.3550.0
+SYNC
+Z: 4941.5110.0
+SYNC
+Z: 4941.5110.0
+SYNC
+Z: 4884.1310.0
+SYNC
+Z: 4884.1310.0
+SYNC
+Z: 4837.4070.0
+SYNC
+Z: 4837.4070.0
+SYNC
+Z: 4801.60840.0
+SYNC
+Z: 4801.60840.0
+SYNC
+Z: 4783.9210.0
+SYNC
+Z: 4783.9210.0
+SYNC
+Z: 4784.05270.0
+SYNC
+Z: 4784.05270.0
+SYNC
+Z: 4815.78560.0
+SYNC
+Z: 4815.78560.0
+SYNC
+Z: 4855.34570.0
+SYNC
+Z: 4855.34570.0
+SYNC
+Z: 4905.51270.0
+SYNC
+Z: 4905.51270.0
+SYNC
+Z: 4977.31930.0
+SYNC
+Z: 4977.31930.0
+SYNC
+Z: 5049.0370.0
+SYNC
+Z: 5049.0370.0
+SYNC
+Z: 5119.5750.0
+SYNC
+Z: 5119.5750.0
+SYNC
+Z: 5194.03120.0
+SYNC
+Z: 5194.03120.0
+SYNC
+Z: 5275.15040.0
+SYNC
+Z: 5275.15040.0
+SYNC
+Z: 5360.90330.0
+SYNC
+Z: 5360.90330.0
+SYNC
+Z: 5449.7080.0
+SYNC
+Z: 5449.7080.0
+SYNC
+Z: 5545.18750.0
+SYNC
+Z: 5545.18750.0
+SYNC
+Z: 5660.9410.0
+SYNC
+Z: 5660.9410.0
+SYNC
+Z: 5768.2060.0
+SYNC
+Z: 5768.2060.0
+SYNC
+Z: 5870.4940.0
+SYNC
+Z: 5870.4940.0
+SYNC
+Z: 5972.65770.0
+SYNC
+Z: 5972.65770.0
+SYNC
+Z: 6071.490.0
+SYNC
+Z: 6071.490.0
+SYNC
+Z: 6168.63670.0
+SYNC
+Z: 6168.63670.0
+SYNC
+Z: 6264.14450.0
+SYNC
+Z: 6264.14450.0
+SYNC
+Z: 6356.930.0
+SYNC
+Z: 6356.930.0
+SYNC
+Z: 6450.2550.0
+SYNC
+Z: 6450.2550.0
+SYNC
+Z: 6543.76660.0
+SYNC
+Z: 6543.76660.0
+SYNC
+Z: 6637.75730.0
+SYNC
+Z: 6637.75730.0
+SYNC
+Z: 6728.3270.0
+SYNC
+Z: 6728.3270.0
+SYNC
+Z: 6816.67530.0
+SYNC
+Z: 6816.67530.0
+SYNC
+Z: 6904.110.0
+SYNC
+Z: 6904.110.0
+SYNC
+Z: 6991.30570.0
+SYNC
+Z: 6991.30570.0
+SYNC
+Z: 7077.5470.0
+SYNC
+Z: 7077.5470.0
+SYNC
+Z: 7166.88040.0
+SYNC
+Z: 7166.88040.0
+SYNC
+Z: 7254.7230.0
+SYNC
+Z: 7254.7230.0
+SYNC
+Z: 7340.7020.0
+SYNC
+Z: 7340.7020.0
+SYNC
+onEndCalibration - userId: 1, successfull: false
+  Failed to calibrate user !!!
+  Start pose detection
+Z: 7430.70260.0
+SYNC
+Z: 7430.70260.0
+SYNC
+Z: 7518.3090.0
+SYNC
+Z: 7518.3090.0
+SYNC
+Z: 7606.59570.0
+SYNC
+Z: 7606.59570.0
+SYNC
+Z: 7690.9340.0
+SYNC
+Z: 7690.9340.0
+SYNC
+Z: 7776.01950.0
+SYNC
+Z: 7776.01950.0
+SYNC
+Z: 7857.18650.0
+SYNC
+Z: 7857.18650.0
+SYNC
+Z: 7932.68160.0
+SYNC
+Z: 7932.68160.0
+SYNC
+Z: 8005.14840.0
+SYNC
+Z: 8005.14840.0
+SYNC
+Z: 8076.08350.0
+SYNC
+Z: 8076.08350.0
+SYNC
+Z: 8139.780.0
+SYNC
+Z: 8139.780.0
+SYNC
+Z: 8200.3320.0
+SYNC
+Z: 8200.3320.0
+SYNC
+Z: 8260.3420.0
+SYNC
+Z: 8260.3420.0
+SYNC
+Z: 8320.1050.0
+SYNC
+Z: 8320.1050.0
+SYNC
+Z: 8376.6230.0
+SYNC
+Z: 8376.6230.0
+SYNC
+Z: 8429.3060.0
+SYNC
+Z: 8429.3060.0
+SYNC
+Z: 8477.4790.0
+SYNC
+Z: 8477.4790.0
+SYNC
+Z: 8521.0630.0
+SYNC
+Z: 8521.0630.0
+SYNC
+Z: 8560.2570.0
+SYNC
+Z: 8560.2570.0
+SYNC
+Z: 8592.2130.0
+SYNC
+Z: 8592.2130.0
+SYNC
+Z: 8619.3130.0
+SYNC
+Z: 8619.3130.0
+SYNC
+Z: 8646.4730.0
+SYNC
+Z: 8646.4730.0
+SYNC
+Z: 8668.7020.0
+SYNC
+Z: 8668.7020.0
+SYNC
+Z: 8687.4520.0
+SYNC
+Z: 8687.4520.0
+SYNC
+Z: 8703.8450.0
+SYNC
+Z: 8703.8450.0
+SYNC
+Z: 8721.660.0
+SYNC
+Z: 8721.660.0
+SYNC
+Z: 8736.0750.0
+SYNC
+Z: 8736.0750.0
+SYNC
+Z: 8747.9380.0
+SYNC
+Z: 8747.9380.0
+SYNC
+Z: 8761.6730.0
+SYNC
+Z: 8761.6730.0
+SYNC
+Z: 8775.4010.0
+SYNC
+Z: 8775.4010.0
+SYNC
+Z: 8789.340.0
+SYNC
+Z: 8789.340.0
+SYNC
+Z: 8801.9270.0
+SYNC
+Z: 8801.9270.0
+SYNC
+Z: 8813.4250.0
+SYNC
+Z: 8813.4250.0
+SYNC
+Z: 8819.960.0
+SYNC
+Z: 8819.960.0
+SYNC
+Z: 8827.6870.0
+SYNC
+Z: 8827.6870.0
+SYNC
+Z: 8832.1090.0
+SYNC
+Z: 8832.1090.0
+SYNC
+Z: 8838.2750.0
+SYNC
+Z: 8838.2750.0
+SYNC
+Z: 8844.9180.0
+SYNC
+Z: 8844.9180.0
+SYNC
+Z: 8851.4420.0
+SYNC
+Z: 8851.4420.0
+SYNC
+Z: 8857.5850.0
+SYNC
+Z: 8857.5850.0
+SYNC
+Z: 8859.8020.0
+SYNC
+Z: 8859.8020.0
+SYNC
+Z: 8860.140.0
+SYNC
+Z: 8860.140.0
+SYNC
+Z: 8863.0660.0
+SYNC
+Z: 8863.0660.0
+SYNC
+Z: 8866.8620.0
+SYNC
+Z: 8866.8620.0
+SYNC
+Z: 8871.1570.0
+SYNC
+Z: 8871.1570.0
+SYNC
+Z: 8875.3150.0
+SYNC
+Z: 8875.3150.0
+SYNC
+Z: 8879.9520.0
+SYNC
+Z: 8879.9520.0
+SYNC
+Z: 8883.8220.0
+SYNC
+Z: 8883.8220.0
+SYNC
+Z: 8887.0040.0
+SYNC
+Z: 8887.0040.0
+SYNC
+onEndCalibration - userId: 3, successfull: false
+  Failed to calibrate user !!!
+  Start pose detection
+Z: 8890.1680.0
+SYNC
+Z: 8890.1680.0
+SYNC
+Z: 8893.0180.0
+SYNC
+Z: 8893.0180.0
+SYNC
+Z: 8899.1830.0
+SYNC
+Z: 8899.1830.0
+SYNC
+Z: 8906.6840.0
+SYNC
+Z: 8906.6840.0
+SYNC
+Z: 8918.0060.0
+SYNC
+Z: 8918.0060.0
+SYNC
+Z: 8930.4790.0
+SYNC
+Z: 8930.4790.0
+SYNC
+Z: 8946.7590.0
+SYNC
+Z: 8946.7590.0
+SYNC
+Z: 8963.9280.0
+SYNC
+Z: 8963.9280.0
+SYNC
+Z: 8984.9860.0
+SYNC
+Z: 8984.9860.0
+SYNC
+Z: 9006.5930.0
+SYNC
+Z: 9006.5930.0
+SYNC
+Z: 9027.3660.0
+SYNC
+Z: 9027.3660.0
+SYNC
+Z: 9050.3270.0
+SYNC
+Z: 9050.3270.0
+SYNC
+Z: 9077.3220.0
+SYNC
+Z: 9077.3220.0
+SYNC
+Z: 9108.9840.0
+SYNC
+Z: 9108.9840.0
+SYNC
+Z: 9145.0640.0
+SYNC
+Z: 9145.0640.0
+SYNC
+Z: 9181.4770.0
+SYNC
+Z: 9181.4770.0
+SYNC
+Z: 9216.3710.0
+SYNC
+Z: 9216.3710.0
+SYNC
+Z: 9252.8870.0
+SYNC
+Z: 9252.8870.0
+SYNC
+Z: 9292.9540.0
+SYNC
+Z: 9292.9540.0
+SYNC
+Z: 9332.3160.0
+SYNC
+Z: 9332.3160.0
+SYNC
+Z: 9373.4430.0
+SYNC
+Z: 9373.4430.0
+SYNC
+Z: 9413.4580.0
+SYNC
+Z: 9413.4580.0
+SYNC
+Z: 9451.4220.0
+SYNC
+Z: 9451.4220.0
+SYNC
+Z: 9490.4630.0
+SYNC
+Z: 9490.4630.0
+SYNC
+Z: 9528.1860.0
+SYNC
+Z: 9528.1860.0
+SYNC
+Z: 9563.2790.0
+SYNC
+Z: 9563.2790.0
+SYNC
+Z: 9595.4230.0
+SYNC
+Z: 9595.4230.0
+SYNC
+Z: 9624.6460.0
+SYNC
+Z: 9624.6460.0
+SYNC
+onNewUser - userId: 5
+  start pose detection
+onStartCalibration - userId: 5
+Z: 9651.2480.0
+SYNC
+Z: 9651.2480.0
+SYNC
+Z: 9675.3420.0
+SYNC
+Z: 9675.3420.0
+SYNC
+Z: 9701.5870.0
+SYNC
+Z: 9701.5870.0
+SYNC
+Z: 9727.3490.0
+SYNC
+Z: 9727.3490.0
+SYNC
+Z: 9756.4040.0
+SYNC
+Z: 9756.4040.0
+SYNC
+Z: 9785.4840.0
+SYNC
+Z: 9785.4840.0
+SYNC
+Z: 9822.43750.0
+SYNC
+Z: 9822.43750.0
+SYNC
+Z: 9861.5220.0
+SYNC
+Z: 9861.5220.0
+SYNC
+Z: 9894.680.0
+SYNC
+Z: 9894.680.0
+SYNC
+Z: 9928.3010.0
+SYNC
+Z: 9928.3010.0
+SYNC
+Z: 9965.3950.0
+SYNC
+Z: 9965.3950.0
+SYNC
+Z: 10002.1980.0
+SYNC
+Z: 10002.1980.0
+SYNC
+Z: 10037.0370.0
+SYNC
+Z: 10037.0370.0
+SYNC
+Z: 10073.89550.0
+SYNC
+Z: 10073.89550.0
+SYNC
+Z: 10109.8190.0
+SYNC
+Z: 10109.8190.0
+SYNC
+Z: 10143.9680.0
+SYNC
+Z: 10143.9680.0
+SYNC
+Z: 10179.960.0
+SYNC
+Z: 10179.960.0
+SYNC
+Z: 10215.4370.0
+SYNC
+Z: 10215.4370.0
+SYNC
+Z: 10249.3590.0
+SYNC
+Z: 10249.3590.0
+SYNC
+Z: 10276.0820.0
+SYNC
+Z: 10276.0820.0
+SYNC
+Z: 10297.7880.0
+SYNC
+Z: 10297.7880.0
+SYNC
+Z: 10316.2990.0
+SYNC
+Z: 10316.2990.0
+SYNC
+Z: 10337.3890.0
+SYNC
+Z: 10337.3890.0
+SYNC
+Z: 10358.2960.0
+SYNC
+Z: 10358.2960.0
+SYNC
+Z: 10373.4160.0
+SYNC
+Z: 10373.4160.0
+SYNC
+Z: 10390.280.0
+SYNC
+Z: 10390.280.0
+SYNC
+Z: 10402.1310.0
+SYNC
+Z: 10402.1310.0
+SYNC
+Z: 10410.6860.0
+SYNC
+Z: 10410.6860.0
+SYNC
+Z: 10417.180.0
+SYNC
+Z: 10417.180.0
+SYNC
+Z: 10417.320.0
+SYNC
+Z: 10417.320.0
+SYNC
+Z: 10414.7410.0
+SYNC
+Z: 10414.7410.0
+SYNC
+Z: 10410.6110.0
+SYNC
+Z: 10410.6110.0
+SYNC
+Z: 10401.4990.0
+SYNC
+Z: 10401.4990.0
+SYNC
+Z: 10386.1080.0
+SYNC
+Z: 10386.1080.0
+SYNC
+Z: 10373.00.0
+SYNC
+Z: 10373.00.0
+SYNC
+Z: 10352.0270.0
+SYNC
+Z: 10352.0270.0
+SYNC
+Z: 10332.5490.0
+SYNC
+Z: 10332.5490.0
+SYNC
+Z: 10307.0850.0
+SYNC
+Z: 10307.0850.0
+SYNC
+Z: 10283.940.0
+SYNC
+Z: 10283.940.0
+SYNC
+Z: 10267.8060.0
+SYNC
+Z: 10267.8060.0
+SYNC
+Z: 10255.780.0
+SYNC
+Z: 10255.780.0
+SYNC
+Z: 10250.5630.0
+SYNC
+Z: 10250.5630.0
+SYNC
+Z: 10248.9690.0
+SYNC
+Z: 10248.9690.0
+SYNC
+Z: 10253.8850.0
+SYNC
+Z: 10253.8850.0
+SYNC
+Z: 10261.4840.0
+SYNC
+Z: 10261.4840.0
+SYNC
+Z: 10275.0080.0
+SYNC
+Z: 10275.0080.0
+SYNC
+Z: 10295.9170.0
+SYNC
+Z: 10295.9170.0
+SYNC
+Z: 10319.2480.0
+SYNC
+Z: 10319.2480.0
+SYNC
+Z: 10347.3030.0
+SYNC
+Z: 10347.3030.0
+SYNC
+Z: 10376.2440.0
+SYNC
+Z: 10376.2440.0
+SYNC
+Z: 10409.0820.0
+SYNC
+Z: 10409.0820.0
+SYNC
+Z: 10442.1780.0
+SYNC
+Z: 10442.1780.0
+SYNC
+Z: 10468.650.0
+SYNC
+Z: 10468.650.0
+SYNC
+Z: 10496.6530.0
+SYNC
+Z: 10496.6530.0
+SYNC
+Z: 10528.5980.0
+SYNC
+Z: 10528.5980.0
+SYNC
+Z: 10566.7240.0
+SYNC
+Z: 10566.7240.0
+SYNC
+Z: 10610.9730.0
+SYNC
+Z: 10610.9730.0
+SYNC
+Z: 10656.2150.0
+SYNC
+Z: 10656.2150.0
+SYNC
+Z: 10700.0990.0
+SYNC
+Z: 10700.0990.0
+SYNC
+Z: 10746.5730.0
+SYNC
+Z: 10746.5730.0
+SYNC
+Z: 10791.4420.0
+SYNC
+Z: 10791.4420.0
+SYNC
+Z: 10839.1910.0
+SYNC
+Z: 10839.1910.0
+SYNC
+Z: 10892.2920.0
+SYNC
+Z: 10892.2920.0
+SYNC
+Z: 10944.7180.0
+SYNC
+Z: 10944.7180.0
+SYNC
+Z: 10993.7510.0
+SYNC
+Z: 10993.7510.0
+SYNC
+Z: 11039.7040.0
+SYNC
+Z: 11039.7040.0
+SYNC
+Z: 11081.5260.0
+SYNC
+Z: 11081.5260.0
+SYNC
+Z: 11119.4010.0
+SYNC
+Z: 11119.4010.0
+SYNC
+Z: 11153.9040.0
+SYNC
+Z: 11153.9040.0
+SYNC
+Z: 11185.3130.0
+SYNC
+Z: 11185.3130.0
+SYNC
+Z: 11213.4610.0
+SYNC
+Z: 11213.4610.0
+SYNC
+Z: 11244.8930.0
+SYNC
+Z: 11244.8930.0
+SYNC
+Z: 11276.6730.0
+SYNC
+Z: 11276.6730.0
+SYNC
+Z: 11306.1130.0
+SYNC
+Z: 11306.1130.0
+SYNC
+Z: 11333.4830.0
+SYNC
+Z: 11333.4830.0
+SYNC
+Z: 11364.8520.0
+SYNC
+Z: 11364.8520.0
+SYNC
+Z: 11391.0590.0
+SYNC
+Z: 11391.0590.0
+SYNC
+Z: 11419.3230.0
+SYNC
+Z: 11419.3230.0
+SYNC
+Z: 11453.2520.0
+SYNC
+Z: 11453.2520.0
+SYNC
+Z: 11488.1820.0
+SYNC
+Z: 11488.1820.0
+SYNC
+onLostUser - userId: 1
+Z: 11522.260.0
+SYNC
+Z: 11522.260.0
+SYNC
+Z: 11560.2720.0
+SYNC
+Z: 11560.2720.0
+SYNC
+Z: 11604.8970.0
+SYNC
+Z: 11604.8970.0
+SYNC
+Z: 11643.8050.0
+SYNC
+Z: 11643.8050.0
+SYNC
+Z: 11678.2120.0
+SYNC
+Z: 11678.2120.0
+SYNC
+Z: 11715.0140.0
+SYNC
+Z: 11715.0140.0
+SYNC
+Z: 11751.3470.0
+SYNC
+Z: 11751.3470.0
+SYNC
+Z: 11786.1080.0
+SYNC
+Z: 11786.1080.0
+SYNC
+Z: 11824.8740.0
+SYNC
+Z: 11824.8740.0
+SYNC
+Z: 11856.4460.0
+SYNC
+Z: 11856.4460.0
+SYNC
+Z: 11883.6620.0
+SYNC
+Z: 11883.6620.0
+SYNC
+Z: 11907.3890.0
+SYNC
+Z: 11907.3890.0
+SYNC
+Z: 11927.7760.0
+SYNC
+Z: 11927.7760.0
+SYNC
+Z: 11939.5050.0
+SYNC
+Z: 11939.5050.0
+SYNC
+Z: 11946.580.0
+SYNC
+Z: 11946.580.0
+SYNC
+Z: 11945.0590.0
+SYNC
+Z: 11945.0590.0
+SYNC
+Z: 11926.550.0
+SYNC
+Z: 11926.550.0
+SYNC
+Z: 11895.3410.0
+SYNC
+Z: 11895.3410.0
+SYNC
+Z: 11848.4060.0
+SYNC
+Z: 11848.4060.0
+SYNC
+Z: 11796.6040.0
+SYNC
+Z: 11796.6040.0
+SYNC
+Z: 11733.1860.0
+SYNC
+Z: 11733.1860.0
+SYNC
+Z: 11651.8180.0
+SYNC
+Z: 11651.8180.0
+SYNC
+Z: 11566.0060.0
+SYNC
+Z: 11566.0060.0
+SYNC
+Z: 11464.1680.0
+SYNC
+Z: 11464.1680.0
+SYNC
+Z: 11348.8010.0
+SYNC
+Z: 11348.8010.0
+SYNC
+Z: 11228.4390.0
+SYNC
+Z: 11228.4390.0
+SYNC
+Z: 11098.9540.0
+SYNC
+Z: 11098.9540.0
+SYNC
+Z: 10958.8070.0
+SYNC
+Z: 10958.8070.0
+SYNC
+Z: 10808.7280.0
+SYNC
+Z: 10808.7280.0
+SYNC
+Z: 10646.5350.0
+SYNC
+Z: 10646.5350.0
+SYNC
+Z: 10473.0470.0
+SYNC
+Z: 10473.0470.0
+SYNC
+Z: 10289.9390.0
+SYNC
+Z: 10289.9390.0
+SYNC
+Z: 10105.2080.0
+SYNC
+Z: 10105.2080.0
+SYNC
+Z: 9922.8670.0
+SYNC
+Z: 9922.8670.0
+SYNC
+Z: 9739.3260.0
+SYNC
+Z: 9739.3260.0
+SYNC
+Z: 9550.6650.0
+SYNC
+Z: 9550.6650.0
+SYNC
+Z: 9354.1260.0
+SYNC
+Z: 9354.1260.0
+SYNC
+Z: 9152.1150.0
+SYNC
+Z: 9152.1150.0
+SYNC
+Z: 8948.7940.0
+SYNC
+Z: 8948.7940.0
+SYNC
+Z: 8746.5820.0
+SYNC
+Z: 8746.5820.0
+SYNC
+Z: 8545.0740.0
+SYNC
+Z: 8545.0740.0
+SYNC
+Z: 8342.860.0
+SYNC
+Z: 8342.860.0
+SYNC
+Z: 8140.2430.0
+SYNC
+Z: 8140.2430.0
+SYNC
+onLostUser - userId: 3
+Z: 7936.63130.0
+SYNC
+Z: 7936.63130.0
+SYNC
+onLostUser - userId: 2
+Z: 7730.5930.0
+SYNC
+Z: 7524.43650.0
+SYNC
+Z: 7316.9890.0
+SYNC
+Z: 7110.2260.0
+SYNC
+Z: 6903.5870.0
+SYNC
+Z: 6696.60060.0
+SYNC
+Z: 6487.45360.0
+SYNC
+Z: 6279.77540.0
+SYNC
+Z: 6069.65870.0
+SYNC
+Z: 5855.0770.0
+SYNC
+Z: 5639.5970.0
+SYNC
+Z: 5422.03560.0
+SYNC
+Z: 5203.60450.0
+SYNC
+Z: 4985.35160.0
+SYNC
+Z: 4765.2940.0
+SYNC
+Z: 4545.5470.0
+SYNC
+Z: 4328.04250.0
+SYNC
+Z: 4114.34770.0
+SYNC
+Z: 3904.35770.0
+SYNC
+Z: 3695.12180.0
+SYNC
+Z: 3521.12330.0
+SYNC
+Z: 3373.44430.0
+SYNC
+Z: 3245.8890.0
+SYNC
+Z: 3138.3920.0
+SYNC
+Z: 3051.42870.0
+SYNC
+Z: 2993.74220.0
+SYNC
+onEndCalibration - userId: 5, successfull: false
+  Failed to calibrate user !!!
+  Start pose detection
+Z: 2956.97580.0
+SYNC
+Z: 2937.00730.0
+SYNC
+Z: 2918.04790.0
+SYNC
+Z: 2888.11720.0
+SYNC
+Z: 2850.19040.0
+SYNC
+Z: 2804.72240.0
+SYNC
+Z: 2759.40650.0
+SYNC
+Z: 2708.20360.0
+SYNC
+Z: 2652.67680.0
+SYNC
+Z: 2594.30930.0
+SYNC
+Z: 2537.50780.0
+SYNC
+Z: 2486.0060.0
+SYNC
+Z: 2441.11570.0
+SYNC
+Z: 2405.6090.0
+SYNC
+Z: 2377.13770.0
+SYNC
+Z: 2352.68650.0
+SYNC
+Z: 2331.58890.0
+SYNC
+Z: 2313.21360.0
+SYNC
+Z: 2293.75760.0
+SYNC
+Z: 2271.64450.0
+SYNC
+Z: 2244.40840.0
+SYNC
+Z: 2210.59810.0
+SYNC
+Z: 2179.98660.0
+SYNC
+Z: 2148.3470.0
+SYNC
+Z: 2120.68770.0
+SYNC
+Z: 2088.67140.0
+SYNC
+Z: 2057.40330.0
+SYNC
+Z: 2024.62670.0
+SYNC
+Z: 1988.87060.0
+SYNC
+Z: 1956.24580.0
+SYNC
+Z: 1926.01570.0
+SYNC
+Z: 1899.52560.0
+SYNC
+Z: 1877.83290.0
+SYNC
+Z: 1863.06670.0
+SYNC
+Z: 1847.73670.0
+SYNC
+Z: 1832.23630.0
+SYNC
+Z: 1811.26570.0
+SYNC
+Z: 1785.01280.0
+SYNC
+Z: 1759.16270.0
+SYNC
+Z: 1738.00430.0
+SYNC
+Z: 1719.99290.0
+SYNC
+Z: 1710.5320.0
+SYNC
+Z: 1707.4290.0
+SYNC
+Z: 1722.69790.0
+SYNC
+Z: 1747.73460.0
+SYNC
+Z: 1778.61120.0
+SYNC
+Z: 1812.67040.0
+SYNC
+Z: 1847.80590.0
+SYNC
+Z: 1883.1480.0
+SYNC
+Z: 1918.91480.0
+SYNC
+Z: 1954.12490.0
+SYNC
+Z: 1988.08760.0
+SYNC
+Z: 2019.33810.0
+SYNC
+Z: 2046.60620.0
+SYNC
+Z: 2069.22460.0
+SYNC
+Z: 2084.87870.0
+SYNC
+Z: 2094.81960.0
+SYNC
+Z: 2101.24270.0
+SYNC
+Z: 2105.61060.0
+SYNC
+Z: 2110.03760.0
+SYNC
+Z: 2115.31930.0
+SYNC
+Z: 2122.22120.0
+SYNC
+Z: 2128.60960.0
+SYNC
+Z: 2134.89820.0
+SYNC
+Z: 2140.97630.0
+SYNC
+Z: 2146.35620.0
+SYNC
+Z: 2151.30270.0
+SYNC
+Z: 2155.80860.0
+SYNC
+Z: 2159.73950.0
+SYNC
+Z: 2163.51370.0
+SYNC
+Z: 2167.17850.0
+SYNC
+Z: 2171.210.0
+SYNC
+Z: 2174.60520.0
+SYNC
+Z: 2178.2950.0
+SYNC
+Z: 2182.68360.0
+SYNC
+Z: 2187.16650.0
+SYNC
+Finished.
+[Finished in 68.4s]

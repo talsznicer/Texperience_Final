@@ -46,7 +46,13 @@ float lastRWPx = 0.0;
 float lastRWPy = 0.0;
 float lastRWPz = 0.0;
 
+//States
+final int ENGAGE = 0;
+final int SYNC = 1;
+final int STARTWALK = 2;
 
+int state = ENGAGE;
+int chosenUser = 0;
 
 
 
@@ -82,8 +88,8 @@ float lastRWPz = 0.0;
 void setup() {
 
   // FULL SCREEN
-  size(displayWidth, displayHeight, P3D);
-  //size(900, 1000, P3D);
+  //size(displayWidth, displayHeight, P3D);
+  size(900, 1000, P3D);
 
   context = new SimpleOpenNI(this);
 
@@ -197,78 +203,10 @@ void draw() {
   context.update();
   cameraZero ();
   cameraToggle ();
-
+  drawSkeleton();
   xoxoFall ();
   wallUp ();
   treePop ();
-
-// draw the skeleton if it's available
-  int[] userList = context.getUsers();
-  int numTreckedUsers = 0;
-  for (int i=0;i<userList.length;i++)  
-  {
-    if (context.isTrackingSkeleton(userList[i]))
-    {
-      if (state == START)
-      {
-        if (!hm.containsKey(userList[i]))
-        {    
-          hm.put(userList[i], new ArrayList());
-        }
-
-        ArrayList<PVector> headHistory = hm.get(userList[i]);
-        headHistory.add(new PVector(head.x, head.y, head.z));
-        final int historySize = 50;
-
-        if (headHistory.size() > historySize)
-        {
-        //check if not moving
-          float total = 0; //accumulated head movement
-          for (int j=1;j<historySize;j++)
-          {
-            PVector v3 = PVector.sub(headHistory.get(j), headHistory.get(j-1));
-            total += v3.mag();
-          }
-
-          float avg = total / historySize;
-
-          //println("head movement average" + avg);
-
-          final int headMovementThreshold = 10; 
-          if (avg < headMovementThreshold)
-          {
-            engage(userList[i]);
-            startWallUp = true;
-            println("engaged");
-          }
-
-          //finally, pop
-          headHistory.remove(0);
-        }
-      }
-
-      numTreckedUsers++;
-      context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_HEAD, head);
-      head.x = -head.x;
-      head.y = -head.y; 
-
-      //println(head);
-    }
-  }
-
-  
-  PVector target = new PVector();
-  if (numTreckedUsers > 0)
-  {
-    target = head;
-    target.z *= 3;
-  }
-  else {
-    target = defaultCameraPosition ;
-  }
-
-  currentCameraPosition.lerp(target, 0.1);
-
   scale(1, -1, 1);
   background(10, 10, 40);
   
@@ -277,34 +215,10 @@ void draw() {
   //  directionalLight(255, 255, 255, 0, 0, 1);
   //  directionalLight(255, 255, 255, 1, 0, 0);
 
-  //spotLight(51, 102, 126, 80, 20, 40, -1, 0, 0, PI/2, 2); 
-  //pointLight(255, 255, 255, 1000, 1000,-10000);
-  //ambientLight(255,255,255,0,-100000,-1);
-  //directionalLight(255, 255, 255, -1, 0, 0);
-  //directionalLight(255, 255, 255, 0, -1, 0);
-  //directionalLight(255, 255, 255, 0, 0, -1);
-
 //Draw the wall projection
   drawWall ();
 
 //Draw 3D Objects
-
-  // //XYZ AXIS
-  // pushMatrix();
-  // pushStyle();  
-  // int A = 10000;
-  // strokeWeight(1);
-  // //X green
-  // stroke(255, 0, 0);
-  // line(0, 0, 0, A, 0, 0);
-  // //y blue
-  // stroke(0, 255, 0);
-  // line(0, 0, 0, 0, A, 0);
-  // //Z red
-  // stroke(0, 0, 255);
-  // line(0, 0, 0, 0, 0, A);
-  // popStyle();
-  // popMatrix();
 
   /*
   // test
@@ -453,155 +367,118 @@ void draw() {
 
 
 
-
-
-
-
-// SimpleOpenNI events
-
-void onNewUser(int userId)
-{
-  println("onNewUser - userId: " + userId);
-  println("  start pose detection");
-
-  if (autoCalib)
-    context.requestCalibrationSkeleton(userId, true);
-  else    
-    context.startPoseDetection("Psi", userId);
-}
-
-void onLostUser(int userId)
-{
-  println("onLostUser - userId: " + userId);
-}
-
-void onExitUser(int userId)
-{
-  println("onExitUser - userId: " + userId);
-}
-
-void onReEnterUser(int userId)
-{
-  println("onReEnterUser - userId: " + userId);
-}
-
-void onStartCalibration(int userId)
-{
-  println("onStartCalibration - userId: " + userId);
-}
-
-void onEndCalibration(int userId, boolean successfull)
-{
-  println("onEndCalibration - userId: " + userId + ", successfull: " + successfull);
-
-  if (successfull) 
-  { 
-    println("  User calibrated !!!");
-    context.startTrackingSkeleton(userId);
-  } 
-  else 
-  { 
-    println("  Failed to calibrate user !!!");
-    println("  Start pose detection");
-    context.startPoseDetection("Psi", userId);
-  }
-}
-
-void onStartPose(String pose, int userId)
-{
-  println("onStartPose - userId: " + userId + ", pose: " + pose);
-  println(" stop pose detection");
-
-  context.stopPoseDetection(userId); 
-  context.requestCalibrationSkeleton(userId, true);
-}
-
-void onEndPose(String pose, int userId)
-{
-  println("onEndPose - userId: " + userId + ", pose: " + pose);
-}
-
-// Keyboard events
-void keyPressed() {
-
-  if (key == '1')
+// Voids
+void drawSkeleton(){
+  // draw the skeleton if it's available
+  int[] userList = context.getUsers();
+  int numTreckedUsers = 0;
+  for (int i=0;i<userList.length;i++)  
   {
-    startGame();
-  } 
-  else   if (key == '2')
-  {
-    engage(0);
-  } 
-  else   if (key == '3')
-  {
-    sync();
-  }
-  else if (key == '4') 
-  {
-    startWalk(0);
-  }
+    if (context.isTrackingSkeleton(userList[i]))
+    {
+      if (state == ENGAGE)
+      {
 
-  if (cameraOn == false) {
-    if (keyCode == DOWN) { 
-      mouseZPosition +=500;
-    } 
-    else if (keyCode == UP ) {
-      mouseZPosition -=500;
+        if (!hm.containsKey(userList[i]))
+        {    
+          hm.put(userList[i], new ArrayList());
+        }
+
+        ArrayList<PVector> headHistory = hm.get(userList[i]);
+        headHistory.add(new PVector(head.x, head.y, head.z));
+        final int historySize = 50;
+
+        if (headHistory.size() > historySize)
+        {
+        //check if not moving
+          float total = 0; //accumulated head movement
+          for (int j=1;j<historySize;j++)
+          {
+            PVector v3 = PVector.sub(headHistory.get(j), headHistory.get(j-1));
+            total += v3.mag();
+          }
+
+          float avg = total / historySize;
+
+          //println("head movement average" + avg);
+
+          final int headMovementThreshold = 15; 
+
+          //println("avg: "+avg);
+
+          if (avg < headMovementThreshold)
+          {
+            sync(userList[i]);
+          }
+
+          //finally, pop
+          headHistory.remove(0);
+        }
+      }
+    else if (state == SYNC) 
+    {
+      println("engaged");
+      float zz = currentCameraPosition.z + sensorPosition.z;
+      println("Z: "+ zz);
+      
+      if (currentCameraPosition.z + sensorPosition.z >= 9000.0)
+        {
+        startWalk(userList[i]);
+        }
     }
-    // else if (keyCode == RIGHT ) {
-    //   tX +=10;
-    // }
-    // else if (keyCode == LEFT ) {
-    //   tX -=10;
-    // }
-  }
-  if (keyCode == ' ' ) {
-    if (cameraOn == false) {
-      cameraOn = true;
-      println("camera " + cameraOn);
-    }
-    else if (cameraOn == true) {
-      cameraOn = false;
-      println("camera " + cameraOn);
+    else if (state == STARTWALK)
+    {
+     println("synced");
+     startWallUp = true; 
+    }  
+    
+      numTreckedUsers++;
+      context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_HEAD, head);
+      head.x = -head.x;
+      head.y = -head.y; 
+
+      //println(head);
     }
   }
+
+  PVector target = new PVector();
+  if (numTreckedUsers > 0)
+  {
+    target = head;
+    target.z *= 3;
+  }
+  else {
+    target = defaultCameraPosition ;
+  }
+currentCameraPosition.lerp(target, 0.1);
 }
 
-//States
-final int START = 0;
-final int ENGAGE = 1;
-final int SYNC = 2;
-final int STARTWALK = 3;
 
-int state = START;
 
-void startGame ()
+
+void engage ()
 {
-  state  = START;
+  //reset all inits and floats
+ //println("ENGAGE");
+  state  = ENGAGE;
   chosenUser = 0;
 }
 
-int chosenUser = 0;
-
-void engage(int id)
+void sync(int id)
 {
+  //println("SYNC");
   state = ENGAGE;
   chosenUser = id;
 }
 
-void sync()
-{
-  state  = SYNC;
-}
-
 void startWalk(int id)
 {
-  state  = STARTWALK;
+  //println("STARTWALK");
+  state  = SYNC;
   chosenUser = id;
 }
 
 
-// Voids
 void wallUp ()
 {
   if (wallUp >= 0 && wallUp <=10000 && startWallUp)
@@ -677,11 +554,11 @@ void cameraToggle ()
 
 void drawWall()
 {
-  if (state == START || state == ENGAGE) {
+  if (state == ENGAGE || state == ENGAGE) {
 
     scale(zoomF);
     int[]   depthMap = context.depthMap();
-    int     steps   = 5;  // to speed up the drawing, draw every third point
+    int     steps   = 10;  // to speed up the drawing, draw every third point
     int     index;
     PVector realWorldPoint;
 
@@ -713,7 +590,7 @@ void drawWall()
             
             //int colorIndex = userMap[index] % userColors.length;
             strokeWeight(4);
-            if (state == ENGAGE || state == START)
+            if (state == ENGAGE || state == SYNC)
             {
               if ( userMap[index] == chosenUser) {
                 //color of chosen person
@@ -733,8 +610,8 @@ void drawWall()
             // camera capture background color
             stroke(0); 
           
-          //point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
-          line(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z, lastRWPx,lastRWPy,lastRWPz);
+          point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
+          //line(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z, lastRWPx,lastRWPy,lastRWPz);
           
           lastRWPx = realWorldPoint.x;
           lastRWPy = realWorldPoint.y;
@@ -746,6 +623,77 @@ void drawWall()
     popMatrix();
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Keyboard events
+void keyPressed() {
+
+  if (key == '1')
+  {
+    engage();
+  } 
+  else if (key == '2')
+  {
+    sync(0);
+  } 
+  else if (key == '3')
+  {
+    startWalk(0);
+  }
+
+  if (cameraOn == false) {
+    if (keyCode == DOWN) { 
+      mouseZPosition +=500;
+    } 
+    else if (keyCode == UP ) {
+      mouseZPosition -=500;
+    }
+    // else if (keyCode == RIGHT ) {
+    //   tX +=10;
+    // }
+    // else if (keyCode == LEFT ) {
+    //   tX -=10;
+    // }
+  }
+
+  if (keyCode == ' ' ) {
+    if (cameraOn == false) {
+      cameraOn = true;
+      println("camera " + cameraOn);
+    }
+    else if (cameraOn == true) {
+      cameraOn = false;
+      println("camera " + cameraOn);
+    }
+  }
+}
+
 
 // void initTreeXYZ ()
 // {
@@ -759,3 +707,97 @@ void drawWall()
 //   runOnce = false; 
 // }
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// SimpleOpenNI events
+
+void onNewUser(int userId)
+{
+  println("onNewUser - userId: " + userId);
+  println("  start pose detection");
+
+  if (autoCalib)
+    context.requestCalibrationSkeleton(userId, true);
+  else    
+    context.startPoseDetection("Psi", userId);
+}
+
+void onLostUser(int userId)
+{
+  println("onLostUser - userId: " + userId);
+}
+
+void onExitUser(int userId)
+{
+  println("onExitUser - userId: " + userId);
+}
+
+void onReEnterUser(int userId)
+{
+  println("onReEnterUser - userId: " + userId);
+}
+
+void onStartCalibration(int userId)
+{
+  println("onStartCalibration - userId: " + userId);
+}
+
+void onEndCalibration(int userId, boolean successfull)
+{
+  println("onEndCalibration - userId: " + userId + ", successfull: " + successfull);
+
+  if (successfull) 
+  { 
+    println("  User calibrated !!!");
+    context.startTrackingSkeleton(userId);
+  } 
+  else 
+  { 
+    println("  Failed to calibrate user !!!");
+    println("  Start pose detection");
+    context.startPoseDetection("Psi", userId);
+  }
+}
+
+void onStartPose(String pose, int userId)
+{
+  println("onStartPose - userId: " + userId + ", pose: " + pose);
+  println(" stop pose detection");
+
+  context.stopPoseDetection(userId); 
+  context.requestCalibrationSkeleton(userId, true);
+}
+
+void onEndPose(String pose, int userId)
+{
+  println("onEndPose - userId: " + userId + ", pose: " + pose);
+}
+
+
+
+
+
+
+

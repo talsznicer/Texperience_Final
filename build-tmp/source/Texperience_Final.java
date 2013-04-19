@@ -34,7 +34,7 @@ OBJModel test, moon, stars, tree, xoxoMan, xoxoCouch, twoMan, twoManArrow, sphea
 
 SimpleOpenNI context;
 boolean autoCalib=true;
-PVector head = new PVector();
+PVector torso = new PVector();
 
 //Sensor position relative to screen in mm
 PVector sensorPosition = new PVector(0, 0, 0);
@@ -53,16 +53,26 @@ float xoxoFall = 6000;
 //boolean runOnce = true;
 
 float treeNumber = 5;
-float[] treeX = { (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f))};
-float[] treeZ = { (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f))};
-float[] treeRotate = { (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)) };
+float[] treeX = { 
+  (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f))
+};
+float[] treeZ = { 
+  (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f))
+};
+float[] treeRotate = { 
+  (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f))
+};
 float treeHoleR = 1;
 float treeY = 0;
 boolean startWallUp = false;
 float wallUp = 0;
 
-int[] userColors = { color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255) };
-int[] userCoMColors = { color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0) };
+int[] userColors = { 
+  color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255)
+};
+int[] userCoMColors = { 
+  color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0)
+};
 
 float lastRWPx = 0.0f;
 float lastRWPy = 0.0f;
@@ -114,7 +124,7 @@ public void setup() {
   //size(900, 1000, P3D);
 
   context = new SimpleOpenNI(this);
-  
+
   enableDepthMap();
 
   // enable skeleton generation for all joints
@@ -221,17 +231,17 @@ public void draw() {
   wallUp ();
   treePop ();
   scale(1, -1, 1);
-  
-  
+
+
   //  lights();
   //directionalLight(255, 255, 255, 0, -1, 0);
   //  directionalLight(255, 255, 255, 0, 0, 1);
   //  directionalLight(255, 255, 255, 1, 0, 0);
 
-//Draw the wall projection
+  //Draw the wall projection
   drawPrimeSence ();
 
-//Draw 3D Objects
+  //Draw 3D Objects
 
   /*
   // test
@@ -352,7 +362,7 @@ public void draw() {
   stone.draw();
   popStyle();  
   popMatrix();
-  
+
   perspective(PI / 3, PApplet.parseFloat(width)/PApplet.parseFloat(height), 1, 1000000);
   //endCamera();
 }
@@ -399,7 +409,7 @@ public void enableDepthMap()
 
 public void printInfo()
 {
-//beginCamera();
+  //beginCamera();
   println("state:     "+state);
   println("_____");
   println("cameraX:    "+(currentCameraPosition.x + sensorPosition.x));
@@ -412,7 +422,7 @@ public void printInfo()
   println("______________________");
 }
 
-public void stateMannager(){
+public void stateMannager() {
   // draw the skeleton if it's available
   int[] userList = context.getUsers();
   int numTreckedUsers = 0;
@@ -428,74 +438,74 @@ public void stateMannager(){
           hm.put(userList[i], new ArrayList());
         }
 
-        ArrayList<PVector> headHistory = hm.get(userList[i]);
-        headHistory.add(new PVector(head.x, head.y, head.z));
+        ArrayList<PVector> torsoHistory = hm.get(userList[i]);
+        torsoHistory.add(new PVector(torso.x, torso.y, torso.z));
         final int historySize = 50;
 
-        if (headHistory.size() > historySize)
+        if (torsoHistory.size() > historySize)
         {
-        //check if not moving
-          float total = 0; //accumulated head movement
+          //check if not moving
+          float total = 0; //accumulated torso movement
           for (int j=1;j<historySize;j++)
           {
-            PVector v3 = PVector.sub(headHistory.get(j), headHistory.get(j-1));
+            PVector v3 = PVector.sub(torsoHistory.get(j), torsoHistory.get(j-1));
             total += v3.mag();
           }
 
           float avg = total / historySize;
 
-          //println("head movement average" + avg);
+          //println("torso movement average" + avg);
 
-          final int headMovementThreshold = 15; 
+          final int torsoMovementThreshold = 20; 
 
           //println("avg: "+avg);
-
-          if (avg < headMovementThreshold)
+          println("avg: "+avg);
+          if (avg < torsoMovementThreshold)
           {
             sync(userList[i]);
           }
 
           //finally, pop
-          headHistory.remove(0);
+          torsoHistory.remove(0);
         }
       }
-    else if (state == SYNC) 
-    {      
-      if (currentCameraPosition.z + sensorPosition.z >= 8000.0f)
+      else if (state == SYNC) 
+      {      
+        if (currentCameraPosition.z + sensorPosition.z >= 8000.0f)
         {
-        startWalk(userList[i]);
+          startWalk(userList[i]);
         }
-    }
-    else if (state == STARTWALK)
-    {
-     startWallUp = true; 
-    }  
-    
-      numTreckedUsers++;
-      context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_HEAD, head);
-      head.x = -head.x;
-      head.y = -head.y; 
+      }
+      else if (state == STARTWALK)
+      {
+        startWallUp = true;
+      }  
 
-      //println(head);
+      numTreckedUsers++;
+      context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_TORSO, torso);
+      torso.x = -torso.x;
+      torso.y = -torso.y; 
+
+      //println(torso);
     }
   }
 
   PVector target = new PVector();
   if (numTreckedUsers > 0)
   {
-    target = head;
+    target = torso;
     target.z *= 3;
   }
   else {
     target = defaultCameraPosition ;
   }
-currentCameraPosition.lerp(target, 0.1f);
+  currentCameraPosition.lerp(target, 0.1f);
 }
 
 public void engage ()
 {
   //reset all inits and floats
- //println("ENGAGE");
+  //println("ENGAGE");
   state  = ENGAGE;
   chosenUser = 0;
 }
@@ -544,14 +554,14 @@ public void treePop ()
 }
 
 /*void cameraZero ()
-{
+ {
  if ( cameraY >= 1 )
  {
-  cameraY = 0;
+ cameraY = 0;
  } else {
-   cameraY =  currentCameraPosition.y + sensorPosition.y;
+ cameraY =  currentCameraPosition.y + sensorPosition.y;
  }
-}*/
+ }*/
 
 public void cameraToggle ()
 {
@@ -570,9 +580,9 @@ public void cameraToggle ()
       userZPosition = (currentCameraPosition.z + sensorPosition.z); 
       camera( 
       currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, userZPosition, 
-      0,0,0,
+      0, 0, 0, 
       0, 1.0f, 0);
-      
+
       // println("X: "+ currentCameraPosition.x);
       // println("y: "+ currentCameraPosition.y);
       // println("z: "+ currentCameraPosition.z);
@@ -580,23 +590,21 @@ public void cameraToggle ()
     }
   }
   else if (cameraOn == false) {
-  
-  //println("camera off");
-  userZPosition = mouseZPosition;
+
+    //println("camera off");
+    userZPosition = mouseZPosition;
     camera( 
     (((PApplet.parseFloat(mouseX) / width) - 0.5f) * 2000), (((PApplet.parseFloat(mouseY) / height) - 0.5f) * 8000), userZPosition, 
     (((PApplet.parseFloat(mouseX) / width) - 0.5f) * 2000), (((PApplet.parseFloat(mouseY) / height) - 0.5f) * 8000), 0, 
     //0, 0, 0, 
     0, 1.0f, 0);
-    
-  }  
+  }
 }
-  
+
 public void drawPrimeSence()
 {
   if (state == ENGAGE || state == SYNC) {
 
-    
     int[]   depthMap = context.depthMap();
     int     steps   = 3;  // to speed up the drawing, draw every third point
     int     index;
@@ -604,8 +612,8 @@ public void drawPrimeSence()
 
     pushMatrix();
     pushStyle();  
-    scale(1.4f,1.4f,1);
-    translate(0, 3800,(startPosition + 10000));  // set the rotation center of the scene 1000 infront of the camera
+    scale(1.4f, 1.4f, 1);
+    translate(0, 3800, (startPosition + 10000));  // set the rotation center of the scene 1000 infront of the camera
     rotateY(radians(180));
     int userCount = context.getNumberOfUsers();
     int[] userMap = null;
@@ -624,35 +632,27 @@ public void drawPrimeSence()
           // get the realworld points
           realWorldPoint = context.depthMapRealWorld()[index];
 
+          strokeWeight(4);
+
           // check if there is a user
           if (userMap != null && userMap[index] != 0)
-          {  // call the user color
-            
-            //int colorIndex = userMap[index] % userColors.length;
-            strokeWeight(4);
-            if (state == ENGAGE || state == SYNC)
-            {
-              if ( userMap[index] == chosenUser) {
-                //color of chosen person
-                stroke(color(0, 255, 0));
-              }
-              else {
-                //color of recognized people
-                stroke(color(0, 0, 255));
-              }
+          {             
+            if ( userMap[index] == chosenUser) {
+              //color of chosen user
+              stroke(color(0, 255, 0));
             }
-            else {
-              //stroke(userColors[0]);
+            else 
+            {
+              //color of recognized user
               stroke(color(0, 0, 255));
             }
           }
-          else
-            // camera capture background color
-            stroke(255); 
-          
+          else{
+            // color of camera capture
+            stroke(0,0,0,0); 
+            }
           point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
-          //line(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z, lastRWPx,lastRWPy,lastRWPz);
-          
+
           lastRWPx = realWorldPoint.x;
           lastRWPy = realWorldPoint.y;
           lastRWPz = realWorldPoint.z;
@@ -705,9 +705,10 @@ public void keyPressed() {
   else if (key == '3')
   {
     startWalk(0);
-  } else if ( key == 'p') 
+  } 
+  else if ( key == 'p') 
   {
-   printInfo(); 
+    printInfo();
   }
 
   if (cameraOn == false) {
@@ -837,6 +838,7 @@ public void onEndPose(String pose, int userId)
 {
   println("onEndPose - userId: " + userId + ", pose: " + pose);
 }
+
 // // The Link class is used for handling constraints between particles.
 // class Link {
 //   float restingDistance;

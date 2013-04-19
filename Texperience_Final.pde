@@ -14,7 +14,7 @@ OBJModel test, moon, stars, tree, xoxoMan, xoxoCouch, twoMan, twoManArrow, sphea
 
 SimpleOpenNI context;
 boolean autoCalib=true;
-PVector head = new PVector();
+PVector torso = new PVector();
 
 //Sensor position relative to screen in mm
 PVector sensorPosition = new PVector(0, 0, 0);
@@ -410,35 +410,35 @@ void drawSkeleton(){
           hm.put(userList[i], new ArrayList());
         }
 
-        ArrayList<PVector> headHistory = hm.get(userList[i]);
-        headHistory.add(new PVector(head.x, head.y, head.z));
+        ArrayList<PVector> torsoHistory = hm.get(userList[i]);
+        torsoHistory.add(new PVector(torso.x, torso.y, torso.z));
         final int historySize = 50;
 
-        if (headHistory.size() > historySize)
+        if (torsoHistory.size() > historySize)
         {
         //check if not moving
-          float total = 0; //accumulated head movement
+          float total = 0; //accumulated torso movement
           for (int j=1;j<historySize;j++)
           {
-            PVector v3 = PVector.sub(headHistory.get(j), headHistory.get(j-1));
+            PVector v3 = PVector.sub(torsoHistory.get(j), torsoHistory.get(j-1));
             total += v3.mag();
           }
 
           float avg = total / historySize;
 
-          //println("head movement average" + avg);
+          //println("torso movement average" + avg);
 
-          final int headMovementThreshold = 15; 
+          final int torsoMovementThreshold = 15; 
 
           //println("avg: "+avg);
 
-          if (avg < headMovementThreshold)
+          if (avg < torsoMovementThreshold)
           {
             sync(userList[i]);
           }
 
           //finally, pop
-          headHistory.remove(0);
+          torsoHistory.remove(0);
         }
       }
     else if (state == SYNC) 
@@ -454,18 +454,18 @@ void drawSkeleton(){
     }  
     
       numTreckedUsers++;
-      context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_HEAD, head);
-      head.x = -head.x;
-      head.y = -head.y; 
+      context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_TORSO, torso);
+      torso.x = -torso.x;
+      torso.y = -torso.y; 
 
-      //println(head);
+      //println(torso);
     }
   }
 
   PVector target = new PVector();
   if (numTreckedUsers > 0)
   {
-    target = head;
+    target = torso;
     target.z *= 3;
   }
   else {

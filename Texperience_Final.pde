@@ -31,9 +31,15 @@ float xoxoFall = 6000;
 //boolean runOnce = true;
 
 float treeNumber = 5;
-float[] treeX = { (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0))};
-float[] treeZ = { (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0))};
-float[] treeRotate = { (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)) };
+float[] treeX = { 
+  (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0))
+};
+float[] treeZ = { 
+  (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0))
+};
+float[] treeRotate = { 
+  (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0))
+};
 float treeHoleR = 1;
 float treeY = 0;
 boolean startWallUp = false;
@@ -42,8 +48,12 @@ float wallUp = 0;
 float startPosition = 30000;
 
 float zoomF =0.5f;
-color[] userColors = { color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255) };
-color[] userCoMColors = { color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0) };
+color[] userColors = { 
+  color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255)
+};
+color[] userCoMColors = { 
+  color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0)
+};
 
 float lastRWPx = 0.0;
 float lastRWPy = 0.0;
@@ -95,7 +105,7 @@ void setup() {
   size(900, 1000, P3D);
 
   context = new SimpleOpenNI(this);
-  
+
   enableDepthMap();
 
   // enable skeleton generation for all joints
@@ -192,29 +202,30 @@ void setup() {
 void draw() {
 
   printInfo();
-
   context.update();
-  
-
   //cameraZero ();
   cameraToggle ();
-  drawSkeleton();
+  statusManager();
+  //Draw the wall projection
+pushStyle();
+  scale(0.5f);
+popStyle();
+  drawUsers ();
   xoxoFall ();
   wallUp ();
   treePop ();
-  scale(1, -1, 1);
   background(10, 10, 40);
-  
+
   //  lights();
   //directionalLight(255, 255, 255, 0, -1, 0);
   //  directionalLight(255, 255, 255, 0, 0, 1);
   //  directionalLight(255, 255, 255, 1, 0, 0);
 
-//Draw the wall projection
-  drawWall ();
+  
+  
 
-//Draw 3D Objects
-
+  //Draw 3D Objects
+  scale(1, -1, 1);
   /*
   // test
    pushMatrix();
@@ -226,7 +237,7 @@ void draw() {
    popStyle();  
    popMatrix();
    */
-
+  
   //Begining wall
   pushMatrix();
   pushStyle();
@@ -334,7 +345,7 @@ void draw() {
   stone.draw();
   popStyle();  
   popMatrix();
-  
+
   perspective(PI / 3, float(width)/float(height), 1, 1000000);
   //endCamera();
 }
@@ -381,7 +392,7 @@ void enableDepthMap()
 
 void printInfo()
 {
-//beginCamera();
+  //beginCamera();
   println("state:     "+state);
   println("_____");
   println("cameraX:    "+(currentCameraPosition.x + sensorPosition.x));
@@ -394,8 +405,79 @@ void printInfo()
   println("______________________");
 }
 
-void drawSkeleton(){
-  // draw the skeleton if it's available
+void drawUsers()
+{
+  if (state == ENGAGE || state == SYNC) {
+
+    //scale(zoomF);
+    int[]   depthMap = context.depthMap();
+    int     steps   = 5;  // to speed up the drawing, draw every third point
+    int     index;
+    PVector realWorldPoint;
+
+    pushMatrix();
+    pushStyle();  
+    scale(0.5f);
+    translate(0, 1300, startPosition + 6000);  // set the rotation center of the scene 1000 infront of the camera
+    rotateY(radians(180));
+    int userCount = context.getNumberOfUsers();
+    int[] userMap = null;
+    if (userCount > 0)
+    {
+      userMap = context.getUsersPixels(SimpleOpenNI.USERS_ALL);
+    }
+
+    for (int y=0;y < context.depthHeight();y+=steps)
+    {
+      for (int x=0;x < context.depthWidth();x+=steps)
+      {
+        index = x + y * context.depthWidth();
+        if (depthMap[index] > 0)
+        { 
+          // get the realworld points
+          realWorldPoint = context.depthMapRealWorld()[index];
+
+          // check if there is a user
+          if (userMap != null && userMap[index] != 0)
+          {  // call the user color
+
+            //int colorIndex = userMap[index] % userColors.length;
+            strokeWeight(4);
+            if (state == ENGAGE || state == SYNC)
+            {
+              if ( userMap[index] == chosenUser) {
+                //color of chosen person
+                stroke(color(0, 255, 0));
+              }
+              else {
+                //color of recognized people
+                stroke(color(0, 0, 255));
+              }
+            }
+            else {
+              //stroke(userColors[0]);
+              stroke(color(0, 0, 255));
+            }
+          }
+          else
+            // camera capture background color
+            stroke(255); 
+
+          point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
+          //line(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z, lastRWPx,lastRWPy,lastRWPz);
+
+          lastRWPx = realWorldPoint.x;
+          lastRWPy = realWorldPoint.y;
+          lastRWPz = realWorldPoint.z;
+        }
+      }
+    }
+    popStyle();
+    popMatrix();
+  }
+}
+
+void statusManager() {
   int[] userList = context.getUsers();
   int numTreckedUsers = 0;
   for (int i=0;i<userList.length;i++)  
@@ -416,7 +498,7 @@ void drawSkeleton(){
 
         if (torsoHistory.size() > historySize)
         {
-        //check if not moving
+          //check if not moving
           float total = 0; //accumulated torso movement
           for (int j=1;j<historySize;j++)
           {
@@ -441,18 +523,18 @@ void drawSkeleton(){
           torsoHistory.remove(0);
         }
       }
-    else if (state == SYNC) 
-    {      
-      if (currentCameraPosition.z + sensorPosition.z >= 8000.0)
+      else if (state == SYNC) 
+      {      
+        if (currentCameraPosition.z + sensorPosition.z >= 8000.0)
         {
-        startWalk(userList[i]);
+          startWalk(userList[i]);
         }
-    }
-    else if (state == STARTWALK)
-    {
-     startWallUp = true; 
-    }  
-    
+      }
+      else if (state == STARTWALK)
+      {
+        startWallUp = true;
+      }  
+
       numTreckedUsers++;
       context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_TORSO, torso);
       torso.x = -torso.x;
@@ -471,13 +553,13 @@ void drawSkeleton(){
   else {
     target = defaultCameraPosition ;
   }
-currentCameraPosition.lerp(target, 0.1);
+  currentCameraPosition.lerp(target, 0.1);
 }
 
 void engage ()
 {
   //reset all inits and floats
- //println("ENGAGE");
+  //println("ENGAGE");
   state  = ENGAGE;
   chosenUser = 0;
 }
@@ -526,14 +608,14 @@ void treePop ()
 }
 
 /*void cameraZero ()
-{
+ {
  if ( cameraY >= 1 )
  {
-  cameraY = 0;
+ cameraY = 0;
  } else {
-   cameraY =  currentCameraPosition.y + sensorPosition.y;
+ cameraY =  currentCameraPosition.y + sensorPosition.y;
  }
-}*/
+ }*/
 
 void cameraToggle ()
 {
@@ -553,9 +635,9 @@ void cameraToggle ()
       zPosition =(currentCameraPosition.z + sensorPosition.z); 
       camera( 
       currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
-      0,0,0,
+      0, 0, 0, 
       0, 1.0, 0);
-      
+
       // println("X: "+ currentCameraPosition.x);
       // println("y: "+ currentCameraPosition.y);
       // println("z: "+ currentCameraPosition.z);
@@ -569,80 +651,9 @@ void cameraToggle ()
     0, 0, 0, 
     0, 1.0, 0);
     zPosition = mouseZPosition ;
-  }  
-}
-
-void drawWall()
-{
-  if (state == ENGAGE || state == SYNC) {
-
-    scale(zoomF);
-    int[]   depthMap = context.depthMap();
-    int     steps   = 3;  // to speed up the drawing, draw every third point
-    int     index;
-    PVector realWorldPoint;
-
-    pushMatrix();
-    pushStyle();  
-    scale(1);
-    translate(0, 1300,(startPosition + 3000));  // set the rotation center of the scene 1000 infront of the camera
-    rotateY(radians(180));
-    int userCount = context.getNumberOfUsers();
-    int[] userMap = null;
-    if (userCount > 0)
-    {
-      userMap = context.getUsersPixels(SimpleOpenNI.USERS_ALL);
-    }
-
-    for (int y=0;y < context.depthHeight();y+=steps)
-    {
-      for (int x=0;x < context.depthWidth();x+=steps)
-      {
-        index = x + y * context.depthWidth();
-        if (depthMap[index] > 0)
-        { 
-          // get the realworld points
-          realWorldPoint = context.depthMapRealWorld()[index];
-
-          // check if there is a user
-          if (userMap != null && userMap[index] != 0)
-          {  // call the user color
-            
-            //int colorIndex = userMap[index] % userColors.length;
-            strokeWeight(4);
-            if (state == ENGAGE || state == SYNC)
-            {
-              if ( userMap[index] == chosenUser) {
-                //color of chosen person
-                stroke(color(0, 255, 0));
-              }
-              else {
-                //color of recognized people
-                stroke(color(0, 0, 255));
-              }
-            }
-            else {
-              //stroke(userColors[0]);
-              stroke(color(0, 0, 255));
-            }
-          }
-          else
-            // camera capture background color
-            stroke(255); 
-          
-          point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
-          //line(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z, lastRWPx,lastRWPy,lastRWPz);
-          
-          lastRWPx = realWorldPoint.x;
-          lastRWPy = realWorldPoint.y;
-          lastRWPz = realWorldPoint.z;
-        }
-      }
-    }
-    popStyle();
-    popMatrix();
   }
 }
+
 
 
 
@@ -814,7 +825,6 @@ void onEndPose(String pose, int userId)
 {
   println("onEndPose - userId: " + userId + ", pose: " + pose);
 }
-
 
 
 

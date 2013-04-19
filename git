@@ -1,0 +1,917 @@
+[33mcommit 46aa80a8ba3cc73200a7c247cece88ce70641f49[m
+Author: Tal Sznicer <talsznicer@gmail.com>
+Date:   Fri Apr 19 15:16:51 2013 +0300
+
+    torso
+
+[1mdiff --git a/Texperience_Final.pde b/Texperience_Final.pde[m
+[1mindex f30e214..9efcfdb 100644[m
+[1m--- a/Texperience_Final.pde[m
+[1m+++ b/Texperience_Final.pde[m
+[36m@@ -1,6 +1,5 @@[m
+ [m
+ //tal sznicer test[m
+[31m-[m
+ //imports[m
+ import SimpleOpenNI.*;[m
+ import processing.opengl.*;[m
+[36m@@ -12,8 +11,8 @@[m [mHashMap<Integer, ArrayList> hm = new HashMap();[m
+ [m
+ OBJModel test, moon, stars, tree, xoxoMan, xoxoCouch, twoMan, twoManArrow, sphear, stone;[m
+ [m
+[31m-SimpleOpenNI context;[m
+[31m-boolean autoCalib=true;[m
+[32m+[m[32mSimpleOpenNI  context;[m
+[32m+[m[32mboolean       autoCalib=true;[m
+ PVector head = new PVector();[m
+ [m
+ //Sensor position relative to screen in mm[m
+[36m@@ -21,6 +20,11 @@[m [mPVector sensorPosition = new PVector(0, 0, 0);[m
+ PVector defaultCameraPosition = new PVector(0, 0, 0);[m
+ PVector currentCameraPosition = defaultCameraPosition;[m
+ [m
+[32m+[m[32m//Opening[m
+[32m+[m[32mfloat zoomF =0.5f;[m
+[32m+[m[32mcolor[] userColors = { color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255) };[m
+[32m+[m[32mcolor[] userCoMColors = { color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0) };[m
+[32m+[m
+ //My Floats[m
+ float mouseZPosition = 19000.0;[m
+ float zPosition = 0.0;[m
+[36m@@ -31,9 +35,15 @@[m [mfloat xoxoFall = 6000;[m
+ //boolean runOnce = true;[m
+ [m
+ float treeNumber = 5;[m
+[31m-float[] treeX = { (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0))};[m
+[31m-float[] treeZ = { (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0))};[m
+[31m-float[] treeRotate = { (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)) };[m
+[32m+[m[32mfloat[] treeX = {[m[41m [m
+[32m+[m[32m  (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0)), (random(-6000.0, 6000.0))[m
+[32m+[m[32m};[m
+[32m+[m[32mfloat[] treeZ = {[m[41m [m
+[32m+[m[32m  (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0)), (random(-400.0, 29500.0))[m
+[32m+[m[32m};[m
+[32m+[m[32mfloat[] treeRotate = {[m[41m [m
+[32m+[m[32m  (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0)), (random(0.0, 360.0))[m
+[32m+[m[32m};[m
+ float treeHoleR = 1;[m
+ float treeY = 0;[m
+ boolean startWallUp = false;[m
+[36m@@ -41,9 +51,16 @@[m [mfloat wallUp = 0;[m
+ [m
+ float startPosition = 30000;[m
+ [m
+[32m+[m[32m<<<<<<< HEAD[m
+ float zoomF =0.5f;[m
+[31m-color[] userColors = { color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255) };[m
+[31m-color[] userCoMColors = { color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0) };[m
+[32m+[m[32mcolor[] userColors = {[m[41m [m
+[32m+[m[32m  color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255)[m
+[32m+[m[32m};[m
+[32m+[m[32mcolor[] userCoMColors = {[m[41m [m
+[32m+[m[32m  color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0)[m
+[32m+[m[32m};[m
+[32m+[m[32m=======[m
+[32m+[m[32m>>>>>>> parent of b5fea6c... staets FIXED![m
+ [m
+ float lastRWPx = 0.0;[m
+ float lastRWPy = 0.0;[m
+[36m@@ -95,8 +112,23 @@[m [mvoid setup() {[m
+   size(900, 1000, P3D);[m
+ [m
+   context = new SimpleOpenNI(this);[m
+[31m-  [m
+[32m+[m
+[32m+[m[32m<<<<<<< HEAD[m
+   enableDepthMap();[m
+[32m+[m[32m=======[m
+[32m+[m[32m  // enable depthMap generation[m[41m [m
+[32m+[m[32m  if (context.enableDepth() == false)[m
+[32m+[m[32m  {[m
+[32m+[m[32m    println("Can't open the depthMap, maybe the camera is not connected!");[m[41m [m
+[32m+[m
+[32m+[m[32m    if ( context.openFileRecording("C:\\Users\\tal\\Documents\\GitHub\\Texperience_Final\\data\\1.oni") == false)[m
+[32m+[m[32m    {[m
+[32m+[m[32m      println("can't find recording !!!!");[m
+[32m+[m[32m      exit();[m
+[32m+[m[32m      return;[m
+[32m+[m[32m    }[m
+[32m+[m[32m  }[m
+[32m+[m[32m>>>>>>> parent of b5fea6c... staets FIXED![m
+ [m
+   // enable skeleton generation for all joints[m
+   context.enableUser(SimpleOpenNI.SKEL_PROFILE_ALL);[m
+[36m@@ -108,6 +140,7 @@[m [mvoid setup() {[m
+ [m
+   //3D Objects [m
+   //types of rendering: LINES,POLYGON,QUADS,[m
+[32m+[m
+   // test[m
+   test = new OBJModel(this, "test.obj", "relative", POLYGON);[m
+   test.enableDebug();[m
+[36m@@ -190,31 +223,45 @@[m [mvoid setup() {[m
+ [m
+ [m
+ void draw() {[m
+[32m+[m[32m<<<<<<< HEAD[m
+ [m
+   printInfo();[m
+[32m+[m[32m=======[m
+[32m+[m[32m//beginCamera();[m
+[32m+[m[32m  println("state:     "+state);[m
+[32m+[m[32m  println("_____");[m
+[32m+[m[32m  println("cameraX:    "+(currentCameraPosition.x + sensorPosition.x));[m
+[32m+[m[32m  println("cameraY:   "+(currentCameraPosition.y + sensorPosition.y));[m
+[32m+[m[32m  println("cameraZ:   "+(currentCameraPosition.z + sensorPosition.z));[m
+[32m+[m[32m  println("_____");[m
+[32m+[m[32m  println("zPosition:  "+zPosition);[m[41m  [m
+[32m+[m[32m  println("______________________");[m
+ [m
+[32m+[m[32m>>>>>>> parent of b5fea6c... staets FIXED![m
+   context.update();[m
+[31m-  [m
+[31m-[m
+   //cameraZero ();[m
+   cameraToggle ();[m
+[31m-  drawSkeleton();[m
+[32m+[m[32m  statusManager();[m
+[32m+[m[32m  //Draw the wall projection[m
+[32m+[m[32mpushStyle();[m
+[32m+[m[32m  scale(0.5f);[m
+[32m+[m[32mpopStyle();[m
+[32m+[m[32m  drawUsers ();[m
+   xoxoFall ();[m
+   wallUp ();[m
+   treePop ();[m
+[31m-  scale(1, -1, 1);[m
+   background(10, 10, 40);[m
+[31m-  [m
+[32m+[m
+   //  lights();[m
+   //directionalLight(255, 255, 255, 0, -1, 0);[m
+   //  directionalLight(255, 255, 255, 0, 0, 1);[m
+   //  directionalLight(255, 255, 255, 1, 0, 0);[m
+ [m
+[31m-//Draw the wall projection[m
+[31m-  drawWall ();[m
+[31m-[m
+[31m-//Draw 3D Objects[m
+[32m+[m[41m  [m
+[32m+[m[41m  [m
+ [m
+[32m+[m[32m  //Draw 3D Objects[m
+[32m+[m[32m  scale(1, -1, 1);[m
+   /*[m
+   // test[m
+    pushMatrix();[m
+[36m@@ -226,7 +273,7 @@[m [mvoid draw() {[m
+    popStyle();  [m
+    popMatrix();[m
+    */[m
+[31m-[m
+[32m+[m[41m  [m
+   //Begining wall[m
+   pushMatrix();[m
+   pushStyle();[m
+[36m@@ -334,7 +381,7 @@[m [mvoid draw() {[m
+   stone.draw();[m
+   popStyle();  [m
+   popMatrix();[m
+[31m-  [m
+[32m+[m
+   perspective(PI / 3, float(width)/float(height), 1, 1000000);[m
+   //endCamera();[m
+ }[m
+[36m@@ -363,6 +410,7 @@[m [mvoid draw() {[m
+ [m
+ [m
+ // Voids[m
+[32m+[m[32m<<<<<<< HEAD[m
+ void enableDepthMap()[m
+ {[m
+   // enable depthMap generation [m
+[36m@@ -381,7 +429,7 @@[m [mvoid enableDepthMap()[m
+ [m
+ void printInfo()[m
+ {[m
+[31m-//beginCamera();[m
+[32m+[m[32m  //beginCamera();[m
+   println("state:     "+state);[m
+   println("_____");[m
+   println("cameraX:    "+(currentCameraPosition.x + sensorPosition.x));[m
+[36m@@ -394,8 +442,83 @@[m [mvoid printInfo()[m
+   println("______________________");[m
+ }[m
+ [m
+[32m+[m[32mvoid drawUsers()[m
+[32m+[m[32m{[m
+[32m+[m[32m  if (state == ENGAGE || state == SYNC) {[m
+[32m+[m
+[32m+[m[32m    //scale(zoomF);[m
+[32m+[m[32m    int[]   depthMap = context.depthMap();[m
+[32m+[m[32m    int     steps   = 5;  // to speed up the drawing, draw every third point[m
+[32m+[m[32m    int     index;[m
+[32m+[m[32m    PVector realWorldPoint;[m
+[32m+[m
+[32m+[m[32m    pushMatrix();[m
+[32m+[m[32m    pushStyle();[m[41m  [m
+[32m+[m[32m    scale(0.5f);[m
+[32m+[m[32m    translate(0, 1300, startPosition + 6000);  // set the rotation center of the scene 1000 infront of the camera[m
+[32m+[m[32m    rotateY(radians(180));[m
+[32m+[m[32m    int userCount = context.getNumberOfUsers();[m
+[32m+[m[32m    int[] userMap = null;[m
+[32m+[m[32m    if (userCount > 0)[m
+[32m+[m[32m    {[m
+[32m+[m[32m      userMap = context.getUsersPixels(SimpleOpenNI.USERS_ALL);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    for (int y=0;y < context.depthHeight();y+=steps)[m
+[32m+[m[32m    {[m
+[32m+[m[32m      for (int x=0;x < context.depthWidth();x+=steps)[m
+[32m+[m[32m      {[m
+[32m+[m[32m        index = x + y * context.depthWidth();[m
+[32m+[m[32m        if (depthMap[index] > 0)[m
+[32m+[m[32m        {[m[41m [m
+[32m+[m[32m          // get the realworld points[m
+[32m+[m[32m          realWorldPoint = context.depthMapRealWorld()[index];[m
+[32m+[m
+[32m+[m[32m          // check if there is a user[m
+[32m+[m[32m          if (userMap != null && userMap[index] != 0)[m
+[32m+[m[32m          {  // call the user color[m
+[32m+[m
+[32m+[m[32m            //int colorIndex = userMap[index] % userColors.length;[m
+[32m+[m[32m            strokeWeight(4);[m
+[32m+[m[32m            if (state == ENGAGE || state == SYNC)[m
+[32m+[m[32m            {[m
+[32m+[m[32m              if ( userMap[index] == chosenUser) {[m
+[32m+[m[32m                //color of chosen person[m
+[32m+[m[32m                stroke(color(0, 255, 0));[m
+[32m+[m[32m              }[m
+[32m+[m[32m              else {[m
+[32m+[m[32m                //color of recognized people[m
+[32m+[m[32m                stroke(color(0, 0, 255));[m
+[32m+[m[32m              }[m
+[32m+[m[32m            }[m
+[32m+[m[32m            else {[m
+[32m+[m[32m              //stroke(userColors[0]);[m
+[32m+[m[32m              stroke(color(0, 0, 255));[m
+[32m+[m[32m            }[m
+[32m+[m[32m          }[m
+[32m+[m[32m          else[m
+[32m+[m[32m            // camera capture background color[m
+[32m+[m[32m            stroke(255);[m[41m [m
+[32m+[m
+[32m+[m[32m          point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);[m
+[32m+[m[32m          //line(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z, lastRWPx,lastRWPy,lastRWPz);[m
+[32m+[m
+[32m+[m[32m          lastRWPx = realWorldPoint.x;[m
+[32m+[m[32m          lastRWPy = realWorldPoint.y;[m
+[32m+[m[32m          lastRWPz = realWorldPoint.z;[m
+[32m+[m[32m        }[m
+[32m+[m[32m      }[m
+[32m+[m[32m    }[m
+[32m+[m[32m    popStyle();[m
+[32m+[m[32m    popMatrix();[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid statusManager() {[m
+[32m+[m[32m=======[m
+ void drawSkeleton(){[m
+   // draw the skeleton if it's available[m
+[32m+[m[32m>>>>>>> parent of b5fea6c... staets FIXED![m
+   int[] userList = context.getUsers();[m
+   int numTreckedUsers = 0;[m
+   for (int i=0;i<userList.length;i++)  [m
+[36m@@ -416,8 +539,13 @@[m [mvoid drawSkeleton(){[m
+ [m
+         if (headHistory.size() > historySize)[m
+         {[m
+[32m+[m[32m<<<<<<< HEAD[m
+[32m+[m[32m          //check if not moving[m
+[32m+[m[32m          float total = 0; //accumulated torso movement[m
+[32m+[m[32m=======[m
+         //check if not moving[m
+           float total = 0; //accumulated head movement[m
+[32m+[m[32m>>>>>>> parent of 79ea794... follow torso instead of head[m
+           for (int j=1;j<historySize;j++)[m
+           {[m
+             PVector v3 = PVector.sub(headHistory.get(j), headHistory.get(j-1));[m
+[36m@@ -441,18 +569,18 @@[m [mvoid drawSkeleton(){[m
+           headHistory.remove(0);[m
+         }[m
+       }[m
+[31m-    else if (state == SYNC) [m
+[31m-    {      [m
+[31m-      if (currentCameraPosition.z + sensorPosition.z >= 8000.0)[m
+[32m+[m[32m      else if (state == SYNC)[m[41m [m
+[32m+[m[32m      {[m[41m      [m
+[32m+[m[32m        if (currentCameraPosition.z + sensorPosition.z >= 8000.0)[m
+         {[m
+[31m-        startWalk(userList[i]);[m
+[32m+[m[32m          startWalk(userList[i]);[m
+         }[m
+[31m-    }[m
+[31m-    else if (state == STARTWALK)[m
+[31m-    {[m
+[31m-     startWallUp = true; [m
+[31m-    }  [m
+[31m-    [m
+[32m+[m[32m      }[m
+[32m+[m[32m      else if (state == STARTWALK)[m
+[32m+[m[32m      {[m
+[32m+[m[32m        startWallUp = true;[m
+[32m+[m[32m      }[m[41m  [m
+[32m+[m
+       numTreckedUsers++;[m
+       context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_HEAD, head);[m
+       head.x = -head.x;[m
+[36m@@ -471,13 +599,13 @@[m [mvoid drawSkeleton(){[m
+   else {[m
+     target = defaultCameraPosition ;[m
+   }[m
+[31m-currentCameraPosition.lerp(target, 0.1);[m
+[32m+[m[32m  currentCameraPosition.lerp(target, 0.1);[m
+ }[m
+ [m
+ void engage ()[m
+ {[m
+   //reset all inits and floats[m
+[31m- //println("ENGAGE");[m
+[32m+[m[32m  //println("ENGAGE");[m
+   state  = ENGAGE;[m
+   chosenUser = 0;[m
+ }[m
+[36m@@ -526,36 +654,36 @@[m [mvoid treePop ()[m
+ }[m
+ [m
+ /*void cameraZero ()[m
+[31m-{[m
+[32m+[m[32m {[m
+  if ( cameraY >= 1 )[m
+  {[m
+[31m-  cameraY = 0;[m
+[32m+[m[32m cameraY = 0;[m
+  } else {[m
+[31m-   cameraY =  currentCameraPosition.y + sensorPosition.y;[m
+[32m+[m[32m cameraY =  currentCameraPosition.y + sensorPosition.y;[m
+  }[m
+[31m-}*/[m
+[32m+[m[32m }*/[m
+ [m
+ void cameraToggle ()[m
+ {[m
+   //Toggle between camera and mouse[m
+   if (cameraOn) {[m
+[31m-    if (state == SYNC || state == ENGAGE) {  [m
+[32m+[m[32m    if (state == SYNC || state == ENGAGE) {[m[41m [m
+ [m
+[31m-      //println("camera on freez");[m
+[32m+[m[32m      println("camera on freez");[m
+       camera( [m
+[31m-      60, -1000, mouseZPosition, [m
+[32m+[m[32m      60, -1000, startPosition,[m[41m [m
+       0, -5000, 0, [m
+       0, 1.0, 0);[m
+       //zPosition = 19000;[m
+     } [m
+     else {[m
+[31m-      //println("camera on user");[m
+[32m+[m[32m      println("camera on user");[m
+       zPosition =(currentCameraPosition.z + sensorPosition.z); [m
+       camera( [m
+       currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, [m
+[31m-      0,0,0,[m
+[32m+[m[32m      0, 0, 0,[m[41m [m
+       0, 1.0, 0);[m
+[31m-      [m
+[32m+[m
+       // println("X: "+ currentCameraPosition.x);[m
+       // println("y: "+ currentCameraPosition.y);[m
+       // println("z: "+ currentCameraPosition.z);[m
+[36m@@ -563,29 +691,31 @@[m [mvoid cameraToggle ()[m
+     }[m
+   }[m
+   else if (cameraOn == false) {[m
+[31m-    //println("camera off");[m
+[32m+[m[32m    println("camera off");[m
+     camera( [m
+     (((float(mouseX) / width) - 0.5) * 2000), (((float(mouseY) / height) - 0.5) * 2000), mouseZPosition, //mouseY / height * 2000, //move camera[m
+     0, 0, 0, [m
+     0, 1.0, 0);[m
+     zPosition = mouseZPosition ;[m
+[32m+[m[32m<<<<<<< HEAD[m
+[32m+[m[32m=======[m
+   }  [m
+ }[m
+ [m
+ void drawWall()[m
+ {[m
+[31m-  if (state == ENGAGE || state == SYNC) {[m
+[32m+[m[32m  if (state == ENGAGE || state == ENGAGE) {[m
+ [m
+     scale(zoomF);[m
+     int[]   depthMap = context.depthMap();[m
+[31m-    int     steps   = 3;  // to speed up the drawing, draw every third point[m
+[32m+[m[32m    int     steps   = 10;  // to speed up the drawing, draw every third point[m
+     int     index;[m
+     PVector realWorldPoint;[m
+ [m
+     pushMatrix();[m
+     pushStyle();  [m
+     scale(1);[m
+[31m-    translate(0, 1300,(startPosition + 3000));  // set the rotation center of the scene 1000 infront of the camera[m
+[32m+[m[32m    translate(0, 1300, (startPosition + 300));  // set the rotation center of the scene 1000 infront of the camera[m
+     rotateY(radians(180));[m
+     int userCount = context.getNumberOfUsers();[m
+     int[] userMap = null;[m
+[36m@@ -628,7 +758,7 @@[m [mvoid drawWall()[m
+           }[m
+           else[m
+             // camera capture background color[m
+[31m-            stroke(255); [m
+[32m+[m[32m            stroke(0);[m[41m [m
+           [m
+           point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);[m
+           //line(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z, lastRWPx,lastRWPy,lastRWPz);[m
+[36m@@ -641,6 +771,7 @@[m [mvoid drawWall()[m
+     }[m
+     popStyle();[m
+     popMatrix();[m
+[32m+[m[32m>>>>>>> parent of b5fea6c... staets FIXED![m
+   }[m
+ }[m
+ [m
+[36m@@ -671,6 +802,7 @@[m [mvoid drawWall()[m
+ [m
+ [m
+ [m
+[32m+[m
+ // Keyboard events[m
+ void keyPressed() {[m
+ [m
+[36m@@ -820,4 +952,3 @@[m [mvoid onEndPose(String pose, int userId)[m
+ [m
+ [m
+ [m
+[31m-[m
+[1mdiff --git a/build-tmp/Texperience_Final.class b/build-tmp/Texperience_Final.class[m
+[1mindex 30567f1..bccf794 100644[m
+Binary files a/build-tmp/Texperience_Final.class and b/build-tmp/Texperience_Final.class differ
+[1mdiff --git a/build-tmp/source/Texperience_Final.java b/build-tmp/source/Texperience_Final.java[m
+[1mindex a2420ea..fdd19fc 100644[m
+[1m--- a/build-tmp/source/Texperience_Final.java[m
+[1m+++ b/build-tmp/source/Texperience_Final.java[m
+[36m@@ -21,7 +21,6 @@[m [mpublic class Texperience_Final extends PApplet {[m
+ [m
+ [m
+ //tal sznicer test[m
+[31m-[m
+ //imports[m
+ [m
+ [m
+[36m@@ -33,8 +32,8 @@[m [mHashMap<Integer, ArrayList> hm = new HashMap();[m
+ [m
+ OBJModel test, moon, stars, tree, xoxoMan, xoxoCouch, twoMan, twoManArrow, sphear, stone;[m
+ [m
+[31m-SimpleOpenNI context;[m
+[31m-boolean autoCalib=true;[m
+[32m+[m[32mSimpleOpenNI  context;[m
+[32m+[m[32mboolean       autoCalib=true;[m
+ PVector head = new PVector();[m
+ [m
+ //Sensor position relative to screen in mm[m
+[36m@@ -42,6 +41,11 @@[m [mPVector sensorPosition = new PVector(0, 0, 0);[m
+ PVector defaultCameraPosition = new PVector(0, 0, 0);[m
+ PVector currentCameraPosition = defaultCameraPosition;[m
+ [m
+[32m+[m[32m//Opening[m
+[32m+[m[32mfloat zoomF =0.5f;[m
+[32m+[m[32mint[] userColors = { color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255) };[m
+[32m+[m[32mint[] userCoMColors = { color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0) };[m
+[32m+[m
+ //My Floats[m
+ float mouseZPosition = 19000.0f;[m
+ float zPosition = 0.0f;[m
+[36m@@ -52,9 +56,15 @@[m [mfloat xoxoFall = 6000;[m
+ //boolean runOnce = true;[m
+ [m
+ float treeNumber = 5;[m
+[31m-float[] treeX = { (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f))};[m
+[31m-float[] treeZ = { (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f))};[m
+[31m-float[] treeRotate = { (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)) };[m
+[32m+[m[32mfloat[] treeX = {[m[41m [m
+[32m+[m[32m  (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f)), (random(-6000.0f, 6000.0f))[m
+[32m+[m[32m};[m
+[32m+[m[32mfloat[] treeZ = {[m[41m [m
+[32m+[m[32m  (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f)), (random(-400.0f, 29500.0f))[m
+[32m+[m[32m};[m
+[32m+[m[32mfloat[] treeRotate = {[m[41m [m
+[32m+[m[32m  (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f)), (random(0.0f, 360.0f))[m
+[32m+[m[32m};[m
+ float treeHoleR = 1;[m
+ float treeY = 0;[m
+ boolean startWallUp = false;[m
+[36m@@ -62,9 +72,16 @@[m [mfloat wallUp = 0;[m
+ [m
+ float startPosition = 30000;[m
+ [m
+[32m+[m[32m<<<<<<< HEAD[m
+ float zoomF =0.5f;[m
+[31m-int[] userColors = { color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255) };[m
+[31m-int[] userCoMColors = { color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0) };[m
+[32m+[m[32mint[] userColors = {[m[41m [m
+[32m+[m[32m  color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255)[m
+[32m+[m[32m};[m
+[32m+[m[32mint[] userCoMColors = {[m[41m [m
+[32m+[m[32m  color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0)[m
+[32m+[m[32m};[m
+[32m+[m[32m=======[m
+[32m+[m[32m>>>>>>> parent of b5fea6c... staets FIXED![m
+ [m
+ float lastRWPx = 0.0f;[m
+ float lastRWPy = 0.0f;[m
+[36m@@ -116,8 +133,23 @@[m [mpublic void setup() {[m
+   size(900, 1000, P3D);[m
+ [m
+   context = new SimpleOpenNI(this);[m
+[31m-  [m
+[32m+[m
+[32m+[m[32m<<<<<<< HEAD[m
+   enableDepthMap();[m
+[32m+[m[32m=======[m
+[32m+[m[32m  // enable depthMap generation[m[41m [m
+[32m+[m[32m  if (context.enableDepth() == false)[m
+[32m+[m[32m  {[m
+[32m+[m[32m    println("Can't open the depthMap, maybe the camera is not connected!");[m[41m [m
+[32m+[m
+[32m+[m[32m    if ( context.openFileRecording("C:\\Users\\tal\\Documents\\GitHub\\Texperience_Final\\data\\1.oni") == false)[m
+[32m+[m[32m    {[m
+[32m+[m[32m      println("can't find recording !!!!");[m
+[32m+[m[32m      exit();[m
+[32m+[m[32m      return;[m
+[32m+[m[32m    }[m
+[32m+[m[32m  }[m
+[32m+[m[32m>>>>>>> parent of b5fea6c... staets FIXED![m
+ [m
+   // enable skeleton generation for all joints[m
+   context.enableUser(SimpleOpenNI.SKEL_PROFILE_ALL);[m
+[36m@@ -129,6 +161,7 @@[m [mpublic void setup() {[m
+ [m
+   //3D Objects [m
+   //types of rendering: LINES,POLYGON,QUADS,[m
+[32m+[m
+   // test[m
+   test = new OBJModel(this, "test.obj", "relative", POLYGON);[m
+   test.enableDebug();[m
+[36m@@ -211,31 +244,45 @@[m [mpublic void setup() {[m
+ [m
+ [m
+ public void draw() {[m
+[32m+[m[32m<<<<<<< HEAD[m
+ [m
+   printInfo();[m
+[32m+[m[32m=======[m
+[32m+[m[32m//beginCamera();[m
+[32m+[m[32m  println("state:     "+state);[m
+[32m+[m[32m  println("_____");[m
+[32m+[m[32m  println("cameraX:    "+(currentCameraPosition.x + sensorPosition.x));[m
+[32m+[m[32m  println("cameraY:   "+(currentCameraPosition.y + sensorPosition.y));[m
+[32m+[m[32m  println("cameraZ:   "+(currentCameraPosition.z + sensorPosition.z));[m
+[32m+[m[32m  println("_____");[m
+[32m+[m[32m  println("zPosition:  "+zPosition);[m[41m  [m
+[32m+[m[32m  println("______________________");[m
+ [m
+[32m+[m[32m>>>>>>> parent of b5fea6c... staets FIXED![m
+   context.update();[m
+[31m-  [m
+[31m-[m
+   //cameraZero ();[m
+   cameraToggle ();[m
+[31m-  drawSkeleton();[m
+[32m+[m[32m  statusManager();[m
+[32m+[m[32m  //Draw the wall projection[m
+[32m+[m[32mpushStyle();[m
+[32m+[m[32m  scale(0.5f);[m
+[32m+[m[32mpopStyle();[m
+[32m+[m[32m  drawUsers ();[m
+   xoxoFall ();[m
+   wallUp ();[m
+   treePop ();[m
+[31m-  scale(1, -1, 1);[m
+   background(10, 10, 40);[m
+[31m-  [m
+[32m+[m
+   //  lights();[m
+   //directionalLight(255, 255, 255, 0, -1, 0);[m
+   //  directionalLight(255, 255, 255, 0, 0, 1);[m
+   //  directionalLight(255, 255, 255, 1, 0, 0);[m
+ [m
+[31m-//Draw the wall projection[m
+[31m-  drawWall ();[m
+[31m-[m
+[31m-//Draw 3D Objects[m
+[32m+[m[41m  [m
+[32m+[m[41m  [m
+ [m
+[32m+[m[32m  //Draw 3D Objects[m
+[32m+[m[32m  scale(1, -1, 1);[m
+   /*[m
+   // test[m
+    pushMatrix();[m
+[36m@@ -247,7 +294,7 @@[m [mpublic void draw() {[m
+    popStyle();  [m
+    popMatrix();[m
+    */[m
+[31m-[m
+[32m+[m[41m  [m
+   //Begining wall[m
+   pushMatrix();[m
+   pushStyle();[m
+[36m@@ -355,7 +402,7 @@[m [mpublic void draw() {[m
+   stone.draw();[m
+   popStyle();  [m
+   popMatrix();[m
+[31m-  [m
+[32m+[m
+   perspective(PI / 3, PApplet.parseFloat(width)/PApplet.parseFloat(height), 1, 1000000);[m
+   //endCamera();[m
+ }[m
+[36m@@ -384,6 +431,7 @@[m [mpublic void draw() {[m
+ [m
+ [m
+ // Voids[m
+[32m+[m[32m<<<<<<< HEAD[m
+ public void enableDepthMap()[m
+ {[m
+   // enable depthMap generation [m
+[36m@@ -402,7 +450,7 @@[m [mpublic void enableDepthMap()[m
+ [m
+ public void printInfo()[m
+ {[m
+[31m-//beginCamera();[m
+[32m+[m[32m  //beginCamera();[m
+   println("state:     "+state);[m
+   println("_____");[m
+   println("cameraX:    "+(currentCameraPosition.x + sensorPosition.x));[m
+[36m@@ -415,8 +463,85 @@[m [mpublic void printInfo()[m
+   println("______________________");[m
+ }[m
+ [m
+[32m+[m[32mpublic void drawUsers()[m
+[32m+[m[32m{[m
+[32m+[m[32m  if (state == ENGAGE || state == SYNC) {[m
+[32m+[m
+[32m+[m[32m    //scale(zoomF);[m
+[32m+[m[32m    int[]   depthMap = context.depthMap();[m
+[32m+[m[32m    int     steps   = 5;  // to speed up the drawing, draw every third point[m
+[32m+[m[32m    int     index;[m
+[32m+[m[32m    PVector realWorldPoint;[m
+[32m+[m
+[32m+[m[32m    pushMatrix();[m
+[32m+[m[32m    pushStyle();[m[41m  [m
+[32m+[m[32m    scale(0.5f);[m
+[32m+[m[32m    translate(0, 1300, startPosition + 6000);  // set the rotation center of the scene 1000 infront of the camera[m
+[32m+[m[32m    rotateY(radians(180));[m
+[32m+[m[32m    int userCount = context.getNumberOfUsers();[m
+[32m+[m[32m    int[] userMap = null;[m
+[32m+[m[32m    if (userCount > 0)[m
+[32m+[m[32m    {[m
+[32m+[m[32m      userMap = context.getUsersPixels(SimpleOpenNI.USERS_ALL);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    for (int y=0;y < context.depthHeight();y+=steps)[m
+[32m+[m[32m    {[m
+[32m+[m[32m      for (int x=0;x < context.depthWidth();x+=steps)[m
+[32m+[m[32m      {[m
+[32m+[m[32m        index = x + y * context.depthWidth();[m
+[32m+[m[32m        if (depthMap[index] > 0)[m
+[32m+[m[32m        {[m[41m [m
+[32m+[m[32m          // get the realworld points[m
+[32m+[m[32m          realWorldPoint = context.depthMapRealWorld()[index];[m
+[32m+[m
+[32m+[m[32m          // check if there is a user[m
+[32m+[m[32m          if (userMap != null && userMap[index] != 0)[m
+[32m+[m[32m          {  // call the user color[m
+[32m+[m
+[32m+[m[32m            //int colorIndex = userMap[index] % userColors.length;[m
+[32m+[m[32m            strokeWeight(4);[m
+[32m+[m[32m            if (state == ENGAGE || state == SYNC)[m
+[32m+[m[32m            {[m
+[32m+[m[32m              if ( userMap[index] == chosenUser) {[m
+[32m+[m[32m                //color of chosen person[m
+[32m+[m[32m                stroke(color(0, 255, 0));[m
+[32m+[m[32m              }[m
+[32m+[m[32m              else {[m
+[32m+[m[32m                //color of recognized people[m
+[32m+[m[32m                stroke(color(0, 0, 255));[m
+[32m+[m[32m              }[m
+[32m+[m[32m            }[m
+[32m+[m[32m            else {[m
+[32m+[m[32m              //stroke(userColors[0]);[m
+[32m+[m[32m              stroke(color(0, 0, 255));[m
+[32m+[m[32m            }[m
+[32m+[m[32m          }[m
+[32m+[m[32m          else[m
+[32m+[m[32m            // camera capture background color[m
+[32m+[m[32m            stroke(255);[m[41m [m
+[32m+[m
+[32m+[m[32m          point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);[m
+[32m+[m[32m//          fill(255);[m
+[32m+[m[32m  //        rect(0, 0, 4000, 4000);[m
+[32m+[m[32m          //line(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z, lastRWPx,lastRWPy,lastRWPz);[m
+[32m+[m
+[32m+[m[32m          lastRWPx = realWorldPoint.x;[m
+[32m+[m[32m          lastRWPy = realWorldPoint.y;[m
+[32m+[m[32m          lastRWPz = realWorldPoint.z;[m
+[32m+[m[32m        }[m
+[32m+[m[32m      }[m
+[32m+[m[32m    }[m
+[32m+[m[32m    popStyle();[m
+[32m+[m[32m    popMatrix();[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mpublic void statusManager() {[m
+[32m+[m[32m=======[m
+ public void drawSkeleton(){[m
+   // draw the skeleton if it's available[m
+[32m+[m[32m>>>>>>> parent of b5fea6c... staets FIXED![m
+   int[] userList = context.getUsers();[m
+   int numTreckedUsers = 0;[m
+   for (int i=0;i<userList.length;i++)  [m
+[36m@@ -437,8 +562,13 @@[m [mpublic void drawSkeleton(){[m
+ [m
+         if (headHistory.size() > historySize)[m
+         {[m
+[32m+[m[32m<<<<<<< HEAD[m
+[32m+[m[32m          //check if not moving[m
+[32m+[m[32m          float total = 0; //accumulated torso movement[m
+[32m+[m[32m=======[m
+         //check if not moving[m
+           float total = 0; //accumulated head movement[m
+[32m+[m[32m>>>>>>> parent of 79ea794... follow torso instead of head[m
+           for (int j=1;j<historySize;j++)[m
+           {[m
+             PVector v3 = PVector.sub(headHistory.get(j), headHistory.get(j-1));[m
+[36m@@ -462,18 +592,18 @@[m [mpublic void drawSkeleton(){[m
+           headHistory.remove(0);[m
+         }[m
+       }[m
+[31m-    else if (state == SYNC) [m
+[31m-    {      [m
+[31m-      if (currentCameraPosition.z + sensorPosition.z >= 8000.0f)[m
+[32m+[m[32m      else if (state == SYNC)[m[41m [m
+[32m+[m[32m      {[m[41m      [m
+[32m+[m[32m        if (currentCameraPosition.z + sensorPosition.z >= 8000.0f)[m
+         {[m
+[31m-        startWalk(userList[i]);[m
+[32m+[m[32m          startWalk(userList[i]);[m
+         }[m
+[31m-    }[m
+[31m-    else if (state == STARTWALK)[m
+[31m-    {[m
+[31m-     startWallUp = true; [m
+[31m-    }  [m
+[31m-    [m
+[32m+[m[32m      }[m
+[32m+[m[32m      else if (state == STARTWALK)[m
+[32m+[m[32m      {[m
+[32m+[m[32m        startWallUp = true;[m
+[32m+[m[32m      }[m[41m  [m
+[32m+[m
+       numTreckedUsers++;[m
+       context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_HEAD, head);[m
+       head.x = -head.x;[m
+[36m@@ -492,13 +622,13 @@[m [mpublic void drawSkeleton(){[m
+   else {[m
+     target = defaultCameraPosition ;[m
+   }[m
+[31m-currentCameraPosition.lerp(target, 0.1f);[m
+[32m+[m[32m  currentCameraPosition.lerp(target, 0.1f);[m
+ }[m
+ [m
+ public void engage ()[m
+ {[m
+   //reset all inits and floats[m
+[31m- //println("ENGAGE");[m
+[32m+[m[32m  //println("ENGAGE");[m
+   state  = ENGAGE;[m
+   chosenUser = 0;[m
+ }[m
+[36m@@ -547,36 +677,36 @@[m [mpublic void treePop ()[m
+ }[m
+ [m
+ /*void cameraZero ()[m
+[31m-{[m
+[32m+[m[32m {[m
+  if ( cameraY >= 1 )[m
+  {[m
+[31m-  cameraY = 0;[m
+[32m+[m[32m cameraY = 0;[m
+  } else {[m
+[31m-   cameraY =  currentCameraPosition.y + sensorPosition.y;[m
+[32m+[m[32m cameraY =  currentCameraPosition.y + sensorPosition.y;[m
+  }[m
+[31m-}*/[m
+[32m+[m[32m }*/[m
+ [m
+ public void cameraToggle ()[m
+ {[m
+   //Toggle between camera and mouse[m
+   if (cameraOn) {[m
+[31m-    if (state == SYNC || state == ENGAGE) {  [m
+[32m+[m[32m    if (state == SYNC || state == ENGAGE) {[m[41m [m
+ [m
+[31m-      //println("camera on freez");[m
+[32m+[m[32m      println("camera on freez");[m
+       camera( [m
+[31m-      60, -1000, mouseZPosition, [m
+[32m+[m[32m      60, -1000, startPosition,[m[41m [m
+       0, -5000, 0, [m
+       0, 1.0f, 0);[m
+       //zPosition = 19000;[m
+     } [m
+     else {[m
+[31m-      //println("camera on user");[m
+[32m+[m[32m      println("camera on user");[m
+       zPosition =(currentCameraPosition.z + sensorPosition.z); [m
+       camera( [m
+       currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, [m
+[31m-      0,0,0,[m
+[32m+[m[32m      0, 0, 0,[m[41m [m
+       0, 1.0f, 0);[m
+[31m-      [m
+[32m+[m
+       // println("X: "+ currentCameraPosition.x);[m
+       // println("y: "+ currentCameraPosition.y);[m
+       // println("z: "+ currentCameraPosition.z);[m
+[36m@@ -584,29 +714,31 @@[m [mpublic void cameraToggle ()[m
+     }[m
+   }[m
+   else if (cameraOn == false) {[m
+[31m-    //println("camera off");[m
+[32m+[m[32m    println("camera off");[m
+     camera( [m
+     (((PApplet.parseFloat(mouseX) / width) - 0.5f) * 2000), (((PApplet.parseFloat(mouseY) / height) - 0.5f) * 2000), mouseZPosition, //mouseY / height * 2000, //move camera[m
+     0, 0, 0, [m
+     0, 1.0f, 0);[m
+     zPosition = mouseZPosition ;[m
+[32m+[m[32m<<<<<<< HEAD[m
+[32m+[m[32m=======[m
+   }  [m
+ }[m
+ [m
+ public void drawWall()[m
+ {[m
+[31m-  if (state == ENGAGE || state == SYNC) {[m
+[32m+[m[32m  if (state == ENGAGE || state == ENGAGE) {[m
+ [m
+     scale(zoomF);[m
+     int[]   depthMap = context.depthMap();[m
+[31m-    int     steps   = 3;  // to speed up the drawing, draw every third point[m
+[32m+[m[32m    int     steps   = 10;  // to speed up the drawing, draw every third point[m
+     int     index;[m
+     PVector realWorldPoint;[m
+ [m
+     pushMatrix();[m
+     pushStyle();  [m
+     scale(1);[m
+[31m-    translate(0, 1300,(startPosition + 3000));  // set the rotation center of the scene 1000 infront of the camera[m
+[32m+[m[32m    translate(0, 1300, (startPosition + 300));  // set the rotation center of the scene 1000 infront of the camera[m
+     rotateY(radians(180));[m
+     int userCount = context.getNumberOfUsers();[m
+     int[] userMap = null;[m
+[36m@@ -649,7 +781,7 @@[m [mpublic void drawWall()[m
+           }[m
+           else[m
+             // camera capture background color[m
+[31m-            stroke(255); [m
+[32m+[m[32m            stroke(0);[m[41m [m
+           [m
+           point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);[m
+           //line(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z, lastRWPx,lastRWPy,lastRWPz);[m
+[36m@@ -662,6 +794,7 @@[m [mpublic void drawWall()[m
+     }[m
+     popStyle();[m
+     popMatrix();[m
+[32m+[m[32m>>>>>>> parent of b5fea6c... staets FIXED![m
+   }[m
+ }[m
+ [m
+[36m@@ -692,6 +825,7 @@[m [mpublic void drawWall()[m
+ [m
+ [m
+ [m
+[32m+[m
+ // Keyboard events[m
+ public void keyPressed() {[m
+ [m
+[36m@@ -841,7 +975,6 @@[m [mpublic void onEndPose(String pose, int userId)[m
+ [m
+ [m
+ [m
+[31m-[m
+ // // The Link class is used for handling constraints between particles.[m
+ // class Link {[m
+ //   float restingDistance;[m

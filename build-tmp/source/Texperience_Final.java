@@ -21,6 +21,7 @@ public class Texperience_Final extends PApplet {
 
 
 //tal sznicer test
+
 //imports
 
 
@@ -32,19 +33,14 @@ HashMap<Integer, ArrayList> hm = new HashMap();
 
 OBJModel test, moon, stars, tree, xoxoMan, xoxoCouch, twoMan, twoManArrow, sphear, stone;
 
-SimpleOpenNI  context;
-boolean       autoCalib=true;
+SimpleOpenNI context;
+boolean autoCalib=true;
 PVector head = new PVector();
 
 //Sensor position relative to screen in mm
 PVector sensorPosition = new PVector(0, 0, 0);
 PVector defaultCameraPosition = new PVector(0, 0, 0);
 PVector currentCameraPosition = defaultCameraPosition;
-
-//Opening
-float zoomF =0.5f;
-int[] userColors = { color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255) };
-int[] userCoMColors = { color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0) };
 
 //My Floats
 float mouseZPosition = 19000.0f;
@@ -66,6 +62,9 @@ float wallUp = 0;
 
 float startPosition = 30000;
 
+float zoomF =0.5f;
+int[] userColors = { color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255) };
+int[] userCoMColors = { color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0) };
 
 float lastRWPx = 0.0f;
 float lastRWPy = 0.0f;
@@ -117,19 +116,8 @@ public void setup() {
   size(900, 1000, P3D);
 
   context = new SimpleOpenNI(this);
-
-  // enable depthMap generation 
-  if (context.enableDepth() == false)
-  {
-    println("Can't open the depthMap, maybe the camera is not connected!"); 
-
-    if ( context.openFileRecording("C:\\Users\\tal\\Documents\\GitHub\\Texperience_Final\\data\\1.oni") == false)
-    {
-      println("can't find recording !!!!");
-      exit();
-      return;
-    }
-  }
+  
+  enableDepthMap();
 
   // enable skeleton generation for all joints
   context.enableUser(SimpleOpenNI.SKEL_PROFILE_ALL);
@@ -141,7 +129,6 @@ public void setup() {
 
   //3D Objects 
   //types of rendering: LINES,POLYGON,QUADS,
-
   // test
   test = new OBJModel(this, "test.obj", "relative", POLYGON);
   test.enableDebug();
@@ -224,17 +211,12 @@ public void setup() {
 
 
 public void draw() {
-//beginCamera();
-  println("state:     "+state);
-  println("_____");
-  println("cameraX:    "+(currentCameraPosition.x + sensorPosition.x));
-  println("cameraY:   "+(currentCameraPosition.y + sensorPosition.y));
-  println("cameraZ:   "+(currentCameraPosition.z + sensorPosition.z));
-  println("_____");
-  println("zPosition:  "+zPosition);  
-  println("______________________");
+
+  printInfo();
 
   context.update();
+  
+
   //cameraZero ();
   cameraToggle ();
   drawSkeleton();
@@ -402,6 +384,37 @@ public void draw() {
 
 
 // Voids
+public void enableDepthMap()
+{
+  // enable depthMap generation 
+  if (context.enableDepth() == false)
+  {
+    println("Can't open the depthMap, maybe the camera is not connected!"); 
+
+    if ( context.openFileRecording("C:\\Users\\tal\\Documents\\GitHub\\Texperience_Final\\data\\1.oni") == false)
+    {
+      println("can't find recording !!!!");
+      exit();
+      return;
+    }
+  }
+}
+
+public void printInfo()
+{
+//beginCamera();
+  println("state:     "+state);
+  println("_____");
+  println("cameraX:    "+(currentCameraPosition.x + sensorPosition.x));
+  println("cameraY:   "+(currentCameraPosition.y + sensorPosition.y));
+  println("cameraZ:   "+(currentCameraPosition.z + sensorPosition.z));
+  println("_____");
+  println("startPosition: "+startPosition);
+  println("zPosition:  "+zPosition);  
+  println("mouseZPosition: "+mouseZPosition);
+  println("______________________");
+}
+
 public void drawSkeleton(){
   // draw the skeleton if it's available
   int[] userList = context.getUsers();
@@ -547,17 +560,17 @@ public void cameraToggle ()
 {
   //Toggle between camera and mouse
   if (cameraOn) {
-    if (state == SYNC || state == ENGAGE) { 
+    if (state == SYNC || state == ENGAGE) {  
 
-      println("camera on freez");
+      //println("camera on freez");
       camera( 
-      60, -1000, startPosition, 
+      60, -1000, mouseZPosition, 
       0, -5000, 0, 
       0, 1.0f, 0);
       //zPosition = 19000;
     } 
     else {
-      println("camera on user");
+      //println("camera on user");
       zPosition =(currentCameraPosition.z + sensorPosition.z); 
       camera( 
       currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
@@ -571,7 +584,7 @@ public void cameraToggle ()
     }
   }
   else if (cameraOn == false) {
-    println("camera off");
+    //println("camera off");
     camera( 
     (((PApplet.parseFloat(mouseX) / width) - 0.5f) * 2000), (((PApplet.parseFloat(mouseY) / height) - 0.5f) * 2000), mouseZPosition, //mouseY / height * 2000, //move camera
     0, 0, 0, 
@@ -582,18 +595,18 @@ public void cameraToggle ()
 
 public void drawWall()
 {
-  if (state == ENGAGE || state == ENGAGE) {
+  if (state == ENGAGE || state == SYNC) {
 
     scale(zoomF);
     int[]   depthMap = context.depthMap();
-    int     steps   = 10;  // to speed up the drawing, draw every third point
+    int     steps   = 3;  // to speed up the drawing, draw every third point
     int     index;
     PVector realWorldPoint;
 
     pushMatrix();
     pushStyle();  
     scale(1);
-    translate(0, 1300, (startPosition + 300));  // set the rotation center of the scene 1000 infront of the camera
+    translate(0, 1300,(startPosition + 3000));  // set the rotation center of the scene 1000 infront of the camera
     rotateY(radians(180));
     int userCount = context.getNumberOfUsers();
     int[] userMap = null;
@@ -636,7 +649,7 @@ public void drawWall()
           }
           else
             // camera capture background color
-            stroke(0); 
+            stroke(255); 
           
           point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
           //line(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z, lastRWPx,lastRWPy,lastRWPz);

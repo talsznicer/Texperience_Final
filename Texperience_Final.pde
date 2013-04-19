@@ -21,8 +21,10 @@ PVector defaultCameraPosition = new PVector(0, 0, 0);
 PVector currentCameraPosition = defaultCameraPosition;
 
 //My Floats
-float mouseZPosition = 19000.0;
-float zPosition = 0.0;
+float startPosition = 35000;
+float userZPosition = startPosition +11000;
+float mouseZPosition = userZPosition;
+
 boolean cameraOn = true;
 
 float xoxoFall = 6000;
@@ -38,9 +40,6 @@ float treeY = 0;
 boolean startWallUp = false;
 float wallUp = 0;
 
-float startPosition = 30000;
-
-float zoomF =0.5f;
 color[] userColors = { color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255) };
 color[] userCoMColors = { color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0) };
 
@@ -90,8 +89,8 @@ int chosenUser = 0;
 void setup() {
 
   // FULL SCREEN
-  //size(displayWidth, displayHeight, P3D);
-  size(900, 1000, P3D);
+  size(displayWidth, displayHeight, P3D);
+  //size(900, 1000, P3D);
 
   context = new SimpleOpenNI(this);
   
@@ -191,7 +190,7 @@ void setup() {
 void draw() {
 
   background(10, 10, 40);
-  printInfo();
+  //printInfo();
 
   context.update();
   //cameraZero ();
@@ -281,7 +280,7 @@ void draw() {
   pushStyle(); 
   strokeWeight(4);
   stroke(255, 0, 0);
-  translate(0, xoxoFall*1.5, zPosition - 7500);
+  translate(0, xoxoFall*1.5, userZPosition - 7500);
   xoxoMan.draw();  
   popStyle();
   popMatrix();
@@ -291,7 +290,7 @@ void draw() {
   pushStyle(); 
   strokeWeight(1);
   stroke(255, 0, 0);
-  translate(0, xoxoFall, zPosition - 7500);
+  translate(0, xoxoFall, userZPosition - 7500);
   xoxoCouch.draw();  
   popStyle();
   popMatrix();
@@ -300,7 +299,7 @@ void draw() {
   pushMatrix();
   pushStyle();
   translate(0, 0, 0);
-  rotateY(radians(zPosition)/20);
+  rotateY(radians(userZPosition)/20);
   //rotateY(radians(currentCameraPosition.z + sensorPosition.z)/20);
   twoMan.draw();
   popStyle();  
@@ -310,7 +309,7 @@ void draw() {
   pushMatrix();
   pushStyle();
   translate(0, 0, 0);
-  rotateY(radians(zPosition)/-10);
+  rotateY(radians(userZPosition)/-10);
   //rotateY(radians(currentCameraPosition.z + sensorPosition.z)/20);
   twoManArrow.draw();
   fill(255, 0, 0);
@@ -387,7 +386,7 @@ void printInfo()
   println("cameraZ:   "+(currentCameraPosition.z + sensorPosition.z));
   println("_____");
   println("startPosition: "+startPosition);
-  println("zPosition:  "+zPosition);  
+  println("userZPosition:  "+userZPosition);  
   println("mouseZPosition: "+mouseZPosition);
   println("______________________");
 }
@@ -505,7 +504,7 @@ void wallUp ()
 
 void xoxoFall () // make xoxo fall in a certain point on Z axis
 {
-  if (zPosition <= 15000.0 && xoxoFall >= -3500 )
+  if (userZPosition <= 15000.0 && xoxoFall >= -3500 )
   {
     xoxoFall -= 90;
   }
@@ -513,7 +512,7 @@ void xoxoFall () // make xoxo fall in a certain point on Z axis
 
 void treePop ()
 {
-  if (zPosition <= 15000 && treeHoleR <= 2200 )
+  if (userZPosition <= 15000 && treeHoleR <= 2200 )
   {
     treeHoleR += 10;
   }
@@ -538,19 +537,18 @@ void cameraToggle ()
   //Toggle between camera and mouse
   if (cameraOn) {
     if (state == SYNC || state == ENGAGE) {  
-
+      userZPosition = startPosition +11000;
       //println("camera on freez");
       camera( 
-      60, -1000, mouseZPosition, 
+      0, -5000, userZPosition, 
       0, -5000, 0, 
       0, 1.0, 0);
-      //zPosition = 19000;
     } 
     else {
       //println("camera on user");
-      zPosition =(currentCameraPosition.z + sensorPosition.z); 
+      userZPosition = (currentCameraPosition.z + sensorPosition.z); 
       camera( 
-      currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
+      currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, userZPosition, 
       0,0,0,
       0, 1.0, 0);
       
@@ -561,20 +559,23 @@ void cameraToggle ()
     }
   }
   else if (cameraOn == false) {
-    //println("camera off");
+  
+  //println("camera off");
+  userZPosition = mouseZPosition;
     camera( 
-    (((float(mouseX) / width) - 0.5) * 2000), (((float(mouseY) / height) - 0.5) * 2000), mouseZPosition, //mouseY / height * 2000, //move camera
-    0, 0, 0, 
+    (((float(mouseX) / width) - 0.5) * 2000), (((float(mouseY) / height) - 0.5) * 8000), userZPosition, 
+    (((float(mouseX) / width) - 0.5) * 2000), (((float(mouseY) / height) - 0.5) * 8000), 0, 
+    //0, 0, 0, 
     0, 1.0, 0);
-    zPosition = mouseZPosition ;
+    
   }  
 }
-
+  
 void drawPrimeSence()
 {
   if (state == ENGAGE || state == SYNC) {
 
-    scale(zoomF);
+    
     int[]   depthMap = context.depthMap();
     int     steps   = 3;  // to speed up the drawing, draw every third point
     int     index;
@@ -582,7 +583,8 @@ void drawPrimeSence()
 
     pushMatrix();
     pushStyle();  
-    translate(0, 1300,(startPosition + 3000));  // set the rotation center of the scene 1000 infront of the camera
+    scale(1.4,1.4,1);
+    translate(0, 3800,(startPosition + 10000));  // set the rotation center of the scene 1000 infront of the camera
     rotateY(radians(180));
     int userCount = context.getNumberOfUsers();
     int[] userMap = null;
@@ -682,6 +684,9 @@ void keyPressed() {
   else if (key == '3')
   {
     startWalk(0);
+  } else if ( key == 'p') 
+  {
+   printInfo(); 
   }
 
   if (cameraOn == false) {

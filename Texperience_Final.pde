@@ -1,6 +1,5 @@
 
 //tal sznicer test
-
 //imports
 import SimpleOpenNI.*;
 import processing.opengl.*;
@@ -12,14 +11,25 @@ HashMap<Integer, ArrayList> hm = new HashMap();
 
 OBJModel test, moon, stars, tree, xoxoMan, xoxoCouch, twoMan, twoManArrow, sphear, stone;
 
+<<<<<<< HEAD
 SimpleOpenNI context;
 boolean autoCalib=true;
 PVector torso = new PVector();
+=======
+SimpleOpenNI  context;
+boolean       autoCalib=true;
+PVector head = new PVector();
+>>>>>>> torso
 
 //Sensor position relative to screen in mm
 PVector sensorPosition = new PVector(0, 0, 0);
 PVector defaultCameraPosition = new PVector(0, 0, 0);
 PVector currentCameraPosition = defaultCameraPosition;
+
+//Opening
+float zoomF =0.5f;
+color[] userColors = { color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255) };
+color[] userCoMColors = { color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0) };
 
 //My Floats
 float mouseZPosition = 19000.0;
@@ -47,6 +57,7 @@ float wallUp = 0;
 
 float startPosition = 30000;
 
+<<<<<<< HEAD
 float zoomF =0.5f;
 color[] userColors = { 
   color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color (0, 0, 0), color(0, 255, 255)
@@ -54,6 +65,11 @@ color[] userColors = {
 color[] userCoMColors = { 
   color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0), color (255, 0, 0)
 };
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> parent of b5fea6c... staets FIXED!
+>>>>>>> torso
 
 float lastRWPx = 0.0;
 float lastRWPy = 0.0;
@@ -106,7 +122,25 @@ void setup() {
 
   context = new SimpleOpenNI(this);
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> torso
   enableDepthMap();
+=======
+  // enable depthMap generation 
+  if (context.enableDepth() == false)
+  {
+    println("Can't open the depthMap, maybe the camera is not connected!"); 
+
+    if ( context.openFileRecording("C:\\Users\\tal\\Documents\\GitHub\\Texperience_Final\\data\\1.oni") == false)
+    {
+      println("can't find recording !!!!");
+      exit();
+      return;
+    }
+  }
+>>>>>>> parent of b5fea6c... staets FIXED!
 
   // enable skeleton generation for all joints
   context.enableUser(SimpleOpenNI.SKEL_PROFILE_ALL);
@@ -118,6 +152,7 @@ void setup() {
 
   //3D Objects 
   //types of rendering: LINES,POLYGON,QUADS,
+
   // test
   test = new OBJModel(this, "test.obj", "relative", POLYGON);
   test.enableDebug();
@@ -200,8 +235,24 @@ void setup() {
 
 
 void draw() {
+<<<<<<< HEAD
 
   printInfo();
+<<<<<<< HEAD
+=======
+=======
+//beginCamera();
+  println("state:     "+state);
+  println("_____");
+  println("cameraX:    "+(currentCameraPosition.x + sensorPosition.x));
+  println("cameraY:   "+(currentCameraPosition.y + sensorPosition.y));
+  println("cameraZ:   "+(currentCameraPosition.z + sensorPosition.z));
+  println("_____");
+  println("zPosition:  "+zPosition);  
+  println("______________________");
+
+>>>>>>> parent of b5fea6c... staets FIXED!
+>>>>>>> torso
   context.update();
   //cameraZero ();
   cameraToggle ();
@@ -374,6 +425,7 @@ popStyle();
 
 
 // Voids
+<<<<<<< HEAD
 void enableDepthMap()
 {
   // enable depthMap generation 
@@ -478,6 +530,13 @@ void drawUsers()
 }
 
 void statusManager() {
+<<<<<<< HEAD
+=======
+=======
+void drawSkeleton(){
+  // draw the skeleton if it's available
+>>>>>>> parent of b5fea6c... staets FIXED!
+>>>>>>> torso
   int[] userList = context.getUsers();
   int numTreckedUsers = 0;
   for (int i=0;i<userList.length;i++)  
@@ -498,8 +557,18 @@ void statusManager() {
 
         if (torsoHistory.size() > historySize)
         {
+<<<<<<< HEAD
           //check if not moving
           float total = 0; //accumulated torso movement
+=======
+<<<<<<< HEAD
+          //check if not moving
+          float total = 0; //accumulated torso movement
+=======
+        //check if not moving
+          float total = 0; //accumulated head movement
+>>>>>>> parent of 79ea794... follow torso instead of head
+>>>>>>> torso
           for (int j=1;j<historySize;j++)
           {
             PVector v3 = PVector.sub(torsoHistory.get(j), torsoHistory.get(j-1));
@@ -621,17 +690,17 @@ void cameraToggle ()
 {
   //Toggle between camera and mouse
   if (cameraOn) {
-    if (state == SYNC || state == ENGAGE) {  
+    if (state == SYNC || state == ENGAGE) { 
 
-      //println("camera on freez");
+      println("camera on freez");
       camera( 
-      60, -1000, mouseZPosition, 
+      60, -1000, startPosition, 
       0, -5000, 0, 
       0, 1.0, 0);
       //zPosition = 19000;
     } 
     else {
-      //println("camera on user");
+      println("camera on user");
       zPosition =(currentCameraPosition.z + sensorPosition.z); 
       camera( 
       currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, currentCameraPosition.z + sensorPosition.z, 
@@ -645,12 +714,90 @@ void cameraToggle ()
     }
   }
   else if (cameraOn == false) {
-    //println("camera off");
+    println("camera off");
     camera( 
     (((float(mouseX) / width) - 0.5) * 2000), (((float(mouseY) / height) - 0.5) * 2000), mouseZPosition, //mouseY / height * 2000, //move camera
     0, 0, 0, 
     0, 1.0, 0);
     zPosition = mouseZPosition ;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+  }  
+}
+
+void drawWall()
+{
+  if (state == ENGAGE || state == ENGAGE) {
+
+    scale(zoomF);
+    int[]   depthMap = context.depthMap();
+    int     steps   = 10;  // to speed up the drawing, draw every third point
+    int     index;
+    PVector realWorldPoint;
+
+    pushMatrix();
+    pushStyle();  
+    scale(1);
+    translate(0, 1300, (startPosition + 300));  // set the rotation center of the scene 1000 infront of the camera
+    rotateY(radians(180));
+    int userCount = context.getNumberOfUsers();
+    int[] userMap = null;
+    if (userCount > 0)
+    {
+      userMap = context.getUsersPixels(SimpleOpenNI.USERS_ALL);
+    }
+
+    for (int y=0;y < context.depthHeight();y+=steps)
+    {
+      for (int x=0;x < context.depthWidth();x+=steps)
+      {
+        index = x + y * context.depthWidth();
+        if (depthMap[index] > 0)
+        { 
+          // get the realworld points
+          realWorldPoint = context.depthMapRealWorld()[index];
+
+          // check if there is a user
+          if (userMap != null && userMap[index] != 0)
+          {  // call the user color
+            
+            //int colorIndex = userMap[index] % userColors.length;
+            strokeWeight(4);
+            if (state == ENGAGE || state == SYNC)
+            {
+              if ( userMap[index] == chosenUser) {
+                //color of chosen person
+                stroke(color(0, 255, 0));
+              }
+              else {
+                //color of recognized people
+                stroke(color(0, 0, 255));
+              }
+            }
+            else {
+              //stroke(userColors[0]);
+              stroke(color(0, 0, 255));
+            }
+          }
+          else
+            // camera capture background color
+            stroke(0); 
+          
+          point(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z);
+          //line(realWorldPoint.x, realWorldPoint.y, realWorldPoint.z, lastRWPx,lastRWPy,lastRWPz);
+          
+          lastRWPx = realWorldPoint.x;
+          lastRWPy = realWorldPoint.y;
+          lastRWPz = realWorldPoint.z;
+        }
+      }
+    }
+    popStyle();
+    popMatrix();
+>>>>>>> parent of b5fea6c... staets FIXED!
+>>>>>>> torso
   }
 }
 

@@ -1,5 +1,4 @@
-
-//tal sznicer test
+//tal sznicer
 //imports
 import SimpleOpenNI.*;
 import processing.opengl.*;

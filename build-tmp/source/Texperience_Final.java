@@ -81,7 +81,8 @@ float lastRWPz = 0.0f;
 //States
 final int ENGAGE = 0;
 final int SYNC = 1;
-final int STARTWALK = 2;
+final int PREWALK = 2;
+final int STARTWALK = 3;
 
 int state = ENGAGE;
 int chosenUser = 0;
@@ -462,6 +463,7 @@ public void stateMannager() {
           println("avg: "+avg);
           if (avg < torsoMovementThreshold)
           {
+            println("SYNCED");
             sync(userList[i]);
           }
 
@@ -470,22 +472,28 @@ public void stateMannager() {
         }
       }
       else if (state == SYNC) 
-      {      
+      { 
+      println("in sync state");     
         if (currentCameraPosition.z + sensorPosition.z >= 8000.0f)
         {
-          startWalk(userList[i]);
+        println("startWallUp: "+startWallUp);
+        startWallUp = true;
+          //startWalk(userList[i]);
         }
+      }
+      else if (state == PREWALK)
+      {
+       startWalk(userList[i]); 
       }
       else if (state == STARTWALK)
       {
-        startWallUp = true;
+        println("bla");
       }  
 
       numTreckedUsers++;
       context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_TORSO, torso);
       torso.x = -torso.x;
       torso.y = -torso.y; 
-
       //println(torso);
     }
   }
@@ -517,6 +525,12 @@ public void sync(int id)
   chosenUser = id;
 }
 
+public void preWalk (int id)
+{
+  state = PREWALK;
+  chosenUser = id;
+}
+
 public void startWalk(int id)
 {
   //println("STARTWALK");
@@ -527,8 +541,9 @@ public void startWalk(int id)
 
 public void wallUp ()
 {
-  if (wallUp >= 0 && wallUp <=10000 && startWallUp)
-  {
+  if (startWallUp == true)//wallUp >= 0 && wallUp <=10000 &&
+  { 
+    println("wallUp");
     wallUp += 80;
   }
 }
@@ -567,16 +582,17 @@ public void cameraToggle ()
 {
   //Toggle between camera and mouse
   if (cameraOn) {
-    if (state == SYNC || state == ENGAGE) {  
+    if (state == SYNC || state == ENGAGE || state == PREWALK) {  
+      println("camera on freez");
       userZPosition = startPosition +11000;
-      //println("camera on freez");
+      
       camera( 
       0, -5000, userZPosition, 
       0, -5000, 0, 
       0, 1.0f, 0);
     } 
     else {
-      //println("camera on user");
+      println("camera on user");
       userZPosition = (currentCameraPosition.z + sensorPosition.z); 
       camera( 
       currentCameraPosition.x + sensorPosition.x, currentCameraPosition.y + sensorPosition.y, userZPosition, 
@@ -603,7 +619,7 @@ public void cameraToggle ()
 
 public void drawPrimeSence()
 {
-  if (state == ENGAGE || state == SYNC) {
+  if (state == ENGAGE || state == SYNC || state == PREWALK) {
 
     int[]   depthMap = context.depthMap();
     int     steps   = 3;  // to speed up the drawing, draw every third point
